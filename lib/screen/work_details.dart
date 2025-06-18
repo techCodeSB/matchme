@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
+import '../screen/qualification_details.dart';
 import '../constant.dart';
 import '../widgets/details_textfield.dart';
 import '../widgets/dropdown.dart';
 import '../widgets/details_hero.dart';
-import './more_question_next.dart';
+import '../widgets/error_text.dart';
+import '../controller/register_controller.dart';
 
 class WorkDetails extends StatefulWidget {
   const WorkDetails({super.key});
@@ -14,6 +17,8 @@ class WorkDetails extends StatefulWidget {
 }
 
 class _WorkDetailsState extends State<WorkDetails> {
+  String _profession = "";
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -74,68 +79,181 @@ class _WorkDetailsState extends State<WorkDetails> {
                   const SizedBox(height: 20.0),
                   Dropdown(
                     hint: "Your Profession",
-                    onChanged: (v) {},
+                    onChanged: (v) {
+                      setState(() {
+                        _profession = v!.toLowerCase();
+                      });
+                      Provider.of<RegisterController>(context, listen: false)
+                          .profession = v!.toLowerCase();
+                      Provider.of<RegisterController>(context, listen: false)
+                          .setErrorMsg({"profession": false});
+                    },
                     items: const [
-                      "Father",
-                      "Mother",
-                      "Brother",
+                      "Business",
+                      "Service",
                     ],
                     icon: Icons.business_center_outlined,
                   ),
-                  const SizedBox(height: 20.0),
-                  DetailsTextfield(
-                    controller: TextEditingController(),
-                    hintText: "Your School",
-                    icon: Icons.school_outlined,
+                  ErrorText(
+                    text: "Select your Profession",
+                    visible: Provider.of<RegisterController>(
+                      context,
+                      listen: true,
+                    ).errMsg['profession']!,
                   ),
 
                   const SizedBox(height: 20.0),
                   DetailsTextfield(
-                    controller: TextEditingController(),
-                    hintText: "Your University",
-                    icon: Icons.school_outlined,
+                    onTap: () {
+                      Provider.of<RegisterController>(context, listen: false)
+                          .setErrorMsg({"industry": false});
+                    },
+                    controller: RegisterController.industry,
+                    hintText: "Industry",
+                    icon: Icons.business_outlined,
+                  ),
+                  ErrorText(
+                    text: "Industry can't be blank",
+                    visible: Provider.of<RegisterController>(
+                      context,
+                      listen: true,
+                    ).errMsg['industry']!,
                   ),
 
                   const SizedBox(height: 20.0),
                   DetailsTextfield(
-                    controller: TextEditingController(),
-                    hintText: "University Address",
-                    icon: Icons.location_on_outlined,
+                    onTap: () {
+                      Provider.of<RegisterController>(context, listen: false)
+                          .setErrorMsg({"orgnization": false});
+                    },
+                    controller: RegisterController.orgnization,
+                    hintText: "Organization",
+                    icon: Icons.business_outlined,
+                  ),
+                  ErrorText(
+                    text: "Organization can't be blank",
+                    visible: Provider.of<RegisterController>(
+                      context,
+                      listen: true,
+                    ).errMsg['orgnization']!,
+                  ),
+
+                  const SizedBox(height: 20.0),
+                  DetailsTextfield(
+                    onTap: () {
+                      Provider.of<RegisterController>(context, listen: false)
+                          .setErrorMsg({"designation": false});
+                    },
+                    controller: RegisterController.designation,
+                    hintText: "Your Designation",
+                    icon: Icons.business_center_outlined,
+                  ),
+                  ErrorText(
+                    text: "Designation can't be blank",
+                    visible: Provider.of<RegisterController>(
+                      context,
+                      listen: true,
+                    ).errMsg['designation']!,
                   ),
 
                   const SizedBox(height: 20.0),
                   Dropdown(
-                    hint: "Personal Income",
-                    onChanged: (v) {},
+                    hint: "Personal Anual Income",
+                    onChanged: (v) {
+                      Provider.of<RegisterController>(context, listen: false)
+                          .anualIncome = v!;
+                      Provider.of<RegisterController>(context, listen: false)
+                          .setErrorMsg({"anualIncome": false});
+                    },
                     items: const [
-                      "Father",
-                      "Mother",
-                      "Brother",
+                      "Under 10 Lakhs",
+                      "10 Lakhs and Above",
+                      "20 Lakhs and Above",
+                      "30 Lakhs and Above",
+                      "40 Lakhs and Above",
                     ],
                     icon: Icons.currency_rupee_sharp,
+                  ),
+                  ErrorText(
+                    text: "Select your personal income",
+                    visible: Provider.of<RegisterController>(
+                      context,
+                      listen: true,
+                    ).errMsg['anualIncome']!,
+                  ),
+
+                  Visibility(
+                    visible: _profession == "business" ? true : false,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 20.0),
+                        DetailsTextfield(
+                          onTap: () {
+                            Provider.of<RegisterController>(context,
+                                    listen: false)
+                                .setErrorMsg({"turnover": false});
+                          },
+                          controller: RegisterController.turnover,
+                          hintText: "Buisness Turnover",
+                          icon: Icons.location_on_outlined,
+                        ),
+                        ErrorText(
+                          text: "Business Turnover can't be blank",
+                          visible: Provider.of<RegisterController>(
+                            context,
+                            listen: true,
+                          ).errMsg['turnover']!,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Visibility(
+                    visible: _profession == "business" ? true : false,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 20.0),
+                        DetailsTextfield(
+                          controller: RegisterController.website,
+                          hintText: "Buisness Website",
+                          icon: Icons.location_on_outlined,
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(height: size.height * 0.07),
                   // *********************** BUTTONS ***********************
                   Row(
                     children: [
                       Expanded(
-                        child: Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            border: Border.all(
-                              color: const Color(0xFF033A44),
-                              width: 2.0,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const QualificationDetails(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            height: 50.0,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30.0),
+                              border: Border.all(
+                                color: const Color(0xFF033A44),
+                                width: 2.0,
+                              ),
                             ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Back",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: Constant.subHadding,
+                            child: Center(
+                              child: Text(
+                                "Back",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: Constant.subHadding,
+                                ),
                               ),
                             ),
                           ),
@@ -145,11 +263,10 @@ class _WorkDetailsState extends State<WorkDetails> {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) {
-                                return const MoreQuestionNext();
-                              },
-                            ));
+                            Provider.of<RegisterController>(
+                              context,
+                              listen: false,
+                            ).workSubmit(context);
                           },
                           child: Container(
                             height: 50.0,

@@ -4,14 +4,14 @@ import 'package:percent_indicator/percent_indicator.dart';
 import '../constant.dart';
 import '../widgets/age_selector.dart';
 
-class ChatQuestion extends StatefulWidget {
-  const ChatQuestion({super.key});
+class Preference extends StatefulWidget {
+  const Preference({super.key});
 
   @override
-  State<ChatQuestion> createState() => _ChatQuestionState();
+  State<Preference> createState() => _PreferenceState();
 }
 
-class _ChatQuestionState extends State<ChatQuestion> {
+class _PreferenceState extends State<Preference> {
   List<Map<String, dynamic>> chatQuestionAnswer = [
     {
       "content":

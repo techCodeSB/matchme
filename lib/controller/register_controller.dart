@@ -1,10 +1,13 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:match_me/screen/family_details.dart';
-import 'package:match_me/screen/personal_sec_details.dart';
-import 'package:match_me/screen/qualification_details.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../screen/family_details.dart';
+import '../screen/more_question_next.dart';
+import '../screen/personal_sec_details.dart';
+import '../screen/preference.dart';
+import '../screen/qualification_details.dart';
+import '../screen/work_details.dart';
 import '../constant.dart';
 
 // Screens;
@@ -38,6 +41,24 @@ class RegisterController extends ChangeNotifier {
   String familyBackground = "";
   String familyAnualIncome = "";
 
+  // Qualification Details;
+  String qualification = "";
+  static final TextEditingController schoolName = TextEditingController();
+  static final TextEditingController ugCollegeName = TextEditingController();
+  static final TextEditingController pgCollegeName = TextEditingController();
+  static final TextEditingController phdCollegeName = TextEditingController();
+  static final TextEditingController otherDetails = TextEditingController();
+  static final TextEditingController highestDegree = TextEditingController();
+
+  // Work Details
+  String profession = "";
+  static final TextEditingController industry = TextEditingController();
+  static final TextEditingController orgnization = TextEditingController();
+  static final TextEditingController designation = TextEditingController();
+  static final TextEditingController turnover = TextEditingController();
+  static final TextEditingController website = TextEditingController();
+  String anualIncome = "";
+
   // Error message for require fields
   Map<String, bool> errMsg = {
     // For first personal Details
@@ -54,6 +75,22 @@ class RegisterController extends ChangeNotifier {
     "mothername": false,
     "hometown": false,
     "description": false,
+
+    // qualification;
+    "qualification": false,
+    "schoolName": false,
+    "ugCollegeName": false,
+    "pgCollegeName": false,
+    "phdCollegeName": false,
+    "highestDegree": false,
+
+    // Work Details;
+    "profession": false,
+    "industry": false,
+    "orgnization": false,
+    "designation": false,
+    "anualIncome": false,
+    "turnover": false
   };
 
   void setErrorMsg(data) {
@@ -99,6 +136,7 @@ class RegisterController extends ChangeNotifier {
     );
   }
 
+//
   void personalFstSubmit(ctx) async {
     // Check validation
     if (fullname.text == "" || gender == "") {
@@ -136,6 +174,7 @@ class RegisterController extends ChangeNotifier {
     }
   }
 
+//
   void personalSecSubmit(ctx) async {
     // Check validation
     if (country.text.isEmpty ||
@@ -189,6 +228,7 @@ class RegisterController extends ChangeNotifier {
     }
   }
 
+  //
   void familySubmit(ctx) async {
     // Check validation
     if (fathername.text.isEmpty ||
@@ -229,6 +269,146 @@ class RegisterController extends ChangeNotifier {
         ctx,
         MaterialPageRoute(
           builder: (ctx) => const QualificationDetails(),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+        content: Text(reg['res']['error'] ?? reg['res']['err']),
+        duration: const Duration(milliseconds: 2000),
+        showCloseIcon: true,
+      ));
+    }
+  }
+
+  //
+  void qualificationSubmit(ctx) async {
+    // Check validation
+    if (schoolName.text.isEmpty ||
+        ((qualification == "graduation" ||
+                qualification == "post-grad" ||
+                qualification == "pd.d") &&
+            ugCollegeName.text == "") ||
+        (qualification == "post-grad" ||
+            qualification == "pd.d" && pgCollegeName.text == "") ||
+        (qualification == "pd.d" && phdCollegeName.text == "") ||
+        highestDegree.text == "" ||
+        qualification == "") {
+      if (schoolName.text.trim().isEmpty) {
+        setErrorMsg({"schoolName": true});
+      }
+      if (ugCollegeName.text.trim().isEmpty) {
+        setErrorMsg({"ugCollegeName": true});
+      }
+      if (pgCollegeName.text.trim().isEmpty) {
+        setErrorMsg({"pgCollegeName": true});
+      }
+      if (highestDegree.text.trim().isEmpty) {
+        setErrorMsg({"highestDegree": true});
+      }
+      if (phdCollegeName.text.trim().isEmpty) {
+        setErrorMsg({"phdCollegeName": true});
+      }
+      if (qualification.trim().isEmpty) {
+        setErrorMsg({"qualification": true});
+      }
+
+      return;
+    }
+
+    var reg = await register({
+      "highest_qualification": qualification.trim(),
+      "school_name": schoolName.text.trim(),
+      "ug_college_name": ugCollegeName.text.trim(),
+      "pg_college_name": pgCollegeName.text.trim(),
+      "phd_college_name": phdCollegeName.text.trim(),
+      "other_qualification_details": otherDetails.text.trim(),
+      "hometown": hometown.text.trim(),
+      "highest_degree": highestDegree.text.trim(),
+      "registration_step": '5'
+    });
+
+    if (reg['success'] == true) {
+      Navigator.push(
+        ctx,
+        MaterialPageRoute(
+          builder: (ctx) => const WorkDetails(),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+        content: Text(reg['res']['error'] ?? reg['res']['err']),
+        duration: const Duration(milliseconds: 2000),
+        showCloseIcon: true,
+      ));
+    }
+  }
+
+  //
+  void workSubmit(ctx) async {
+    // Check validation
+    if (profession.isEmpty ||
+        (profession == "business" && turnover.text.trim() == "") ||
+        industry.text.trim() == "" ||
+        orgnization.text.trim() == "" ||
+        designation.text.trim() == "" ||
+        anualIncome == "") {
+      if (profession.isEmpty) {
+        setErrorMsg({"profession": true});
+      }
+      if (industry.text.trim().isEmpty) {
+        setErrorMsg({"industry": true});
+      }
+      if (orgnization.text.trim().isEmpty) {
+        setErrorMsg({"orgnization": true});
+      }
+      if (designation.text.trim().isEmpty) {
+        setErrorMsg({"designation": true});
+      }
+      if (anualIncome.trim().isEmpty) {
+        setErrorMsg({"anualIncome": true});
+      }
+      if (turnover.text.trim().isEmpty) {
+        setErrorMsg({"turnover": true});
+      }
+
+      return;
+    }
+
+    var reg = await register({
+      "nature_of_work": profession.trim(),
+      "industry": industry.text.trim(),
+      "organization": orgnization.text.trim(),
+      "designation": designation.text.trim(),
+      "personal_anual_income": anualIncome.trim(),
+      "business_turnover": turnover.text.trim(),
+      "business_website": website.text.trim(),
+      "registration_step": '6'
+    });
+
+    if (reg['success'] == true) {
+      Navigator.push(
+        ctx,
+        MaterialPageRoute(
+          builder: (ctx) => const MoreQuestionNext(),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+        content: Text(reg['res']['error'] ?? reg['res']['err']),
+        duration: const Duration(milliseconds: 2000),
+        showCloseIcon: true,
+      ));
+    }
+  }
+
+  void moreQuestionNext(ctx) async {
+    var reg = await register({'registration_step': "7"});
+
+    if (reg['success'] == true) {
+      Navigator.push(
+        ctx,
+        MaterialPageRoute(
+          builder: (ctx) => const Preference(),
         ),
       );
     } else {

@@ -12,7 +12,7 @@ import '../screen/family_details.dart';
 import '../screen/qualification_details.dart';
 import '../screen/work_details.dart';
 import '../screen/more_question_next.dart';
-import '../screen/chat_question.dart';
+import '../screen/preference.dart';
 import '../screen/photo_upload.dart';
 import '../screen/interest.dart';
 import '../screen/goto_profile.dart';
@@ -48,6 +48,7 @@ class SplashController {
     }
   }
 
+  // Dicision function and login function call this function;
   static void checkSteps(ctx) async {
     var stepsAndStatus = await getSteps();
     var status = stepsAndStatus['registration_status'];
@@ -60,17 +61,16 @@ class SplashController {
       const QualificationDetails(),
       const WorkDetails(),
       const MoreQuestionNext(),
-      const ChatQuestion(),
+      const Preference(),
       const PhotoUpload(),
       const Interest(),
       const GotoProfile(),
     ];
 
-    debugPrint(steps);
-    debugPrint(status);
+    debugPrint("[SplashController]: $steps");
+    debugPrint("[SplashController]: $status");
     // Registration not complete;
     if (status == "0") {
-      debugPrint("run....");
       for (var i = 0; i < screens.length; i++) {
         if (steps == i.toString()) {
           Navigator.of(ctx).pushReplacement(

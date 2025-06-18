@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:provider/provider.dart';
+import '../controller/register_controller.dart';
 import '../constant.dart';
 
 class MoreQuestionNext extends StatefulWidget {
@@ -59,32 +61,37 @@ class _MoreQuestionNextState extends State<MoreQuestionNext> {
                     ),
                   ),
                   const Spacer(),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                    width: double.infinity,
-                    height: size.height * 0.07,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.0),
-                      color: const Color(0xFF033A44),
-                    ),
-                    child: Center(
-                      child: Row(
-                        children: [
-                          Text(
-                            "Next",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: Constant.haddingFont ?? 'josefinSans',
-                              fontSize: 22.0,
+                  InkWell(
+                    onTap: (){
+                      Provider.of<RegisterController>(context, listen: false).moreQuestionNext(context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                      width: double.infinity,
+                      height: size.height * 0.07,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.0),
+                        color: const Color(0xFF033A44),
+                      ),
+                      child: Center(
+                        child: Row(
+                          children: [
+                            Text(
+                              "Next",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: Constant.haddingFont ?? 'josefinSans',
+                                fontSize: 22.0,
+                              ),
                             ),
-                          ),
-                          const Spacer(),
-                          const Icon(
-                            Icons.arrow_right_alt_outlined,
-                            color: Colors.white,
-                            size: 40.0,
-                          )
-                        ],
+                            const Spacer(),
+                            const Icon(
+                              Icons.arrow_right_alt_outlined,
+                              color: Colors.white,
+                              size: 40.0,
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   )
