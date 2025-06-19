@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:match_me/widgets/image_uploader.dart';
+import '../widgets/image_uploader.dart';
 import '../constant.dart';
 import '../widgets/container_button.dart';
 

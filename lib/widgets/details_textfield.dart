@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:match_me/constant.dart';
+import '../constant.dart';
 
 class DetailsTextfield extends StatefulWidget {
   final String hintText;

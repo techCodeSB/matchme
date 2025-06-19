@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:match_me/constant.dart';
+import '../constant.dart';
 
 class Dropdown extends StatefulWidget {
   final String hint;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:match_me/widgets/container_button.dart';
+import '../widgets/container_button.dart';
 import '../constant.dart';
 
 class GotoProfile extends StatefulWidget {

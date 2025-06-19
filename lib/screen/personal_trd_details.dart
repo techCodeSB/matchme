@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
-import '../screen/personal_fst_details.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:provider/provider.dart';
 import '../controller/register_controller.dart';
-import '../widgets/error_text.dart';
+import 'package:provider/provider.dart';
 import '../constant.dart';
 import '../widgets/dropdown.dart';
 import '../widgets/details_hero.dart';
 import '../widgets/details_textfield.dart';
+import '../widgets/radio.dart' as MyRadio;
+import '../widgets/error_text.dart';
 
-class PersonalSecDetails extends StatefulWidget {
-  const PersonalSecDetails({super.key});
+class PersonalTrdDetails extends StatefulWidget {
+  const PersonalTrdDetails({super.key});
 
   @override
-  State<PersonalSecDetails> createState() => _PersonalSecDetailsState();
+  State<PersonalTrdDetails> createState() => _PersonalTrdDetailsState();
 }
 
-class _PersonalSecDetailsState extends State<PersonalSecDetails> {
+class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -45,7 +45,7 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                           "Personal Details",
                           style: TextStyle(
                             color: const Color(0XFF033A44),
-                            fontSize: size.width * 0.06,
+                            fontSize: 30.0,
                             fontWeight: FontWeight.bold,
                             fontFamily: Constant.haddingFont,
                           ),
@@ -53,9 +53,9 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                         CircularPercentIndicator(
                           radius: 40.0, //size
                           lineWidth: 13.0,
-                          percent: 0.1,
+                          percent: 0.0,
                           center: Text(
-                            "10%",
+                            "0%",
                             style: TextStyle(
                               color: const Color(0xFF033A44),
                               fontFamily: Constant.haddingFont,
@@ -74,116 +74,96 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 20.0),
+                    DetailsTextfield(
+                      controller: RegisterController.whatsappNumber,
+                      hintText: "Add WhatsApp Number",
+                      icon: Icons.phone,
+                      onTap: () {
+                        Provider.of<RegisterController>(context, listen: false)
+                            .setErrorMsg({'whatsappNumber': false});
+                      },
+                    ),
+                    ErrorText(
+                      text: "WhatsApp number can't be blank",
+                      visible:
+                          Provider.of<RegisterController>(context, listen: true)
+                              .errMsg['whatsappNumber']!,
+                    ),
 
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
+                      controller: RegisterController.height,
+                      hintText: "Height",
+                      icon: Icons.height_rounded,
                       onTap: () {
                         Provider.of<RegisterController>(context, listen: false)
-                            .setErrorMsg({"country": false});
+                            .setErrorMsg({'height': false});
                       },
-                      controller: RegisterController.country,
-                      hintText: "Your Current Residence",
+                    ),
+                    ErrorText(
+                      text: "Height can't be blank",
+                      visible:
+                          Provider.of<RegisterController>(context, listen: true)
+                              .errMsg['height']!,
+                    ),
+
+                    const SizedBox(height: 20.0),
+                    DetailsTextfield(
+                      controller: RegisterController.weight,
+                      hintText: "Weight",
+                      icon: Icons.person,
+                      onTap: () {
+                        Provider.of<RegisterController>(context, listen: false)
+                            .setErrorMsg({'weight': false});
+                      },
+                    ),
+                    ErrorText(
+                      text: "Weight can't be blank",
+                      visible:
+                          Provider.of<RegisterController>(context, listen: true)
+                              .errMsg['weight']!,
+                    ),
+
+                    const SizedBox(height: 20.0),
+                    Dropdown(
+                      hint: "Marital Status",
+                      onChanged: (v) {
+                        Provider.of<RegisterController>(context, listen: false)
+                            .maritalStatus = v!;
+                        Provider.of<RegisterController>(context, listen: false)
+                            .setErrorMsg({'maritalStatus': false});
+                      },
+                      items: const [
+                        "Never Married",
+                        "Divorced",
+                        "Widowed",
+                      ],
                       icon: Icons.person_outline,
                     ),
                     ErrorText(
-                      text: "Residence can't be blank",
-                      visible: Provider.of<RegisterController>(
-                        context,
-                        listen: true,
-                      ).errMsg['country']!,
+                      text: "Marital Status can't be blank",
+                      visible:
+                          Provider.of<RegisterController>(context, listen: true)
+                              .errMsg['maritalStatus']!,
                     ),
 
-                    const SizedBox(height: 20.0),
-                    DetailsTextfield(
-                      onTap: () {
-                        Provider.of<RegisterController>(context, listen: false)
-                            .setErrorMsg({"city": false});
-                      },
-                      controller: RegisterController.city,
-                      hintText: "Your City",
-                      icon: Icons.location_on_outlined,
-                    ),
-                    ErrorText(
-                      text: "City can't be blank",
-                      visible: Provider.of<RegisterController>(
-                        context,
-                        listen: true,
-                      ).errMsg['city']!,
-                    ),
-
-                    const SizedBox(height: 20.0),
-                    DetailsTextfield(
-                      onTap: () {
-                        Provider.of<RegisterController>(context, listen: false)
-                            .setErrorMsg({"locality": false});
-                      },
-                      controller: RegisterController.locality,
-                      hintText: "Your Locality",
-                      icon: Icons.location_on_outlined,
-                    ),
-                    ErrorText(
-                      text: "Locality can't be blank",
-                      visible: Provider.of<RegisterController>(
-                        context,
-                        listen: true,
-                      ).errMsg['locality']!,
-                    ),
-
-                    const SizedBox(height: 20.0),
-                    Dropdown(
-                      hint: "Your Nationality",
+                    const SizedBox(height: 15.0),
+                    MyRadio.Radio(
+                      title: "Tell us about your eating preferences?",
+                      items: const ["Veg", "Non-Veg", "Vegan"],
                       onChanged: (v) {
                         Provider.of<RegisterController>(context, listen: false)
-                            .nationality = v!;
+                            .eatingPref = v!;
                         Provider.of<RegisterController>(context, listen: false)
-                            .setErrorMsg({"nationality": false});
+                            .setErrorMsg({"eatingPref": false});
                       },
-                      items: const [
-                        "Indian",
-                        "NRI",
-                      ],
-                      icon: Icons.flag_outlined,
                     ),
                     ErrorText(
-                      text: "Nationality can't be blank",
-                      visible: Provider.of<RegisterController>(
-                        context,
-                        listen: true,
-                      ).errMsg['nationality']!,
-                    ),
-
-                    const SizedBox(height: 20.0),
-                    Dropdown(
-                      hint: "Your Religious",
-                      onChanged: (v) {
-                        Provider.of<RegisterController>(context, listen: false)
-                            .religious = v!;
-                        Provider.of<RegisterController>(context, listen: false)
-                            .setErrorMsg({"religious": false});
-                      },
-                      items: const ["Hindu", "Muslim", "Christian", "Sikh"],
-                      icon: Icons.temple_hindu_outlined,
-                    ),
-                    ErrorText(
-                      text: "Religious can't be blank",
-                      visible: Provider.of<RegisterController>(
-                        context,
-                        listen: true,
-                      ).errMsg['religious']!,
-                    ),
-
-                    const SizedBox(height: 20.0),
-                    DetailsTextfield(
-                      controller: RegisterController.community,
-                      hintText: "Your Community Name ( Optional )",
-                      icon: Icons.location_on_outlined,
-                    ),
-
-                    const SizedBox(height: 20.0),
-                    DetailsTextfield(
-                      controller: RegisterController.medical,
-                      hintText: "Medical History",
-                      icon: Icons.location_on_outlined,
+                      text: "Eating Preferance can't be blank",
+                      visible:
+                          Provider.of<RegisterController>(context, listen: true)
+                              .errMsg['eatingPref']!,
                     ),
 
                     SizedBox(height: size.height * 0.05),
@@ -191,34 +171,23 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                     Row(
                       children: [
                         Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const PersonalFstDetails(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30.0),
-                                border: Border.all(
-                                  color: const Color(0xFF033A44),
-                                  width: 2.0,
-                                ),
+                          child: Container(
+                            height: 50.0,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30.0),
+                              border: Border.all(
+                                color: const Color(0xFF033A44),
+                                width: 2.0,
                               ),
-                              child: Center(
-                                child: Text(
-                                  "Back",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: Constant.subHadding,
-                                  ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Back",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: Constant.subHadding,
                                 ),
                               ),
                             ),
@@ -231,7 +200,7 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                               Provider.of<RegisterController>(
                                 context,
                                 listen: false,
-                              ).personalSecSubmit(context);
+                              ).personalTrdSubmit(context);
                             },
                             child: Container(
                               height: 50.0,
@@ -257,7 +226,7 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                     )
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

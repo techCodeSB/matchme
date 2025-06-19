@@ -7,6 +7,7 @@ import '../constant.dart';
 
 import '../screen/personal_fst_details.dart';
 import '../screen/personal_sec_details.dart';
+import '../screen/personal_trd_details.dart';
 import '../screen/get_started.dart';
 import '../screen/family_details.dart';
 import '../screen/qualification_details.dart';
@@ -14,8 +15,13 @@ import '../screen/work_details.dart';
 import '../screen/more_question_next.dart';
 import '../screen/preference.dart';
 import '../screen/photo_upload.dart';
-import '../screen/interest.dart';
 import '../screen/goto_profile.dart';
+import '../screen/lifestyle_1.dart';
+import '../screen/lifestyle_2.dart';
+import '../screen/lifestyle_3.dart';
+import '../screen/lifestyle_4.dart';
+import '../screen/lifestyle_5.dart';
+import '../screen/introduction.dart';
 
 class SplashController {
   static Future<dynamic> getSteps() async {
@@ -53,18 +59,24 @@ class SplashController {
     var stepsAndStatus = await getSteps();
     var status = stepsAndStatus['registration_status'];
     var steps = stepsAndStatus['registration_step'];
-    List<Widget> screens = [
-      const GetStarted(),
-      const PersonalFstDetails(),
-      const PersonalSecDetails(),
-      const FamilyDetails(),
-      const QualificationDetails(),
-      const WorkDetails(),
-      const MoreQuestionNext(),
-      const Preference(),
-      const PhotoUpload(),
-      const Interest(),
-      const GotoProfile(),
+    List<Widget> screens = const [
+      GetStarted(),
+      PersonalFstDetails(),
+      PersonalSecDetails(),
+      PersonalTrdDetails(),
+      FamilyDetails(),
+      QualificationDetails(),
+      WorkDetails(),
+      Lifestyle1(),
+      Lifestyle2(),
+      Lifestyle3(),
+      Lifestyle4(),
+      Lifestyle5(),
+      Introduction(),
+      MoreQuestionNext(),
+      Preference(),
+      PhotoUpload(),
+      GotoProfile(),
     ];
 
     debugPrint("[SplashController]: $steps");

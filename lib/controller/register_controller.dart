@@ -2,16 +2,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../screen/family_details.dart';
-import '../screen/more_question_next.dart';
-import '../screen/personal_sec_details.dart';
-import '../screen/preference.dart';
-import '../screen/qualification_details.dart';
-import '../screen/work_details.dart';
 import '../constant.dart';
 
 // Screens;
+import '../screen/introduction.dart';
+import '../screen/family_details.dart';
+import '../screen/more_question_next.dart';
+import '../screen/personal_sec_details.dart';
+import '../screen/personal_trd_details.dart';
+import '../screen/preference.dart';
+import '../screen/qualification_details.dart';
+import '../screen/work_details.dart';
 import '../screen/personal_fst_details.dart';
+import '../screen/lifestyle_1.dart';
+import '../screen/lifestyle_2.dart';
+import '../screen/lifestyle_3.dart';
+import '../screen/lifestyle_4.dart';
+import '../screen/lifestyle_5.dart';
 
 class RegisterController extends ChangeNotifier {
   // First personal details
@@ -28,6 +35,13 @@ class RegisterController extends ChangeNotifier {
   static final TextEditingController medical = TextEditingController();
   String nationality = "";
   String religious = "";
+
+  // Third Personal Details;
+  static final TextEditingController whatsappNumber = TextEditingController();
+  static final TextEditingController height = TextEditingController();
+  static final TextEditingController weight = TextEditingController();
+  String maritalStatus = "";
+  String eatingPref = "";
 
   // Family Details;
   static final TextEditingController fathername = TextEditingController();
@@ -59,6 +73,25 @@ class RegisterController extends ChangeNotifier {
   static final TextEditingController website = TextEditingController();
   String anualIncome = "";
 
+  // Life Style
+  String drink = "";
+  String smoker = "";
+  String workout = "";
+  List<String> weekendActivites = [];
+  List<String> interest = [];
+  List<String> holidays = [];
+  String eatOut = "";
+  String travle = "";
+  String socialise = "";
+  String goOut = "";
+  String spritual = "";
+  String howReligious = "";
+
+  // Introduction about Your sele;
+  static final TextEditingController introduction = TextEditingController();
+
+
+
   // Error message for require fields
   Map<String, bool> errMsg = {
     // For first personal Details
@@ -69,6 +102,11 @@ class RegisterController extends ChangeNotifier {
     "locality": false,
     "nationality": false,
     "religious": false,
+    "whatsappNumber": false,
+    "height": false,
+    "weight": false,
+    "maritalStatus": false,
+    "eatingPref": false,
 
     // For family details;
     "fathername": false,
@@ -90,7 +128,23 @@ class RegisterController extends ChangeNotifier {
     "orgnization": false,
     "designation": false,
     "anualIncome": false,
-    "turnover": false
+    "turnover": false,
+
+    // Lifestyle
+    "drink": false,
+    "smoker": false,
+    "workout": false,
+    "weekendActivites": false,
+    "interest": false,
+    "holidays": false,
+    "eatOut": false,
+    "travle": false,
+    "socialise": false,
+    "goOut": false,
+    "spritual": false,
+    "howReligious": false,
+
+    "introduction": false,
   };
 
   void setErrorMsg(data) {
@@ -126,6 +180,7 @@ class RegisterController extends ChangeNotifier {
     }
   }
 
+  //
   static void getStarted(ctx) async {
     await register({'registration_step': "1"});
     Navigator.push(
@@ -136,7 +191,7 @@ class RegisterController extends ChangeNotifier {
     );
   }
 
-//
+  //
   void personalFstSubmit(ctx) async {
     // Check validation
     if (fullname.text == "" || gender == "") {
@@ -167,14 +222,14 @@ class RegisterController extends ChangeNotifier {
       );
     } else {
       ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text(reg['res']['error'] ?? reg['res']['err']),
+        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
         duration: const Duration(milliseconds: 2000),
         showCloseIcon: true,
       ));
     }
   }
 
-//
+  //
   void personalSecSubmit(ctx) async {
     // Check validation
     if (country.text.isEmpty ||
@@ -216,12 +271,64 @@ class RegisterController extends ChangeNotifier {
       Navigator.push(
         ctx,
         MaterialPageRoute(
+          builder: (ctx) => const PersonalTrdDetails(),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
+        duration: const Duration(milliseconds: 2000),
+        showCloseIcon: true,
+      ));
+    }
+  }
+
+  //
+  void personalTrdSubmit(ctx) async {
+    // Check validation
+    if (whatsappNumber.text.isEmpty ||
+        height.text.isEmpty ||
+        weight.text.isEmpty ||
+        maritalStatus.isEmpty ||
+        eatingPref.isEmpty) {
+      if (whatsappNumber.text.trim().isEmpty) {
+        setErrorMsg({"whatsappNumber": true});
+      }
+      if (height.text.trim().isEmpty) {
+        setErrorMsg({"height": true});
+      }
+      if (weight.text.trim().isEmpty) {
+        setErrorMsg({"weight": true});
+      }
+      if (maritalStatus.isEmpty) {
+        setErrorMsg({"maritalStatus": true});
+      }
+      if (eatingPref.isEmpty) {
+        setErrorMsg({"eatingPref": true});
+      }
+
+      return;
+    }
+
+    var reg = await register({
+      "country": whatsappNumber.text.trim(),
+      "height": height.text.trim(),
+      "weight": weight.text.trim(),
+      "marital_status": maritalStatus.trim(),
+      "eating_preferences": eatingPref.trim(),
+      "registration_step": '4'
+    });
+
+    if (reg['success'] == true) {
+      Navigator.push(
+        ctx,
+        MaterialPageRoute(
           builder: (ctx) => const FamilyDetails(),
         ),
       );
     } else {
       ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text(reg['res']['error'] ?? reg['res']['err']),
+        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
         duration: const Duration(milliseconds: 2000),
         showCloseIcon: true,
       ));
@@ -261,7 +368,7 @@ class RegisterController extends ChangeNotifier {
       "hometown": hometown.text.trim(),
       "family_anual_income": familyAnualIncome.trim(),
       "family_description": familyDescription.text.trim(),
-      "registration_step": '4'
+      "registration_step": '5'
     });
 
     if (reg['success'] == true) {
@@ -273,7 +380,7 @@ class RegisterController extends ChangeNotifier {
       );
     } else {
       ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text(reg['res']['error'] ?? reg['res']['err']),
+        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
         duration: const Duration(milliseconds: 2000),
         showCloseIcon: true,
       ));
@@ -324,7 +431,7 @@ class RegisterController extends ChangeNotifier {
       "other_qualification_details": otherDetails.text.trim(),
       "hometown": hometown.text.trim(),
       "highest_degree": highestDegree.text.trim(),
-      "registration_step": '5'
+      "registration_step": '6'
     });
 
     if (reg['success'] == true) {
@@ -336,7 +443,7 @@ class RegisterController extends ChangeNotifier {
       );
     } else {
       ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text(reg['res']['error'] ?? reg['res']['err']),
+        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
         duration: const Duration(milliseconds: 2000),
         showCloseIcon: true,
       ));
@@ -382,7 +489,221 @@ class RegisterController extends ChangeNotifier {
       "personal_anual_income": anualIncome.trim(),
       "business_turnover": turnover.text.trim(),
       "business_website": website.text.trim(),
-      "registration_step": '6'
+      "registration_step": '7'
+    });
+
+    if (reg['success'] == true) {
+      Navigator.push(
+        ctx,
+        MaterialPageRoute(
+          builder: (ctx) => const Lifestyle1(),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
+        duration: const Duration(milliseconds: 2000),
+        showCloseIcon: true,
+      ));
+    }
+  }
+
+  //
+  void lifeStyle1Submit(ctx) async {
+    if (smoker.isEmpty || drink.isEmpty) {
+      if (smoker.isEmpty) {
+        setErrorMsg({"smoker": true});
+      }
+      if (drink.isEmpty) {
+        setErrorMsg({"drink": true});
+      }
+
+      return;
+    }
+
+    var reg = await register({
+      "how_often_you_drink": drink.trim(),
+      "are_you_a_smoker": smoker.trim(),
+      "registration_step": '8'
+    });
+
+    if (reg['success'] == true) {
+      Navigator.push(
+        ctx,
+        MaterialPageRoute(
+          builder: (ctx) => const Lifestyle2(),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
+        duration: const Duration(milliseconds: 2000),
+        showCloseIcon: true,
+      ));
+    }
+  }
+
+  //
+  void lifeStyle2Submit(ctx, List<String> act) async {
+    weekendActivites = act; // add all Activites;
+
+    if (workout.isEmpty || weekendActivites.isEmpty) {
+      if (workout.isEmpty) {
+        setErrorMsg({"workout": true});
+      }
+      if (weekendActivites.isEmpty) {
+        setErrorMsg({"weekendActivites": true});
+      }
+
+      return;
+    }
+
+    var reg = await register({
+      "how_often_you_workout": workout.trim(),
+      "favourite_weekend_activities": weekendActivites,
+      "registration_step": '9'
+    });
+
+    if (reg['success'] == true) {
+      Navigator.push(
+        ctx,
+        MaterialPageRoute(
+          builder: (ctx) => const Lifestyle3(),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
+        duration: const Duration(milliseconds: 2000),
+        showCloseIcon: true,
+      ));
+    }
+  }
+
+  //
+  void lifeStyle3Submit(ctx, List<String> intst) async {
+    interest = intst; // add all intersets;
+
+    if (interest.isEmpty) {
+      setErrorMsg({"interest": true});
+      return;
+    }
+
+    var reg =
+        await register({"interests": interest, "registration_step": '10'});
+
+    if (reg['success'] == true) {
+      Navigator.push(
+        ctx,
+        MaterialPageRoute(
+          builder: (ctx) => const Lifestyle4(),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
+        duration: const Duration(milliseconds: 2000),
+        showCloseIcon: true,
+      ));
+    }
+  }
+
+  //
+  void lifeStyle4Submit(ctx, List<String> h) async {
+    holidays = h; // add all holidays;
+
+    if (holidays.isEmpty || eatOut.isEmpty || travle.isEmpty) {
+      if (holidays.isEmpty) {
+        setErrorMsg({"holidays": true});
+      }
+      if (eatOut.isEmpty) {
+        setErrorMsg({"eatOut": true});
+      }
+      if (travle.isEmpty) {
+        setErrorMsg({"travle": true});
+      }
+      return;
+    }
+
+    var reg = await register({
+      "holidays_prefrences": holidays,
+      "how_often_you_eat_out": eatOut.trim(),
+      "how_often_you_travel": travle.trim(),
+      "registration_step": '11',
+    });
+
+    if (reg['success'] == true) {
+      Navigator.push(
+        ctx,
+        MaterialPageRoute(
+          builder: (ctx) => const Lifestyle5(),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
+        duration: const Duration(milliseconds: 2000),
+        showCloseIcon: true,
+      ));
+    }
+  }
+
+  //
+  void lifeStyle5Submit(ctx) async {
+    if (socialise.isEmpty ||
+        goOut.isEmpty ||
+        spritual.isEmpty ||
+        howReligious.isEmpty) {
+      if (socialise.isEmpty) {
+        setErrorMsg({"socialise": true});
+      }
+      if (goOut.isEmpty) {
+        setErrorMsg({"goOut": true});
+      }
+      if (spritual.isEmpty) {
+        setErrorMsg({"spritual": true});
+      }
+      if (howReligious.isEmpty) {
+        setErrorMsg({"howReligious": true});
+      }
+      return;
+    }
+
+    var reg = await register({
+      "prefered_social_event": socialise.trim(),
+      "whom_do_you_like_going_out_with": goOut.trim(),
+      "how_spiritual_are_you": spritual.trim(),
+      "how_religious_are_you": howReligious.trim(),
+      "registration_step": '12',
+    });
+
+    if (reg['success'] == true) {
+      Navigator.push(
+        ctx,
+        MaterialPageRoute(
+          builder: (ctx) => const Introduction(),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
+        duration: const Duration(milliseconds: 2000),
+        showCloseIcon: true,
+      ));
+    }
+  }
+
+  // 
+  void introductionSubmit(ctx)async{
+    if(introduction.text.isEmpty){
+      setErrorMsg({"introduction": true});
+
+      return;
+    }
+
+    var reg = await register({
+      "about_yourself": introduction.text.trim(),
+      "registration_step": '13',
     });
 
     if (reg['success'] == true) {
@@ -394,15 +715,17 @@ class RegisterController extends ChangeNotifier {
       );
     } else {
       ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text(reg['res']['error'] ?? reg['res']['err']),
+        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
         duration: const Duration(milliseconds: 2000),
         showCloseIcon: true,
       ));
     }
   }
 
+
+  //
   void moreQuestionNext(ctx) async {
-    var reg = await register({'registration_step': "7"});
+    var reg = await register({'registration_step': "14"});
 
     if (reg['success'] == true) {
       Navigator.push(
@@ -413,7 +736,7 @@ class RegisterController extends ChangeNotifier {
       );
     } else {
       ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text(reg['res']['error'] ?? reg['res']['err']),
+        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
         duration: const Duration(milliseconds: 2000),
         showCloseIcon: true,
       ));

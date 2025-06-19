@@ -16,7 +16,7 @@ class AgeSelectorState extends State<AgeSelector> {
   //     return 2;
   //   }
   // }).whereType<int>().toList();
-  List<int> ages = [1, 2, 3, 4, 5, 21, 55, 85, 4, 86, 20];
+  List<int> ages = List.generate(24, (index) => index + 21);
   int? fromAge = 0;
   int? toAge = 0;
 
@@ -79,6 +79,7 @@ class AgeSelectorState extends State<AgeSelector> {
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton(
                       isExpanded: true, //for center a hint text + center widget
+                      menuMaxHeight: 250.0,
                       items: [
                         ...ages.map((age) {
                           return DropdownMenuItem(
@@ -120,6 +121,7 @@ class AgeSelectorState extends State<AgeSelector> {
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton(
                       isExpanded: true, //for center a hint text + center widget
+                      menuMaxHeight: 250.0,
                       items: [
                         ...ages.map((age) {
                           return DropdownMenuItem(

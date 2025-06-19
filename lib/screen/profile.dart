@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:match_me/widgets/bottom_bar.dart';
+import '../widgets/bottom_bar.dart';
 import '../widgets/slider.dart';
 import '../constant.dart';
 

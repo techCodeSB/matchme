@@ -21,12 +21,12 @@ class _ErrorTextState extends State<ErrorText> {
       visible: widget.visible,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        padding: const EdgeInsets.only(left: 10, top: 3.0),
         child: Text(
           widget.text,
           style: const TextStyle(
             color: Colors.red,
-            fontSize: 12.0,
+            fontSize: 13.0,
           ),
         ),
       ),

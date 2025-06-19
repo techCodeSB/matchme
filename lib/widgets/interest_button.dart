@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import '../constant.dart';
 
 class InterestButton extends StatefulWidget {
-  final IconData icons;
+  final IconData? icons;
   final String text;
+  final ValueChanged<List<String?>> onChanged;
+  final bool isSelected;
 
   const InterestButton({
     super.key,
-    required this.icons,
     required this.text,
+    this.icons,
+    required this.onChanged,
+    required this.isSelected,
   });
 
   @override
@@ -29,29 +33,37 @@ class _InterestButtonState extends State<InterestButton> {
             activeInterest.add(widget.text);
           }
         });
+
+        widget.onChanged(activeInterest);
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 13.0, vertical: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
-          color: activeInterest.contains(widget.text)
+          border: Border.all(color: const Color(0xFF033A44), width: 1.5),
+          color: widget.isSelected
               ? const Color(0xFF033A44)
               : Colors.white,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(
-              widget.icons,
-              color: activeInterest.contains(widget.text)
-                  ? Colors.white
-                  : Colors.black,
-            ),
+            widget.icons != null
+                ? Icon(
+                    widget.icons,
+                    color: widget.isSelected
+                        ? Colors.white
+                        : Colors.black,
+                  )
+                : const Text(""),
             const SizedBox(width: 7.0),
             Text(
               widget.text,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              textAlign: TextAlign.center,
               style: TextStyle(
-                color: activeInterest.contains(widget.text)
+                color: widget.isSelected
                     ? Colors.white
                     : Colors.black,
                 fontFamily: Constant.subHadding,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:match_me/controller/login_controller.dart';
-import 'package:match_me/widgets/error_text.dart';
+import '../controller/login_controller.dart';
+import '../widgets/error_text.dart';
 import 'package:provider/provider.dart';
 // import 'package:match_me/screen/otp.dart';
 
