@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/details_hero.dart';
 import '../widgets/image_uploader.dart';
 import '../constant.dart';
 import '../widgets/container_button.dart';
@@ -21,44 +22,14 @@ class _PhotoUploadState extends State<PhotoUpload> {
           width: double.infinity,
           height: double.infinity,
           color: const Color(0xFFF5F7F7),
-          child: Column(
+          child: ListView(
             children: [
-              Container(
-                padding: const EdgeInsets.all(10.0),
-                width: double.infinity,
-                height: size.height * 0.08,
-                child: Stack(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: Constant.backIcon,
-                    ),
-                    Center(
-                      child: Container(
-                        width: size.width * 0.5,
-                        height: 10.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30.0),
-                          color: const Color(0xFFD2F8FF),
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            width: size.width * 0.5,
-                            height: 10.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30.0),
-                              color: const Color(0xFF033A44),
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              DetailsHero(size: size),
+              // *********************** TOP BAR CLOSE ***********************
+
               Text(
                 'Upload your photos',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.black,
                   fontFamily: Constant.haddingFont,
@@ -124,7 +95,7 @@ class _PhotoUploadState extends State<PhotoUpload> {
                   ),
                 ),
               ),
-              const Spacer(),
+              // const Spacer(),
               SizedBox(
                 width: double.infinity,
                 child: Image.asset(
@@ -133,12 +104,13 @@ class _PhotoUploadState extends State<PhotoUpload> {
                 ),
               ),
               const SizedBox(height: 30.0),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: ContainerButton(
                   text: "Continue",
-                  color: Color(0xFF033A44),
+                  color: const Color(0xFF033A44),
                   textColor: Colors.white,
+                  onTap: () {},
                 ),
               ),
               const SizedBox(height: 30.0),

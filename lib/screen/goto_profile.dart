@@ -69,12 +69,13 @@ class _GotoProfileState extends State<GotoProfile> {
               ),
             ),
             const Spacer(),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: ContainerButton(
                 text: "Go to Profile",
                 color: Colors.white,
                 textColor: Colors.black,
+                onTap: () {},
               ),
             ),
             const SizedBox(height: 40.0),

@@ -92,6 +92,7 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
                         ),
                       ],
                     ),
+                    // *********************** PERCENTAGE CLOSE ***********************
 
                     const SizedBox(height: 20.0),
                     DetailsTextfield(

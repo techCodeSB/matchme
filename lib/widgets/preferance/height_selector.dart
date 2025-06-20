@@ -1,31 +1,27 @@
 import 'package:flutter/material.dart';
-import '../constant.dart';
+import 'package:provider/provider.dart';
+import '../../controller/preferance_controller.dart';
+import '../../constant.dart';
 
-class AgeSelector extends StatefulWidget {
-  const AgeSelector({super.key});
+class HeightSelector extends StatefulWidget {
+  const HeightSelector({super.key});
 
   @override
-  State<AgeSelector> createState() => AgeSelectorState();
+  State<HeightSelector> createState() => HeightSelectorState();
 }
 
-class AgeSelectorState extends State<AgeSelector> {
-  // var ages = List.generate(70, (index) {
-  //   if (index > 18) {
-  //     return index;
-  //   } else {
-  //     return 2;
-  //   }
-  // }).whereType<int>().toList();
-  List<int> ages = List.generate(24, (index) => index + 21);
-  int? fromAge = 0;
-  int? toAge = 0;
+class HeightSelectorState extends State<HeightSelector> {
+  List<int> inch = [4, 5, 6, 7];
+  List<int> feet = List.generate(11, (index) => index);
+  int? selectedInch;
+  int? selectedFeet;
 
   @override
   Widget build(BuildContext context) {
     // final size = MediaQuery.of(context);
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(10.0),
       decoration: const BoxDecoration(
         color: Color(0xFF033A44),
         borderRadius: BorderRadius.only(
@@ -42,7 +38,7 @@ class AgeSelectorState extends State<AgeSelector> {
               Padding(
                 padding: const EdgeInsets.only(left: 25.0),
                 child: Text(
-                  "From (Year)",
+                  "Inch",
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: Constant.subHadding,
@@ -54,7 +50,7 @@ class AgeSelectorState extends State<AgeSelector> {
               Padding(
                 padding: const EdgeInsets.only(right: 40.0),
                 child: Text(
-                  "To (Year)",
+                  "Feet",
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: Constant.subHadding,
@@ -81,22 +77,35 @@ class AgeSelectorState extends State<AgeSelector> {
                       isExpanded: true, //for center a hint text + center widget
                       menuMaxHeight: 250.0,
                       items: [
-                        ...ages.map((age) {
+                        ...inch.map((i) {
                           return DropdownMenuItem(
-                            value: age,
-                            child: Text(age.toString()),
+                            value: i,
+                            child: Text(i.toString()),
                           );
                         }),
                       ],
                       onChanged: (v) {
                         setState(() {
-                          fromAge = v;
+                          selectedInch = v;
                         });
+                        if (selectedInch != null && selectedFeet != null) {
+                          Provider.of<PreferanceController>(
+                            context,
+                            listen: false,
+                          ).nextIndex(2);
+
+                          Provider.of<PreferanceController>(context,
+                                      listen: false)
+                                  .height =
+                              "${selectedFeet.toString()}.${selectedInch.toString()}";
+                        }
                       },
-                      
+
                       hint: Center(
                         child: Text(
-                          "Select",
+                          selectedInch != null
+                              ? selectedInch.toString()
+                              : "Select",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFF0C5461),
@@ -123,7 +132,7 @@ class AgeSelectorState extends State<AgeSelector> {
                       isExpanded: true, //for center a hint text + center widget
                       menuMaxHeight: 250.0,
                       items: [
-                        ...ages.map((age) {
+                        ...feet.map((age) {
                           return DropdownMenuItem(
                             value: age,
                             child: Text(age.toString()),
@@ -132,13 +141,26 @@ class AgeSelectorState extends State<AgeSelector> {
                       ],
                       onChanged: (v) {
                         setState(() {
-                          toAge = v;
+                          selectedFeet = v;
                         });
+                        if (selectedInch != null && selectedFeet != null) {
+                          Provider.of<PreferanceController>(
+                            context,
+                            listen: false,
+                          ).nextIndex(2);
+
+                          Provider.of<PreferanceController>(context,
+                                      listen: false)
+                                  .height =
+                              "${selectedFeet.toString()}.${selectedInch.toString()}";
+                        }
                       },
-                      
+
                       hint: Center(
                         child: Text(
-                          "Select",
+                          selectedFeet != null
+                              ? selectedFeet.toString()
+                              : "Select",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFF0C5461),
