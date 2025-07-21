@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:matchme/widgets/my_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import './splash_controller.dart';
@@ -60,10 +61,7 @@ class LoginController extends ChangeNotifier {
         // }));
         SplashController.checkSteps(ctx);
       } else {
-        ScaffoldMessenger.of(ctx).showSnackBar(const SnackBar(
-          content: Text("Invalid username or password"),
-          duration: Duration(milliseconds: 2000),
-        ));
+        mySnackBar(ctx, "Invalid username or password");
       }
     } catch (e) {
       setError("Someting went wrong");

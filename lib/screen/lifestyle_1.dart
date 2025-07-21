@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../widgets/details_hero.dart';
 import '../constant.dart';
-import '../widgets/radio.dart' as MyRadio;
+import '../widgets/radio.dart' as my_radio;
 import '../widgets/error_text.dart';
 import '../controller/register_controller.dart';
 
@@ -47,9 +47,9 @@ class _Lifestyle1State extends State<Lifestyle1> {
                     CircularPercentIndicator(
                       radius: 40.0, //size
                       lineWidth: 13.0,
-                      percent: 0.0,
+                      percent: 0.42,
                       center: Text(
-                        "0%",
+                        "42%",
                         style: TextStyle(
                           color: const Color(0xFF033A44),
                           fontFamily: Constant.haddingFont,
@@ -73,7 +73,7 @@ class _Lifestyle1State extends State<Lifestyle1> {
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                 child: Column(
                   children: [
-                    MyRadio.Radio(
+                    my_radio.Radio(
                       title: "How often do you drink",
                       items: const [
                         "Never",
@@ -94,7 +94,8 @@ class _Lifestyle1State extends State<Lifestyle1> {
                           Provider.of<RegisterController>(context, listen: true)
                               .errMsg['drink']!,
                     ),
-                    MyRadio.Radio(
+                    const SizedBox(height: 30.0),
+                    my_radio.Radio(
                       title: "Are you smoker?",
                       items: const ["Yes", "No", "Occasionally"],
                       onChanged: (v) {

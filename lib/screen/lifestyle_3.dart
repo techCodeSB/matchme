@@ -97,9 +97,9 @@ class _Lifestyle3State extends State<Lifestyle3> {
                     CircularPercentIndicator(
                       radius: 40.0, //size
                       lineWidth: 13.0,
-                      percent: 0.0,
+                      percent: 0.56,
                       center: Text(
-                        "0%",
+                        "56%",
                         style: TextStyle(
                           color: const Color(0xFF033A44),
                           fontFamily: Constant.haddingFont,
@@ -363,7 +363,7 @@ class _Lifestyle3State extends State<Lifestyle3> {
                           borderRadius: BorderRadius.circular(30.0),
                           border: Border.all(
                             color: const Color(0xFF033A44),
-                            width: 2.0,
+                            width: 1.5,
                           ),
                         ),
                         child: Center(

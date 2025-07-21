@@ -9,7 +9,6 @@ import '../widgets/details_textfield.dart';
 import '../widgets/dropdown.dart';
 import '../widgets/details_hero.dart';
 
-
 class FamilyDetails extends StatefulWidget {
   const FamilyDetails({super.key});
 
@@ -54,9 +53,9 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                         CircularPercentIndicator(
                           radius: 40.0, //size
                           lineWidth: 13.0,
-                          percent: 0.3,
+                          percent: 0.21,
                           center: Text(
-                            "30%",
+                            "21%",
                             style: TextStyle(
                               color: const Color(0xFF033A44),
                               fontFamily: Constant.haddingFont,
@@ -75,7 +74,6 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
                       onTap: () {
@@ -93,7 +91,6 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                         listen: true,
                       ).errMsg['fathername']!,
                     ),
-
                     const SizedBox(height: 20.0),
                     Dropdown(
                       hint: "Father's Occupation",
@@ -109,7 +106,6 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                       ],
                       icon: Icons.work_outline,
                     ),
-
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
                       onTap: () {
@@ -127,7 +123,6 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                         listen: true,
                       ).errMsg['mothername']!,
                     ),
-
                     const SizedBox(height: 20.0),
                     Dropdown(
                       hint: "Mother's Occupation",
@@ -144,7 +139,6 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                       ],
                       icon: Icons.work_outline,
                     ),
-
                     const SizedBox(height: 20.0),
                     Dropdown(
                       hint: "No of Siblings",
@@ -155,7 +149,6 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                       items: const ["0", "1", "2", "3", "3+"],
                       icon: Icons.people_outline,
                     ),
-
                     const SizedBox(height: 20.0),
                     Dropdown(
                       hint: "Family Background",
@@ -173,7 +166,6 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                       ],
                       icon: Icons.business_center_outlined,
                     ),
-
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
                       onTap: () {
@@ -191,7 +183,6 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                         listen: true,
                       ).errMsg['hometown']!,
                     ),
-
                     const SizedBox(height: 20.0),
                     Dropdown(
                       hint: "Family Anual Income",
@@ -250,76 +241,90 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                         listen: true,
                       ).errMsg['description']!,
                     ),
-                    const SizedBox(height: 20.0),
-                    // *********************** BUTTONS ***********************
-                    Row(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const PersonalSecDetails(),
-                                  ));
-                            },
-                            child: Container(
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30.0),
-                                border: Border.all(
-                                  color: const Color(0xFF033A44),
-                                  width: 2.0,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Back",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: Constant.subHadding,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 20.0),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Provider.of<RegisterController>(context,
-                                      listen: false)
-                                  .familySubmit(context);
-                            },
-                            child: Container(
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30.0),
-                                color: const Color(0xFF033A44),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Submit",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: Constant.subHadding,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
                   ],
                 ),
-              )
+              ),
+
+              SizedBox(
+                width: double.infinity,
+                child: Image.asset(
+                  "assets/images/Vector 1.png",
+                  fit: BoxFit.cover,
+                ),
+              ),
+
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.05,
+                  vertical: size.height * 0.02,
+                ),
+                child: // *********************** BUTTONS ***********************
+                    Row(
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const PersonalSecDetails(),
+                              ));
+                        },
+                        child: Container(
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                            border: Border.all(
+                              color: const Color(0xFF033A44),
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Back",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: Constant.subHadding,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 20.0),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Provider.of<RegisterController>(context,
+                                  listen: false)
+                              .familySubmit(context);
+                        },
+                        child: Container(
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                            color: const Color(0xFF033A44),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Submit",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: Constant.subHadding,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

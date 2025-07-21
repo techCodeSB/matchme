@@ -8,6 +8,7 @@ import '../widgets/dropdown.dart';
 import '../widgets/details_hero.dart';
 import '../controller/register_controller.dart';
 import '../widgets/error_text.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 class QualificationDetails extends StatefulWidget {
   const QualificationDetails({super.key});
@@ -55,9 +56,9 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                         CircularPercentIndicator(
                           radius: 40.0, //size
                           lineWidth: 13.0,
-                          percent: 0.4,
+                          percent: 0.28,
                           center: Text(
-                            "40%",
+                            "28%",
                             style: TextStyle(
                               color: const Color(0xFF033A44),
                               fontFamily: Constant.haddingFont,
@@ -105,7 +106,6 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                         listen: true,
                       ).errMsg['qualification']!,
                     ),
-
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
                       onTap: () {
@@ -123,7 +123,6 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                         listen: true,
                       ).errMsg['schoolName']!,
                     ),
-
                     Visibility(
                       visible: _qualification == "post-grad" ||
                               _qualification == "graduation" ||
@@ -141,7 +140,7 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                             },
                             controller: RegisterController.ugCollegeName,
                             hintText: "UG College Name",
-                            icon: Icons.location_on_outlined,
+                            icon: Icons.school_outlined,
                           ),
                           ErrorText(
                             text: "UG College name can't be blank",
@@ -153,7 +152,6 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                         ],
                       ),
                     ),
-
                     Visibility(
                       visible: _qualification == "post-grad" ||
                               _qualification == "pd.d"
@@ -170,7 +168,7 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                             },
                             controller: RegisterController.pgCollegeName,
                             hintText: "PG College Name",
-                            icon: Icons.location_on_outlined,
+                            icon: Icons.school_outlined,
                           ),
                           ErrorText(
                             text: "PG College name can't be blank",
@@ -182,7 +180,6 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                         ],
                       ),
                     ),
-
                     Visibility(
                       visible: _qualification == "pd.d" ? true : false,
                       child: Column(
@@ -196,7 +193,7 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                             },
                             controller: RegisterController.phdCollegeName,
                             hintText: "Ph.D College Name",
-                            icon: Icons.location_on_outlined,
+                            icon: Icons.school_outlined,
                           ),
                           ErrorText(
                             text: "Ph.D College name can't be blank",
@@ -208,14 +205,6 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                         ],
                       ),
                     ),
-
-                    const SizedBox(height: 20.0),
-                    DetailsTextfield(
-                      controller: TextEditingController(),
-                      hintText: "Other Details",
-                      icon: Icons.school_outlined,
-                    ),
-
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
                       onTap: () {
@@ -224,7 +213,7 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                       },
                       controller: RegisterController.highestDegree,
                       hintText: "Highest Degree",
-                      icon: Icons.school_outlined,
+                      icon: Clarity.certificate_solid,
                     ),
                     ErrorText(
                       text: "Highest degree can't be blank",
@@ -233,75 +222,94 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                         listen: true,
                       ).errMsg['highestDegree']!,
                     ),
+                    const SizedBox(height: 20.0),
+                    DetailsTextfield(
+                      controller: TextEditingController(),
+                      hintText: "Other Details",
+                      icon: Icons.school_outlined,
+                    ),
+                  ],
+                ),
+              ),
 
-                    SizedBox(height: size.height * 0.07),
-                    // *********************** BUTTONS ***********************
+              SizedBox(
+                width: double.infinity,
+                child: Image.asset(
+                  "assets/images/Vector 1.png",
+                  fit: BoxFit.cover,
+                ),
+              ),
+
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.05,
+                  vertical: size.height * 0.02,
+                ),
+                child: // *********************** BUTTONS ***********************
                     Row(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const FamilyDetails(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30.0),
-                                border: Border.all(
-                                  color: const Color(0xFF033A44),
-                                  width: 2.0,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Back",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: Constant.subHadding,
-                                  ),
-                                ),
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const FamilyDetails(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                            border: Border.all(
+                              color: const Color(0xFF033A44),
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Back",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: Constant.subHadding,
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 20.0),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Provider.of<RegisterController>(
-                                context,
-                                listen: false,
-                              ).qualificationSubmit(context);
-                            },
-                            child: Container(
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30.0),
-                                color: const Color(0xFF033A44),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Submit",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: Constant.subHadding,
-                                  ),
-                                ),
+                      ),
+                    ),
+                    const SizedBox(width: 20.0),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Provider.of<RegisterController>(
+                            context,
+                            listen: false,
+                          ).qualificationSubmit(context);
+                        },
+                        child: Container(
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                            color: const Color(0xFF033A44),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Submit",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: Constant.subHadding,
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    )
+                      ),
+                    ),
                   ],
                 ),
               )

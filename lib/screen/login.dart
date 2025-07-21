@@ -110,6 +110,9 @@ class _LoginState extends State<Login> {
                             fontFamily: GoogleFonts.nunito().fontFamily,
                           ),
                           decoration: const InputDecoration(
+                            floatingLabelStyle: TextStyle(
+                              color: Color(0xFF0C5461),
+                            ),
                             labelText: 'Username',
                             border: OutlineInputBorder(
                               borderRadius:
@@ -119,7 +122,12 @@ class _LoginState extends State<Login> {
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(30.0)),
-                              borderSide: BorderSide(color: Color(0xFF1690A7)),
+                              borderSide: BorderSide(color: Color(0xFF0C5461)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30.0)),
+                              borderSide: BorderSide(color: Color(0xFF0C5461)),
                             ),
                             prefixIcon: Icon(Icons.account_circle_outlined),
                             contentPadding: EdgeInsets.all(10.0),
@@ -146,6 +154,9 @@ class _LoginState extends State<Login> {
                           obscureText: true,
                           decoration: const InputDecoration(
                             labelText: 'Password',
+                            floatingLabelStyle: TextStyle(
+                              color: Color(0xFF0C5461),
+                            ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(30.0),
@@ -155,7 +166,12 @@ class _LoginState extends State<Login> {
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(30.0)),
-                              borderSide: BorderSide(color: Color(0xFF1690A7)),
+                              borderSide: BorderSide(color: Color(0xFF0C5461)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30.0)),
+                              borderSide: BorderSide(color: Color(0xFF0C5461)),
                             ),
                             prefixIcon: Icon(Icons.lock_outline_rounded),
                             contentPadding: EdgeInsets.all(10.0),

@@ -1,207 +1,150 @@
-// import 'package:flutter/material.dart';
-// import 'package:match_me/widgets/container_button.dart';
-// import '../constant.dart';
-// import '../widgets/interest_button.dart';
-// import 'package:icons_plus/icons_plus.dart';
+import 'package:flutter/material.dart';
+import 'package:matchme/controller/interest_controller.dart';
+import 'package:matchme/widgets/profile_card.dart';
+import 'package:provider/provider.dart';
+import '../constant.dart';
 
-// class Interest extends StatefulWidget {
-//   const Interest({super.key});
+class Interest extends StatefulWidget {
+  const Interest({super.key});
 
-//   @override
-//   State<Interest> createState() => _InterestState();
-// }
+  @override
+  State<Interest> createState() => _InterestState();
+}
 
-// class _InterestState extends State<Interest> {
-//   @override
-//   Widget build(BuildContext context) {
-//     final Size size = MediaQuery.of(context).size;
-//     return Scaffold(
-//       // body: SafeArea(
-//       //   child: Container(
-//       //     color: const Color(0xFFF5F7F7),
-//       //     width: double.infinity,
-//       //     height: double.infinity,
-//       //     child: Column(
-//       //       children: [
-//       //         Container(
-//       //           padding: const EdgeInsets.all(10.0),
-//       //           width: double.infinity,
-//       //           height: size.height * 0.08,
-//       //           child: Stack(
-//       //             children: [
-//       //               IconButton(
-//       //                 onPressed: () {},
-//       //                 icon: Constant.backIcon,
-//       //               ),
-//       //               Center(
-//       //                 child: Container(
-//       //                   width: size.width * 0.5,
-//       //                   height: 10.0,
-//       //                   decoration: BoxDecoration(
-//       //                     borderRadius: BorderRadius.circular(30.0),
-//       //                     color: const Color(0xFFD2F8FF),
-//       //                   ),
-//       //                   child: Align(
-//       //                     alignment: Alignment.centerLeft,
-//       //                     child: Container(
-//       //                       width: size.width * 0.05,
-//       //                       height: 10.0,
-//       //                       decoration: BoxDecoration(
-//       //                         borderRadius: BorderRadius.circular(30.0),
-//       //                         color: const Color(0xFF033A44),
-//       //                       ),
-//       //                     ),
-//       //                   ),
-//       //                 ),
-//       //               )
-//       //             ],
-//       //           ),
-//       //         ),
-//       //         const SizedBox(height: 20.0),
-//       //         Padding(
-//       //           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-//       //           child: SizedBox(
-//       //             width: double.infinity,
-//       //             height: size.height * 0.5,
-//       //             child: Column(
-//       //               children: [
-//       //                 Text(
-//       //                   'Select up to 5 interest',
-//       //                   style: TextStyle(
-//       //                     color: Colors.black,
-//       //                     fontFamily: Constant.haddingFont,
-//       //                     fontSize: 25.0,
-//       //                     fontWeight: FontWeight.bold,
-//       //                   ),
-//       //                 ),
-//       //                 Text(
-//       //                   "Tell us what piques your curiosity and\npassions",
-//       //                   textAlign: TextAlign.center,
-//       //                   style: TextStyle(
-//       //                     fontFamily: Constant.subHadding,
-//       //                     fontSize: 15.0,
-//       //                     color: const Color(0xFF333333),
-//       //                   ),
-//       //                 ),
-//       //                 const SizedBox(height: 15.0),
-//       //                 Row(
-//       //                   mainAxisAlignment: MainAxisAlignment.center,
-//       //                   children: [
-//       //                     InterestButton(
-//       //                       icons: Icons.menu_book_outlined,
-//       //                       text: "Reading",
-//       //                       onChanged: (v) {},
-//       //                     ),
-//       //                     const SizedBox(width: 15.0),
-//       //                     InterestButton(
-//       //                       icons: Icons.camera,
-//       //                       text: "Photography",
-//       //                       onChanged: (v) {},
-//       //                     )
-//       //                   ],
-//       //                 ),
-//       //                 const SizedBox(height: 15.0),
-//       //                 Row(
-//       //                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-//       //                   children: [
-//       //                     InterestButton(
-//       //                       icons: Icons.sports_esports_outlined,
-//       //                       text: "Gaming",
-//       //                       onChanged: (v) {},
-//       //                     ),
-//       //                     InterestButton(
-//       //                       onChanged: (v) {},
-//       //                       icons: Icons.music_note,
-//       //                       text: "Music",
-//       //                     ),
-//       //                     InterestButton(
-//       //                       onChanged: (v) {},
-//       //                       icons: Icons.travel_explore,
-//       //                       text: "Travel",
-//       //                     ),
-//       //                   ],
-//       //                 ),
-//       //                 const SizedBox(height: 15.0),
-//       //                 Row(
-//       //                   mainAxisAlignment: MainAxisAlignment.center,
-//       //                   children: [
-//       //                     InterestButton(
-//       //                       onChanged: (v) {},
-//       //                       icons: FontAwesome.paintbrush_solid,
-//       //                       text: "Painting",
-//       //                     ),
-//       //                     SizedBox(width: 15.0),
-//       //                     InterestButton(
-//       //                       onChanged: (v) {},
-//       //                       icons: Icons.man,
-//       //                       text: "Politics",
-//       //                     ),
-//       //                   ],
-//       //                 ),
-//       //                 const SizedBox(height: 15.0),
-//       //                 Row(
-//       //                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-//       //                   children: [
-//       //                     InterestButton(
-//       //                       onChanged: (v) {},
-//       //                       icons: Bootstrap.people_fill,
-//       //                       text: "Charity",
-//       //                     ),
-//       //                     InterestButton(
-//       //                       onChanged: (v) {},
-//       //                       icons: FontAwesome.spoon_solid,
-//       //                       text: "Cooking",
-//       //                     ),
-//       //                     InterestButton(
-//       //                       onChanged: (v) {},
-//       //                       icons: Icons.pets,
-//       //                       text: "Pets",
-//       //                     ),
-//       //                   ],
-//       //                 ),
-//       //                 const SizedBox(height: 15.0),
-//       //                 Row(
-//       //                   mainAxisAlignment: MainAxisAlignment.center,
-//       //                   children: [
-//       //                     InterestButton(
-//       //                       onChanged: (v) {},
-//       //                       icons: Icons.sports_basketball,
-//       //                       text: "Sports",
-//       //                     ),
-//       //                     SizedBox(width: 15.0),
-//       //                     InterestButton(
-//       //                       onChanged: (v) {},
-//       //                       icons: FontAwesome.shirt_solid,
-//       //                       text: "Fashion",
-//       //                     ),
-//       //                   ],
-//       //                 ),
-//       //               ],
-//       //             ),
-//       //           ),
-//       //         ),
-//       //         const Spacer(),
-//       //         SizedBox(
-//       //           width: double.infinity,
-//       //           child: Image.asset(
-//       //             "assets/images/Vector 1.png",
-//       //             fit: BoxFit.cover,
-//       //           ),
-//       //         ),
-//       //         const SizedBox(height: 30.0),
-//       //         const Padding(
-//       //           padding: EdgeInsets.symmetric(horizontal: 20.0),
-//       //           child: ContainerButton(
-//       //             text: "Continue",
-//       //             color: Color(0xFF033A44),
-//       //             textColor: Colors.white,
-//       //           ),
-//       //         ),
-//       //         const SizedBox(height: 30.0),
-//       //       ],
-//       //     ),
-//       //   ),
-//       // ),
-//     );
-//   }
-// }
+class _InterestState extends State<Interest> {
+  @override
+  Widget build(BuildContext context) {
+    // final size = MediaQuery.of(context).size;
+    var profileImg = Provider.of<InterestController>(
+      context,
+      listen: true,
+    ).stackData;
+
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Interested in You",
+            style: TextStyle(
+              fontFamily: Constant.haddingFont,
+              fontSize: 22.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          centerTitle: true,
+          scrolledUnderElevation: 0.0,
+          // toolbarHeight: 70.0,
+        ),
+        body: ListView(
+          children: [
+            ProfileCard(profilePhotos: profileImg),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Close || dislike Button;
+                InkWell(
+                  onTap: () async {
+                    await Provider.of<InterestController>(
+                      context,
+                      listen: false,
+                    ).popStackData(direction: "left");
+                  },
+                  child: Container(
+                    height: 60.0,
+                    width: 60.0,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(50.0),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromARGB(255, 105, 102, 102),
+                          blurRadius: 20.0,
+                        )
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.close,
+                      color: Colors.black,
+                      size: 30.0,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 40.0),
+
+                // Favorite button;
+                InkWell(
+                  onTap: () async {
+                    Provider.of<InterestController>(
+                      context,
+                      listen: false,
+                    ).setIsLovesSymbolRed();
+
+                    await Provider.of<InterestController>(
+                      context,
+                      listen: false,
+                    ).popStackData(direction: "right");
+                  },
+                  child: Container(
+                    height: 80.0,
+                    width: 80.0,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF0C5461),
+                      borderRadius: BorderRadius.circular(50.0),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromARGB(255, 105, 102, 102),
+                          blurRadius: 20.0,
+                        )
+                      ],
+                    ),
+                    child: Icon(
+                      Icons.favorite_rounded,
+                      color: Provider.of<InterestController>(
+                        context,
+                        listen: true,
+                      ).isLovesSymbolRed
+                          ? Colors.red
+                          : Colors.white,
+                      size: 35.0,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 40.0),
+
+                // Bookmark button
+                InkWell(
+                  onTap: () async {
+                    await Provider.of<InterestController>(
+                      context,
+                      listen: false,
+                    ).popStackData(direction: "up");
+                  },
+                  child: Container(
+                    height: 60.0,
+                    width: 60.0,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(50.0),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromARGB(255, 105, 102, 102),
+                          blurRadius: 20.0,
+                        )
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.bookmark_outline_rounded,
+                      color: Colors.black,
+                      size: 30.0,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

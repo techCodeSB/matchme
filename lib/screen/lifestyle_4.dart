@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../widgets/details_hero.dart';
 import '../constant.dart';
 import '../widgets/interest_button.dart';
-import '../widgets/radio.dart' as MyRadio;
+import '../widgets/radio.dart' as my_radio;
 import '../widgets/error_text.dart';
 import '../controller/register_controller.dart';
 
@@ -64,9 +64,9 @@ class _Lifestyle4State extends State<Lifestyle4> {
                   CircularPercentIndicator(
                     radius: 40.0, //size
                     lineWidth: 13.0,
-                    percent: 0.0,
+                    percent: 0.63,
                     center: Text(
-                      "0%",
+                      "63%",
                       style: TextStyle(
                         color: const Color(0xFF033A44),
                         fontFamily: Constant.haddingFont,
@@ -86,57 +86,6 @@ class _Lifestyle4State extends State<Lifestyle4> {
                 ],
               ),
             ),
-            const SizedBox(height: 20.0),
-            Text(
-              "What kind of holidays do your prefer",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 15.0,
-                fontFamily: Constant.subHadding,
-              ),
-            ),
-            const SizedBox(height: 15.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InterestButton(
-                  text: "Luxury",
-                  onChanged: (v) {
-                    setHolidays("Luxury");
-                  },
-                  isSelected: _selectedHolidays.contains("Luxury"),
-                ),
-                const SizedBox(width: 15.0),
-                InterestButton(
-                  text: "Budget",
-                  onChanged: (v) {
-                    setHolidays("Budget");
-                  },
-                  isSelected: _selectedHolidays.contains("Budget"),
-                )
-              ],
-            ),
-            const SizedBox(height: 15.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InterestButton(
-                  text: "Well planned",
-                  onChanged: (v) {
-                    setHolidays("Well planned");
-                  },
-                  isSelected: _selectedHolidays.contains("Well planned"),
-                ),
-                const SizedBox(width: 15.0),
-                InterestButton(
-                  text: "Unplanned trips",
-                  onChanged: (v) {
-                    setHolidays("Unplanned trips");
-                  },
-                  isSelected: _selectedHolidays.contains("Unplanned trips"),
-                )
-              ],
-            ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
               child: ErrorText(
@@ -145,12 +94,12 @@ class _Lifestyle4State extends State<Lifestyle4> {
                     .errMsg['holidays']!,
               ),
             ),
-            const SizedBox(height: 15.0),
+            const SizedBox(height: 20.0),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
               child: Column(
                 children: [
-                  MyRadio.Radio(
+                  my_radio.Radio(
                     title: "How often do you eat out?",
                     items: const ["Occasionally", "Weekends", "Regularly"],
                     onChanged: (v) {
@@ -167,7 +116,7 @@ class _Lifestyle4State extends State<Lifestyle4> {
                             .errMsg['eatOut']!,
                   ),
                   const SizedBox(height: 15.0),
-                  MyRadio.Radio(
+                  my_radio.Radio(
                     title: "How often do you travle? (For leisure)",
                     items: const [
                       "Often",
@@ -187,6 +136,59 @@ class _Lifestyle4State extends State<Lifestyle4> {
                     visible:
                         Provider.of<RegisterController>(context, listen: true)
                             .errMsg['travle']!,
+                  ),
+                  const SizedBox(height: 20.0),
+                  Text(
+                    "What kind of holidays do your prefer",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      fontFamily: Constant.subHadding,
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InterestButton(
+                        text: "Luxury",
+                        onChanged: (v) {
+                          setHolidays("Luxury");
+                        },
+                        isSelected: _selectedHolidays.contains("Luxury"),
+                      ),
+                      const SizedBox(width: 15.0),
+                      InterestButton(
+                        text: "Budget",
+                        onChanged: (v) {
+                          setHolidays("Budget");
+                        },
+                        isSelected: _selectedHolidays.contains("Budget"),
+                      ),
+                      const SizedBox(width: 15.0),
+                      InterestButton(
+                        text: "Well planned",
+                        onChanged: (v) {
+                          setHolidays("Well planned");
+                        },
+                        isSelected: _selectedHolidays.contains("Well planned"),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(width: 15.0),
+                      InterestButton(
+                        text: "Unplanned trips",
+                        onChanged: (v) {
+                          setHolidays("Unplanned trips");
+                        },
+                        isSelected:
+                            _selectedHolidays.contains("Unplanned trips"),
+                      )
+                    ],
                   ),
                 ],
               ),

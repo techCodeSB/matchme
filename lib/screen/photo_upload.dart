@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:matchme/controller/photoupload_controller.dart';
+import 'package:provider/provider.dart';
 import '../widgets/details_hero.dart';
 import '../widgets/image_uploader.dart';
 import '../constant.dart';
@@ -57,20 +59,42 @@ class _PhotoUploadState extends State<PhotoUpload> {
                       SizedBox(
                         height: size.height * 0.5 / 2,
                         width: double.infinity,
-                        child: const Row(
+                        child: Row(
                           children: [
                             Expanded(
                               flex: 2,
-                              child: ImageUploader(),
+                              child: ImageUploader(
+                                pos: "one",
+                                image: Provider.of<PhotouploadController>(
+                                  context,
+                                  listen: true,
+                                ).images['one'],
+                              ),
                             ),
-                            SizedBox(width: 15.0),
+                            const SizedBox(width: 15.0),
                             Expanded(
                               flex: 1,
                               child: Column(
                                 children: [
-                                  Expanded(child: ImageUploader()),
-                                  SizedBox(height: 15.0),
-                                  Expanded(child: ImageUploader()),
+                                  Expanded(
+                                    child: ImageUploader(
+                                      pos: "two",
+                                      image: Provider.of<PhotouploadController>(
+                                        context,
+                                        listen: true,
+                                      ).images['two'],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 15.0),
+                                  Expanded(
+                                    child: ImageUploader(
+                                      pos: "three",
+                                      image: Provider.of<PhotouploadController>(
+                                        context,
+                                        listen: true,
+                                      ).images['three'],
+                                    ),
+                                  ),
                                 ],
                               ),
                             )
@@ -81,13 +105,37 @@ class _PhotoUploadState extends State<PhotoUpload> {
                       SizedBox(
                         height: size.height * 0.3 / 2,
                         width: double.infinity,
-                        child: const Row(
+                        child: Row(
                           children: [
-                            Expanded(child: ImageUploader()),
-                            SizedBox(width: 15.0),
-                            Expanded(child: ImageUploader()),
-                            SizedBox(width: 15.0),
-                            Expanded(child: ImageUploader()),
+                            Expanded(
+                              child: ImageUploader(
+                                pos: "four",
+                                image: Provider.of<PhotouploadController>(
+                                  context,
+                                  listen: true,
+                                ).images['four'],
+                              ),
+                            ),
+                            const SizedBox(width: 15.0),
+                            Expanded(
+                              child: ImageUploader(
+                                pos: "five",
+                                image: Provider.of<PhotouploadController>(
+                                  context,
+                                  listen: true,
+                                ).images['five'],
+                              ),
+                            ),
+                            const SizedBox(width: 15.0),
+                            Expanded(
+                              child: ImageUploader(
+                                pos: "six",
+                                image: Provider.of<PhotouploadController>(
+                                  context,
+                                  listen: true,
+                                ).images['six'],
+                              ),
+                            ),
                           ],
                         ),
                       )
@@ -110,7 +158,10 @@ class _PhotoUploadState extends State<PhotoUpload> {
                   text: "Continue",
                   color: const Color(0xFF033A44),
                   textColor: Colors.white,
-                  onTap: () {},
+                  onTap: () {
+                    Provider.of<PhotouploadController>(context, listen: false)
+                        .upload(context);
+                  },
                 ),
               ),
               const SizedBox(height: 30.0),

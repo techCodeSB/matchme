@@ -6,8 +6,9 @@ import '../constant.dart';
 import '../widgets/dropdown.dart';
 import '../widgets/details_hero.dart';
 import '../widgets/details_textfield.dart';
-import '../widgets/radio.dart' as MyRadio;
+import '../widgets/radio.dart' as my_radio;
 import '../widgets/error_text.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 class PersonalTrdDetails extends StatefulWidget {
   const PersonalTrdDetails({super.key});
@@ -53,9 +54,9 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                         CircularPercentIndicator(
                           radius: 40.0, //size
                           lineWidth: 13.0,
-                          percent: 0.0,
+                          percent: 0.14,
                           center: Text(
-                            "0%",
+                            "14%",
                             style: TextStyle(
                               color: const Color(0xFF033A44),
                               fontFamily: Constant.haddingFont,
@@ -76,9 +77,10 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                     ),
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
+                      type: TextInputType.phone,
                       controller: RegisterController.whatsappNumber,
                       hintText: "Add WhatsApp Number",
-                      icon: Icons.phone,
+                      icon: FontAwesome.whatsapp_brand,
                       onTap: () {
                         Provider.of<RegisterController>(context, listen: false)
                             .setErrorMsg({'whatsappNumber': false});
@@ -90,16 +92,37 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                           Provider.of<RegisterController>(context, listen: true)
                               .errMsg['whatsappNumber']!,
                     ),
-
                     const SizedBox(height: 20.0),
-                    DetailsTextfield(
-                      controller: RegisterController.height,
-                      hintText: "Height",
-                      icon: Icons.height_rounded,
-                      onTap: () {
-                        Provider.of<RegisterController>(context, listen: false)
-                            .setErrorMsg({'height': false});
-                      },
+                    Row(
+                      children: [
+                        Expanded(
+                          child: DetailsTextfield(
+                            type: TextInputType.number,
+                            controller: RegisterController.heightFeet,
+                            hintText: "Height (feet)",
+                            icon: Icons.height_rounded,
+                            onTap: () {
+                              Provider.of<RegisterController>(context,
+                                      listen: false)
+                                  .setErrorMsg({'height': false});
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 20.0),
+                        Expanded(
+                          child: DetailsTextfield(
+                            type: TextInputType.number,
+                            controller: RegisterController.heightInch,
+                            hintText: "Height (inches)",
+                            icon: Icons.height_rounded,
+                            onTap: () {
+                              Provider.of<RegisterController>(context,
+                                      listen: false)
+                                  .setErrorMsg({'height': false});
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                     ErrorText(
                       text: "Height can't be blank",
@@ -107,12 +130,12 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                           Provider.of<RegisterController>(context, listen: true)
                               .errMsg['height']!,
                     ),
-
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
+                      type: TextInputType.number,
                       controller: RegisterController.weight,
                       hintText: "Weight",
-                      icon: Icons.person,
+                      icon: FontAwesome.weight_scale_solid,
                       onTap: () {
                         Provider.of<RegisterController>(context, listen: false)
                             .setErrorMsg({'weight': false});
@@ -124,7 +147,6 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                           Provider.of<RegisterController>(context, listen: true)
                               .errMsg['weight']!,
                     ),
-
                     const SizedBox(height: 20.0),
                     Dropdown(
                       hint: "Marital Status",
@@ -147,9 +169,8 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                           Provider.of<RegisterController>(context, listen: true)
                               .errMsg['maritalStatus']!,
                     ),
-
                     const SizedBox(height: 15.0),
-                    MyRadio.Radio(
+                    my_radio.Radio(
                       title: "Tell us about your eating preferences?",
                       items: const ["Veg", "Non-Veg", "Vegan"],
                       onChanged: (v) {
@@ -165,68 +186,79 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                           Provider.of<RegisterController>(context, listen: true)
                               .errMsg['eatingPref']!,
                     ),
-
-                    SizedBox(height: size.height * 0.05),
-                    // *********************** BUTTONS ***********************
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            height: 50.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30.0),
-                              border: Border.all(
-                                color: const Color(0xFF033A44),
-                                width: 2.0,
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Back",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: Constant.subHadding,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 20.0),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Provider.of<RegisterController>(
-                                context,
-                                listen: false,
-                              ).personalTrdSubmit(context);
-                            },
-                            child: Container(
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30.0),
-                                color: const Color(0xFF033A44),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Submit",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: Constant.subHadding,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
                   ],
                 ),
               ),
+              SizedBox(
+                width: double.infinity,
+                child: Image.asset(
+                  "assets/images/Vector 1.png",
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.05,
+                  vertical: size.height * 0.02,
+                ),
+                child: // *********************** BUTTONS ***********************
+                    Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 50.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.0),
+                          border: Border.all(
+                            color: const Color(0xFF033A44),
+                            width: 2.0,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Back",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: Constant.subHadding,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 20.0),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Provider.of<RegisterController>(
+                            context,
+                            listen: false,
+                          ).personalTrdSubmit(context);
+                        },
+                        child: Container(
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                            color: const Color(0xFF033A44),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Submit",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: Constant.subHadding,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),

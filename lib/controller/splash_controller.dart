@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:matchme/screen/dashboard.dart';
+import 'package:matchme/screen/opening.dart';
 import '../screen/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -96,8 +98,9 @@ class SplashController {
     }
     // Registration complete;
     else {
-      //Goto Dashboard code here;
-      //
+      Navigator.of(ctx).pushReplacement(
+        MaterialPageRoute(builder: (ctx) => const Dashboard()),
+      );
     }
   }
 
@@ -106,6 +109,14 @@ class SplashController {
   static void decision(ctx) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     // pref.remove("token");
+
+    // If Opening
+    if (pref.getBool("opening") == null) {
+      Navigator.of(ctx).pushReplacement(
+        MaterialPageRoute(builder: (ctx) => const Opening()),
+      );
+      return;
+    }
 
     // If not Login
     if (pref.getString("token") == null) {
@@ -118,5 +129,17 @@ class SplashController {
 
     // If Login
     checkSteps(ctx);
+  }
+
+  // Opening Screen Function;
+  static void setOpeningStatus(ctx) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+
+    // Set Opening Status;
+    if (pref.getBool("opening") == null) {
+      pref.setBool("opening", true);
+
+      decision(ctx);
+    }
   }
 }

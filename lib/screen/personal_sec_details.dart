@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../screen/personal_fst_details.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -53,9 +54,9 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                         CircularPercentIndicator(
                           radius: 40.0, //size
                           lineWidth: 13.0,
-                          percent: 0.1,
+                          percent: 0.07, // 7% progress
                           center: Text(
-                            "10%",
+                            "7%",
                             style: TextStyle(
                               color: const Color(0xFF033A44),
                               fontFamily: Constant.haddingFont,
@@ -71,10 +72,10 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                           backgroundColor: const Color(0xFFD9D9D9),
                           animation: true,
                           animateFromLastPercent: true,
+                          animationDuration: 700,
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
                       onTap: () {
@@ -82,7 +83,7 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                             .setErrorMsg({"country": false});
                       },
                       controller: RegisterController.country,
-                      hintText: "Your Current Residence",
+                      hintText: "Enter Country (current residence)",
                       icon: Icons.person_outline,
                     ),
                     ErrorText(
@@ -92,7 +93,6 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                         listen: true,
                       ).errMsg['country']!,
                     ),
-
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
                       onTap: () {
@@ -101,7 +101,7 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                       },
                       controller: RegisterController.city,
                       hintText: "Your City",
-                      icon: Icons.location_on_outlined,
+                      icon: Icons.person_pin_circle_outlined,
                     ),
                     ErrorText(
                       text: "City can't be blank",
@@ -110,7 +110,6 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                         listen: true,
                       ).errMsg['city']!,
                     ),
-
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
                       onTap: () {
@@ -119,7 +118,7 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                       },
                       controller: RegisterController.locality,
                       hintText: "Your Locality",
-                      icon: Icons.location_on_outlined,
+                      icon: CupertinoIcons.building_2_fill,
                     ),
                     ErrorText(
                       text: "Locality can't be blank",
@@ -128,7 +127,6 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                         listen: true,
                       ).errMsg['locality']!,
                     ),
-
                     const SizedBox(height: 20.0),
                     Dropdown(
                       hint: "Your Nationality",
@@ -151,7 +149,6 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                         listen: true,
                       ).errMsg['nationality']!,
                     ),
-
                     const SizedBox(height: 20.0),
                     Dropdown(
                       hint: "Your Religious",
@@ -171,90 +168,96 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                         listen: true,
                       ).errMsg['religious']!,
                     ),
-
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
                       controller: RegisterController.community,
                       hintText: "Your Community Name ( Optional )",
-                      icon: Icons.location_on_outlined,
+                      icon: Icons.groups_sharp,
                     ),
-
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
                       controller: RegisterController.medical,
                       hintText: "Medical History",
-                      icon: Icons.location_on_outlined,
+                      icon: Icons.medical_services_outlined,
                     ),
-
-                    SizedBox(height: size.height * 0.05),
-                    // *********************** BUTTONS ***********************
-                    Row(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const PersonalFstDetails(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30.0),
-                                border: Border.all(
-                                  color: const Color(0xFF033A44),
-                                  width: 2.0,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Back",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: Constant.subHadding,
-                                  ),
-                                ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: Image.asset(
+                  "assets/images/Vector 1.png",
+                  fit: BoxFit.cover,
+                ),
+              ),
+              // *********************** BUTTONS ***********************
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.05,
+                vertical: size.height * 0.02,),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const PersonalFstDetails(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                            border: Border.all(
+                              color: const Color(0xFF033A44),
+                              width: 2.0,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Back",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: Constant.subHadding,
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 20.0),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Provider.of<RegisterController>(
-                                context,
-                                listen: false,
-                              ).personalSecSubmit(context);
-                            },
-                            child: Container(
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30.0),
-                                color: const Color(0xFF033A44),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Submit",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: Constant.subHadding,
-                                  ),
-                                ),
+                      ),
+                    ),
+                    const SizedBox(width: 20.0),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Provider.of<RegisterController>(
+                            context,
+                            listen: false,
+                          ).personalSecSubmit(context);
+                        },
+                        child: Container(
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                            color: const Color(0xFF033A44),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Submit",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: Constant.subHadding,
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    )
+                      ),
+                    ),
                   ],
                 ),
               )

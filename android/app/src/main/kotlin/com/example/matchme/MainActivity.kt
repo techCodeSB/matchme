@@ -1,4 +1,4 @@
-package com.example.match_me
+package com.cms.matchme
 
 import io.flutter.embedding.android.FlutterActivity
 

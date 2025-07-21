@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../widgets/bottom_bar.dart';
+import 'package:provider/provider.dart';
+import '../controller/mainpage_controller.dart';
 import '../widgets/slider.dart';
 import '../constant.dart';
 
@@ -30,13 +31,14 @@ class _ProfileState extends State<Profile> {
           height: double.infinity,
           color: const Color(0xFFF5F7F7),
           child: ListView(
+            padding: const EdgeInsets.only(bottom: 20.0),
             children: [
               SizedBox(
                 width: double.infinity,
                 height: size.height * 0.9 / 2,
-                child: const Stack(
+                child: Stack(
                   children: [
-                    ProfileSlider(
+                    const ProfileSlider(
                       imgs: [
                         "assets/images/Photo.png",
                         "assets/images/Photo.png",
@@ -50,11 +52,23 @@ class _ProfileState extends State<Profile> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.white,
-                            child: Icon(Icons.arrow_back_ios_sharp),
+                          InkWell(
+                            onTap: () {
+                              Provider.of<MainpageController>(
+                                context,
+                                listen: false,
+                              ).updatePosition("home");
+                              Provider.of<MainpageController>(
+                                context,
+                                listen: false,
+                              ).setBottomIndex(0);
+                            },
+                            child: const CircleAvatar(
+                              backgroundColor: Colors.white,
+                              child: Icon(Icons.arrow_back_ios_sharp),
+                            ),
                           ),
-                          CircleAvatar(
+                          const CircleAvatar(
                             backgroundColor: Colors.white,
                             child: Icon(Icons.edit_square),
                           ),
@@ -170,63 +184,6 @@ class _ProfileState extends State<Profile> {
           ),
         ),
       ),
-      bottomNavigationBar: CurvedBottomNavScreen()
     );
   }
-}
-
-class BottomNavClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final double width = size.width;
-    final double height = size.height;
-    const double cornerRadius = 25;
-
-    final Path path = Path();
-
-    // Top-left corner
-    path.moveTo(0, cornerRadius);
-    path.quadraticBezierTo(0, 0, cornerRadius, 0);
-
-    // Start curve toward dip
-    path.quadraticBezierTo(
-      width * 0.30, 0,
-      width * 0.42, height * 0.08, // go deeper down
-    );
-
-    // Left shoulder to bottom of dip
-    path.quadraticBezierTo(
-      width * 0.47, height * 0.32, // even deeper
-      width * 0.50, height * 0.36, // deepest point
-    );
-
-    // Bottom center to right shoulder
-    path.quadraticBezierTo(
-      width * 0.53,
-      height * 0.32,
-      width * 0.58,
-      height * 0.08,
-    );
-
-    // Curve back up
-    path.quadraticBezierTo(
-      width * 0.70,
-      0,
-      width - cornerRadius,
-      0,
-    );
-
-    // Top-right corner
-    path.quadraticBezierTo(width, 0, width, cornerRadius);
-
-    // Bottom rectangle
-    path.lineTo(width, height);
-    path.lineTo(0, height);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

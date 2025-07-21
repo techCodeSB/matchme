@@ -37,7 +37,7 @@ class _InterestButtonState extends State<InterestButton> {
         widget.onChanged(activeInterest);
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
           border: Border.all(color: const Color(0xFF033A44), width: 1.5),

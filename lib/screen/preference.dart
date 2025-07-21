@@ -71,9 +71,9 @@ class _PreferenceState extends State<Preference> {
                     CircularPercentIndicator(
                       radius: 30.0, //size
                       lineWidth: 10.0,
-                      percent: 0.7,
+                      percent: 0.84,
                       center: Text(
-                        "70%",
+                        "84%",
                         style: TextStyle(
                           color: const Color(0xFF033A44),
                           fontFamily: Constant.haddingFont,
@@ -148,9 +148,9 @@ class _PreferenceState extends State<Preference> {
                                       decoration: const BoxDecoration(
                                         color: Color(0xFFD8F9FF),
                                         borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(30.0),
-                                          topRight: Radius.circular(30.0),
-                                          bottomRight: Radius.circular(30.0),
+                                          topLeft: Radius.circular(40.0),
+                                          topRight: Radius.circular(50.0),
+                                          bottomRight: Radius.circular(50.0),
                                         ),
                                       ),
                                       child: Text(
@@ -162,10 +162,11 @@ class _PreferenceState extends State<Preference> {
                                         ),
                                       ),
                                     ).animate().fadeIn(duration: 400.ms).slideY(
-                                        begin: 0.3,
-                                        end: 0,
-                                        curve: Curves.easeOut,
-                                        duration: 400.ms),
+                                          begin: 0.3,
+                                          end: 0,
+                                          curve: Curves.easeOut,
+                                          duration: 400.ms,
+                                        ),
                                   ),
                                 ],
                               ),

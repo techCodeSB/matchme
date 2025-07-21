@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -54,9 +55,9 @@ class _WorkDetailsState extends State<WorkDetails> {
                       CircularPercentIndicator(
                         radius: 40.0, //size
                         lineWidth: 13.0,
-                        percent: 0.5,
+                        percent: 0.35,
                         center: Text(
-                          "50%",
+                          "35%",
                           style: TextStyle(
                             color: const Color(0xFF033A44),
                             fontFamily: Constant.haddingFont,
@@ -101,7 +102,6 @@ class _WorkDetailsState extends State<WorkDetails> {
                       listen: true,
                     ).errMsg['profession']!,
                   ),
-
                   const SizedBox(height: 20.0),
                   DetailsTextfield(
                     onTap: () {
@@ -110,7 +110,7 @@ class _WorkDetailsState extends State<WorkDetails> {
                     },
                     controller: RegisterController.industry,
                     hintText: "Industry",
-                    icon: Icons.business_outlined,
+                    icon: CupertinoIcons.building_2_fill,
                   ),
                   ErrorText(
                     text: "Industry can't be blank",
@@ -119,7 +119,6 @@ class _WorkDetailsState extends State<WorkDetails> {
                       listen: true,
                     ).errMsg['industry']!,
                   ),
-
                   const SizedBox(height: 20.0),
                   DetailsTextfield(
                     onTap: () {
@@ -128,7 +127,7 @@ class _WorkDetailsState extends State<WorkDetails> {
                     },
                     controller: RegisterController.orgnization,
                     hintText: "Organization",
-                    icon: Icons.business_outlined,
+                    icon: CupertinoIcons.building_2_fill,
                   ),
                   ErrorText(
                     text: "Organization can't be blank",
@@ -137,7 +136,6 @@ class _WorkDetailsState extends State<WorkDetails> {
                       listen: true,
                     ).errMsg['orgnization']!,
                   ),
-
                   const SizedBox(height: 20.0),
                   DetailsTextfield(
                     onTap: () {
@@ -155,7 +153,6 @@ class _WorkDetailsState extends State<WorkDetails> {
                       listen: true,
                     ).errMsg['designation']!,
                   ),
-
                   const SizedBox(height: 20.0),
                   Dropdown(
                     hint: "Personal Anual Income",
@@ -181,7 +178,6 @@ class _WorkDetailsState extends State<WorkDetails> {
                       listen: true,
                     ).errMsg['anualIncome']!,
                   ),
-
                   Visibility(
                     visible: _profession == "business" ? true : false,
                     child: Column(
@@ -195,7 +191,7 @@ class _WorkDetailsState extends State<WorkDetails> {
                           },
                           controller: RegisterController.turnover,
                           hintText: "Buisness Turnover",
-                          icon: Icons.location_on_outlined,
+                          icon: Icons.account_balance_wallet_outlined,
                         ),
                         ErrorText(
                           text: "Business Turnover can't be blank",
@@ -207,7 +203,6 @@ class _WorkDetailsState extends State<WorkDetails> {
                       ],
                     ),
                   ),
-
                   Visibility(
                     visible: _profession == "business" ? true : false,
                     child: Column(
@@ -216,80 +211,93 @@ class _WorkDetailsState extends State<WorkDetails> {
                         DetailsTextfield(
                           controller: RegisterController.website,
                           hintText: "Buisness Website",
-                          icon: Icons.location_on_outlined,
+                          icon: CupertinoIcons.globe,
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: size.height * 0.07),
-                  // *********************** BUTTONS ***********************
+                ],
+              ),
+            ),
+
+            SizedBox(
+              width: double.infinity,
+              child: Image.asset(
+                "assets/images/Vector 1.png",
+                fit: BoxFit.cover,
+              ),
+            ),
+
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.05,
+                vertical: size.height * 0.02,
+              ),
+              child: // *********************** BUTTONS ***********************
                   Row(
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const QualificationDetails(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            height: 50.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30.0),
-                              border: Border.all(
-                                color: const Color(0xFF033A44),
-                                width: 2.0,
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Back",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: Constant.subHadding,
-                                ),
-                              ),
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const QualificationDetails(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: 50.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.0),
+                          border: Border.all(
+                            color: const Color(0xFF033A44),
+                            width: 1.5,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Back",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: Constant.subHadding,
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 20.0),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            Provider.of<RegisterController>(
-                              context,
-                              listen: false,
-                            ).workSubmit(context);
-                          },
-                          child: Container(
-                            height: 50.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30.0),
-                              color: const Color(0xFF033A44),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Submit",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: Constant.subHadding,
-                                ),
-                              ),
+                    ),
+                  ),
+                  const SizedBox(width: 20.0),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Provider.of<RegisterController>(
+                          context,
+                          listen: false,
+                        ).workSubmit(context);
+                      },
+                      child: Container(
+                        height: 50.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.0),
+                          color: const Color(0xFF033A44),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Submit",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: Constant.subHadding,
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  )
+                    ),
+                  ),
                 ],
               ),
             )

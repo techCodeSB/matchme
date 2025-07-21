@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:matchme/controller/splash_controller.dart';
+import 'package:matchme/screen/dashboard.dart';
+import 'package:matchme/widgets/my_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constant.dart';
 import '../screen/photo_upload.dart';
@@ -121,7 +124,7 @@ class PreferanceController extends ChangeNotifier {
     });
   }
 
-  // Get preferance and push to rederQ using index number;
+  // Get preferance and push to renderQ using index number;
   void nextIndex(index) {
     if (!renderQ.contains(preferencesQ[index])) {
       renderQ.add(preferencesQ[index]);
@@ -148,6 +151,8 @@ class PreferanceController extends ChangeNotifier {
     var token = pref.getString("token");
     Uri url = Uri.parse("${Constant.api}preferance/add");
     Uri url2 = Uri.parse("${Constant.api}users/update");
+    var getStatus = await SplashController.getSteps();
+    var status = getStatus['registration_status'];
 
     Map<String, dynamic> data = {
       "token": token,
@@ -160,8 +165,6 @@ class PreferanceController extends ChangeNotifier {
       "religion_preference": relegion,
       "preferred_location": location,
     };
-
-    print(data);
 
     try {
       // Make API call to register preference
@@ -182,26 +185,27 @@ class PreferanceController extends ChangeNotifier {
       );
 
       if (req.statusCode == 200 && req2.statusCode == 200) {
-        // var res = jsonDecode(req.body);
-
-        Navigator.push(
-          ctx,
-          MaterialPageRoute(
-            builder: (context) => const PhotoUpload(),
-          ),
-        );
+        if (status == "0") {
+          Navigator.push(
+            ctx,
+            MaterialPageRoute(
+              builder: (context) => const PhotoUpload(),
+            ),
+          );
+        } else if (status == "1") {
+          Navigator.push(
+            ctx,
+            MaterialPageRoute(
+              builder: (context) => const Dashboard(),
+            ),
+          );
+        }
       } else {
         // If API call failed then show error message;
-        ScaffoldMessenger.of(ctx).showSnackBar(
-          const SnackBar(
-            content: Text("Something went wrong, try again later."),
-          ),
-        );
+        mySnackBar(ctx, "Something went wrong, try again later.");
       }
     } catch (er) {
-      ScaffoldMessenger.of(ctx).showSnackBar(
-        const SnackBar(content: Text("Something went wrong, try again later.")),
-      );
+      mySnackBar(ctx, "Something went wrong, try again later.");
     }
   }
 }

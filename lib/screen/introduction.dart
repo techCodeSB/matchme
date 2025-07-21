@@ -47,9 +47,9 @@ class _IntroductionState extends State<Introduction> {
                     CircularPercentIndicator(
                       radius: 40.0, //size
                       lineWidth: 13.0,
-                      percent: 0.0,
+                      percent: 0.77,
                       center: Text(
-                        "0%",
+                        "77%",
                         style: TextStyle(
                           color: const Color(0xFF033A44),
                           fontFamily: Constant.haddingFont,

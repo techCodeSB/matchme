@@ -19,7 +19,7 @@ class LocationSelectorState extends State<LocationSelector> {
     // final size = MediaQuery.of(context);
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(20.0),
       decoration: const BoxDecoration(
         color: Color(0xFF033A44),
         borderRadius: BorderRadius.only(

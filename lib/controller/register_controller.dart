@@ -1,3 +1,4 @@
+import 'package:matchme/widgets/my_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -38,7 +39,9 @@ class RegisterController extends ChangeNotifier {
 
   // Third Personal Details;
   static final TextEditingController whatsappNumber = TextEditingController();
-  static final TextEditingController height = TextEditingController();
+  static final TextEditingController heightFeet = TextEditingController();
+  static final TextEditingController heightInch = TextEditingController();
+  String height = "${heightFeet.text.trim()}.${heightInch.text.trim()}";
   static final TextEditingController weight = TextEditingController();
   String maritalStatus = "";
   String eatingPref = "";
@@ -89,8 +92,6 @@ class RegisterController extends ChangeNotifier {
 
   // Introduction about Your sele;
   static final TextEditingController introduction = TextEditingController();
-
-
 
   // Error message for require fields
   Map<String, bool> errMsg = {
@@ -170,8 +171,8 @@ class RegisterController extends ChangeNotifier {
 
     // remove in production
     var res = jsonDecode(req.body);
-    print("============response===========");
-    print(res);
+    debugPrint("============response===========");
+    debugPrint(res);
 
     if (req.statusCode == 200) {
       return {"success": true, "res": res};
@@ -221,11 +222,7 @@ class RegisterController extends ChangeNotifier {
         ),
       );
     } else {
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
-        duration: const Duration(milliseconds: 2000),
-        showCloseIcon: true,
-      ));
+      mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
   }
 
@@ -275,26 +272,24 @@ class RegisterController extends ChangeNotifier {
         ),
       );
     } else {
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
-        duration: const Duration(milliseconds: 2000),
-        showCloseIcon: true,
-      ));
+      mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
   }
 
   //
   void personalTrdSubmit(ctx) async {
+    var height = "${heightFeet.text.trim()}.${heightInch.text.trim()}";
     // Check validation
     if (whatsappNumber.text.isEmpty ||
-        height.text.isEmpty ||
+        height.isEmpty ||
         weight.text.isEmpty ||
         maritalStatus.isEmpty ||
         eatingPref.isEmpty) {
       if (whatsappNumber.text.trim().isEmpty) {
         setErrorMsg({"whatsappNumber": true});
       }
-      if (height.text.trim().isEmpty) {
+
+      if (height.trim().isEmpty || height.trim() == "." || height.trim() == "0.0") {
         setErrorMsg({"height": true});
       }
       if (weight.text.trim().isEmpty) {
@@ -310,9 +305,10 @@ class RegisterController extends ChangeNotifier {
       return;
     }
 
+    
     var reg = await register({
       "country": whatsappNumber.text.trim(),
-      "height": height.text.trim(),
+      "height": height.trim(),
       "weight": weight.text.trim(),
       "marital_status": maritalStatus.trim(),
       "eating_preferences": eatingPref.trim(),
@@ -327,11 +323,7 @@ class RegisterController extends ChangeNotifier {
         ),
       );
     } else {
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
-        duration: const Duration(milliseconds: 2000),
-        showCloseIcon: true,
-      ));
+      mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
   }
 
@@ -379,11 +371,7 @@ class RegisterController extends ChangeNotifier {
         ),
       );
     } else {
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
-        duration: const Duration(milliseconds: 2000),
-        showCloseIcon: true,
-      ));
+      mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
   }
 
@@ -442,11 +430,8 @@ class RegisterController extends ChangeNotifier {
         ),
       );
     } else {
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
-        duration: const Duration(milliseconds: 2000),
-        showCloseIcon: true,
-      ));
+      mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
+      mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
   }
 
@@ -500,11 +485,7 @@ class RegisterController extends ChangeNotifier {
         ),
       );
     } else {
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
-        duration: const Duration(milliseconds: 2000),
-        showCloseIcon: true,
-      ));
+      mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
   }
 
@@ -535,11 +516,7 @@ class RegisterController extends ChangeNotifier {
         ),
       );
     } else {
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
-        duration: const Duration(milliseconds: 2000),
-        showCloseIcon: true,
-      ));
+      mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
   }
 
@@ -572,11 +549,7 @@ class RegisterController extends ChangeNotifier {
         ),
       );
     } else {
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
-        duration: const Duration(milliseconds: 2000),
-        showCloseIcon: true,
-      ));
+      mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
   }
 
@@ -600,11 +573,7 @@ class RegisterController extends ChangeNotifier {
         ),
       );
     } else {
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
-        duration: const Duration(milliseconds: 2000),
-        showCloseIcon: true,
-      ));
+      mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
   }
 
@@ -640,11 +609,7 @@ class RegisterController extends ChangeNotifier {
         ),
       );
     } else {
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
-        duration: const Duration(milliseconds: 2000),
-        showCloseIcon: true,
-      ));
+      mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
   }
 
@@ -685,17 +650,13 @@ class RegisterController extends ChangeNotifier {
         ),
       );
     } else {
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
-        duration: const Duration(milliseconds: 2000),
-        showCloseIcon: true,
-      ));
+      mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
   }
 
-  // 
-  void introductionSubmit(ctx)async{
-    if(introduction.text.isEmpty){
+  //
+  void introductionSubmit(ctx) async {
+    if (introduction.text.isEmpty) {
       setErrorMsg({"introduction": true});
 
       return;
@@ -714,14 +675,9 @@ class RegisterController extends ChangeNotifier {
         ),
       );
     } else {
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
-        duration: const Duration(milliseconds: 2000),
-        showCloseIcon: true,
-      ));
+      mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
   }
-
 
   //
   void moreQuestionNext(ctx) async {
@@ -735,11 +691,7 @@ class RegisterController extends ChangeNotifier {
         ),
       );
     } else {
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text("Error: ${reg['res']['error'] ?? reg['res']['err']}"),
-        duration: const Duration(milliseconds: 2000),
-        showCloseIcon: true,
-      ));
+      mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
   }
 }

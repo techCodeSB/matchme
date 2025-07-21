@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../screen/lifestyle_4.dart';
 import '../widgets/details_hero.dart';
 import '../constant.dart';
-import '../widgets/radio.dart' as MyRadio;
+import '../widgets/radio.dart' as my_radio;
 import '../widgets/error_text.dart';
 import '../controller/register_controller.dart';
 
@@ -61,9 +61,9 @@ class _Lifestyle5State extends State<Lifestyle5> {
                   CircularPercentIndicator(
                     radius: 40.0, //size
                     lineWidth: 13.0,
-                    percent: 0.0,
+                    percent: 0.70,
                     center: Text(
-                      "0%",
+                      "70%",
                       style: TextStyle(
                         color: const Color(0xFF033A44),
                         fontFamily: Constant.haddingFont,
@@ -88,7 +88,7 @@ class _Lifestyle5State extends State<Lifestyle5> {
               padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
               child: Column(
                 children: [
-                  MyRadio.Radio(
+                  my_radio.Radio(
                     title: "Do you like socialise?",
                     items: const ["Yes", "Occasionally", "No"],
                     onChanged: (v) {
@@ -105,7 +105,7 @@ class _Lifestyle5State extends State<Lifestyle5> {
                             .errMsg['socialise']!,
                   ),
                   const SizedBox(height: 15.0),
-                  MyRadio.Radio(
+                  my_radio.Radio(
                     title: "Whom do you mostly go out with",
                     items: const ["With Family", "With Friends", "Solo"],
                     onChanged: (v) {
@@ -122,7 +122,7 @@ class _Lifestyle5State extends State<Lifestyle5> {
                             .errMsg['goOut']!,
                   ),
                   const SizedBox(height: 15.0),
-                  MyRadio.Radio(
+                  my_radio.Radio(
                     title: "How Spritual you are?",
                     items: const [
                       "Not all",
@@ -144,7 +144,7 @@ class _Lifestyle5State extends State<Lifestyle5> {
                             .errMsg['spritual']!,
                   ),
                   const SizedBox(height: 15.0),
-                  MyRadio.Radio(
+                  my_radio.Radio(
                     title: "How religious you are?",
                     items: const [
                       "Not all",
