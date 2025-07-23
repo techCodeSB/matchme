@@ -70,13 +70,15 @@ class _IntroductionState extends State<Introduction> {
                 ),
               ),
               const SizedBox(height: 20.0),
+              // ::::::::::::::::::::::::::::::::::::::::::::::: FORM FIELDS ::::::::::::::::::::::::::::::::::::::::::::::::
               Text(
                 "Please write a bried introduction",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: const Color(0xFF033A44),
-                    fontFamily: Constant.subHadding,
-                    fontSize: 15.0),
+                  color: const Color(0xFF033A44),
+                  fontFamily: Constant.subHadding,
+                  fontSize: 15.0,
+                ),
               ),
               const SizedBox(height: 15.0),
               Padding(
@@ -107,6 +109,7 @@ class _IntroductionState extends State<Introduction> {
               SizedBox(
                 height: size.height * 0.08,
               ),
+              // ::::::::::::::::::::::::::::::::::::::::::::::: BUTTONS ::::::::::::::::::::::::::::::::::::::::::::::::
               SizedBox(
                 width: double.infinity,
                 child: Image.asset(
@@ -126,9 +129,11 @@ class _IntroductionState extends State<Introduction> {
                       child: InkWell(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Lifestyle5()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Lifestyle5(),
+                            ),
+                          );
                         },
                         child: Container(
                           height: 50.0,

@@ -78,6 +78,7 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                       ],
                     ),
                     const SizedBox(height: 20.0),
+                    // ::::::::::::::::::::::::::::::::::::::::: FORMS FIELDS :::::::::::::::::::::::::::::::::::::
                     Dropdown(
                       hint: "Your Highest Qualification",
                       onChanged: (v) {
@@ -88,8 +89,7 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                         Provider.of<RegisterController>(context, listen: false)
                             .setErrorMsg({"qualification": false});
 
-                        Provider.of<RegisterController>(context, listen: false)
-                            .qualification = v!.toLowerCase();
+                        RegisterController.qualification = v!.toLowerCase();
                       },
                       items: const [
                         "School",
@@ -98,6 +98,7 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                         "Pd.D"
                       ],
                       icon: Icons.school_outlined,
+                      defaultValue: RegisterController.qualification,
                     ),
                     ErrorText(
                       text: "Select your qualification",

@@ -6,6 +6,7 @@ class Dropdown extends StatefulWidget {
   final ValueChanged<String?> onChanged;
   final List<String> items;
   final IconData? icon;
+  final String? defaultValue;
 
   const Dropdown({
     super.key,
@@ -13,6 +14,7 @@ class Dropdown extends StatefulWidget {
     required this.onChanged,
     required this.items,
     required this.icon,
+    this.defaultValue,
   });
 
   @override
@@ -21,6 +23,16 @@ class Dropdown extends StatefulWidget {
 
 class _DropdownState extends State<Dropdown> {
   String? selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    print("defaultValue::::::: ${widget.defaultValue}");
+
+    if (widget.defaultValue != null && widget.defaultValue!.isNotEmpty) {
+      selectedValue = widget.defaultValue!.toUpperCase();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +60,12 @@ class _DropdownState extends State<Dropdown> {
                     widget.hint,
                     style: TextStyle(
                       fontFamily: Constant.subHadding,
-                      color:const Color(0xFF0C5461),
+                      color: const Color(0xFF0C5461),
                     ),
                   ),
                   items: widget.items.map((String item) {
                     return DropdownMenuItem<String>(
-                      value: item,
+                      value: item.toUpperCase(),
                       child: Text(item),
                     );
                   }).toList(),

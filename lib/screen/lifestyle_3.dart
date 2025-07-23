@@ -64,6 +64,14 @@ class _Lifestyle3State extends State<Lifestyle3> {
         .setErrorMsg({"interest": false});
   }
 
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the selected interests from the provider
+    _selectedInterest.addAll(RegisterController.interest);
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;

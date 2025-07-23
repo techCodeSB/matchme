@@ -131,16 +131,17 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                     Dropdown(
                       hint: "Your Nationality",
                       onChanged: (v) {
-                        Provider.of<RegisterController>(context, listen: false)
-                            .nationality = v!;
+                        RegisterController.nationality = v!;
                         Provider.of<RegisterController>(context, listen: false)
                             .setErrorMsg({"nationality": false});
                       },
                       items: const [
-                        "Indian",
+                        "INDIAN",
                         "NRI",
                       ],
                       icon: Icons.flag_outlined,
+                      defaultValue:
+                          RegisterController.nationality.toUpperCase(),
                     ),
                     ErrorText(
                       text: "Nationality can't be blank",
@@ -153,13 +154,13 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                     Dropdown(
                       hint: "Your Religious",
                       onChanged: (v) {
-                        Provider.of<RegisterController>(context, listen: false)
-                            .religious = v!;
+                        RegisterController.religious = v!;
                         Provider.of<RegisterController>(context, listen: false)
                             .setErrorMsg({"religious": false});
                       },
-                      items: const ["Hindu", "Muslim", "Christian", "Sikh"],
+                      items: const ["HINDU", "MUSLIM", "CHRISTIAN", "SIKH"],
                       icon: Icons.temple_hindu_outlined,
+                      defaultValue: RegisterController.religious.toUpperCase(),
                     ),
                     ErrorText(
                       text: "Religious can't be blank",
@@ -192,8 +193,10 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
               ),
               // *********************** BUTTONS ***********************
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: size.width * 0.05,
-                vertical: size.height * 0.02,),
+                padding: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.05,
+                  vertical: size.height * 0.02,
+                ),
                 child: Row(
                   children: [
                     Expanded(

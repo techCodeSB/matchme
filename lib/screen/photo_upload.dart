@@ -69,6 +69,8 @@ class _PhotoUploadState extends State<PhotoUpload> {
                                   context,
                                   listen: true,
                                 ).images['one'],
+                                uploadedImage:
+                                    PhotouploadController.uploadedImages['one'],
                               ),
                             ),
                             const SizedBox(width: 15.0),
@@ -83,6 +85,8 @@ class _PhotoUploadState extends State<PhotoUpload> {
                                         context,
                                         listen: true,
                                       ).images['two'],
+                                      uploadedImage: PhotouploadController
+                                          .uploadedImages['two'],
                                     ),
                                   ),
                                   const SizedBox(height: 15.0),
@@ -93,6 +97,8 @@ class _PhotoUploadState extends State<PhotoUpload> {
                                         context,
                                         listen: true,
                                       ).images['three'],
+                                      uploadedImage: PhotouploadController
+                                          .uploadedImages['three'],
                                     ),
                                   ),
                                 ],
@@ -114,6 +120,8 @@ class _PhotoUploadState extends State<PhotoUpload> {
                                   context,
                                   listen: true,
                                 ).images['four'],
+                                uploadedImage: PhotouploadController
+                                    .uploadedImages['four'],
                               ),
                             ),
                             const SizedBox(width: 15.0),
@@ -124,6 +132,8 @@ class _PhotoUploadState extends State<PhotoUpload> {
                                   context,
                                   listen: true,
                                 ).images['five'],
+                                uploadedImage: PhotouploadController
+                                    .uploadedImages['five'],
                               ),
                             ),
                             const SizedBox(width: 15.0),
@@ -134,6 +144,8 @@ class _PhotoUploadState extends State<PhotoUpload> {
                                   context,
                                   listen: true,
                                 ).images['six'],
+                                uploadedImage:
+                                    PhotouploadController.uploadedImages['six'],
                               ),
                             ),
                           ],

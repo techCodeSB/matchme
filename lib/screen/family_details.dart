@@ -74,6 +74,7 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                         ),
                       ],
                     ),
+                    // ::::::::::::::::::::::::::::::::::::: FORM FIELDS :::::::::::::::::::::::::::::::::::::::
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
                       onTap: () {
@@ -95,8 +96,7 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                     Dropdown(
                       hint: "Father's Occupation",
                       onChanged: (v) {
-                        Provider.of<RegisterController>(context, listen: false)
-                            .fatherOccupation = v!;
+                        RegisterController.fatherOccupation = v!;
                       },
                       items: const [
                         "Business",
@@ -105,6 +105,7 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                         "N.a."
                       ],
                       icon: Icons.work_outline,
+                      defaultValue: RegisterController.fatherOccupation,
                     ),
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
@@ -127,8 +128,7 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                     Dropdown(
                       hint: "Mother's Occupation",
                       onChanged: (v) {
-                        Provider.of<RegisterController>(context, listen: false)
-                            .motherOccupation = v!;
+                        RegisterController.motherOccupation = v!;
                       },
                       items: const [
                         "Business",
@@ -138,23 +138,23 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                         "N.a."
                       ],
                       icon: Icons.work_outline,
+                      defaultValue: RegisterController.motherOccupation,
                     ),
                     const SizedBox(height: 20.0),
                     Dropdown(
                       hint: "No of Siblings",
                       onChanged: (v) {
-                        Provider.of<RegisterController>(context, listen: false)
-                            .noOfSibling = v!;
+                        RegisterController.noOfSibling = v!;
                       },
                       items: const ["0", "1", "2", "3", "3+"],
                       icon: Icons.people_outline,
+                      defaultValue: RegisterController.noOfSibling,
                     ),
                     const SizedBox(height: 20.0),
                     Dropdown(
                       hint: "Family Background",
                       onChanged: (v) {
-                        Provider.of<RegisterController>(context, listen: false)
-                            .familyAnualIncome = v!;
+                        RegisterController.familyBackground = v!;
                       },
                       items: const [
                         "Business owners",
@@ -165,6 +165,7 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                         "Others"
                       ],
                       icon: Icons.business_center_outlined,
+                      defaultValue: RegisterController.familyBackground,
                     ),
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
@@ -187,8 +188,7 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                     Dropdown(
                       hint: "Family Anual Income",
                       onChanged: (v) {
-                        Provider.of<RegisterController>(context, listen: false)
-                            .familyAnualIncome = v!;
+                        RegisterController.familyAnualIncome = v!;
                       },
                       items: const [
                         "> 10L",
@@ -199,6 +199,7 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                         "> 10Cr",
                       ],
                       icon: Icons.currency_rupee_sharp,
+                      defaultValue: RegisterController.familyAnualIncome,
                     ),
                     const SizedBox(height: 20.0),
                     TextField(
@@ -208,10 +209,6 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                             .setErrorMsg({"description": false});
                       },
                       decoration: InputDecoration(
-                        // prefixIcon: const Icon(
-                        //   Icons.description_outlined,
-                        //   color: Color(0xFF0C5461),
-                        // ),
                         hintText: "Describe your family in your words",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
@@ -258,8 +255,8 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                   horizontal: size.width * 0.05,
                   vertical: size.height * 0.02,
                 ),
-                child: // *********************** BUTTONS ***********************
-                    Row(
+                // ::::::::::::::::::::::::::::::::::::::::: BUTTONS :::::::::::::::::::::::::::::::::::::::::
+                child: Row(
                   children: [
                     Expanded(
                       child: InkWell(

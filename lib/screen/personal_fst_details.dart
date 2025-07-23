@@ -37,6 +37,12 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    selectedDate = RegisterController.dateOfBirth;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -129,10 +135,11 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
                             .setErrorMsg({'gender': false});
                       },
                       items: const [
-                        "Male",
-                        "Female",
+                        "MALE",
+                        "FEMALE",
                       ],
                       icon: Icons.person_outline,
+                      defaultValue: RegisterController.gender.toUpperCase(),
                     ),
                     ErrorText(
                       text: "Gender can't be blank",

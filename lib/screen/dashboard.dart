@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import "package:flutter_svg/flutter_svg.dart";
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:matchme/controller/login_controller.dart';
+import 'package:matchme/controller/profile_controller.dart';
+import 'package:matchme/screen/personal_fst_details.dart';
 import 'package:matchme/screen/preference.dart';
 import 'package:provider/provider.dart';
 import '../controller/mainpage_controller.dart';
@@ -22,6 +25,19 @@ class _DashboardState extends State<Dashboard> {
     "http://13.203.218.134:1337/uploads/Cancer_Care_F_Image_a80443046f.jpg"
   ];
   int currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Call Get userdata function ::::::::
+      await Provider.of<ProfileController>(context, listen: false)
+          .getUserData(context);
+
+      Provider.of<ProfileController>(context, listen: false).setData();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +89,7 @@ class _DashboardState extends State<Dashboard> {
                   ],
                 ),
 
-                // :::::::::::::: SLIDER HERE :::::::::::::
+                // ::::::::::::::::::::::::::::::::::::::::::: SLIDER HERE :::::::::::::::::::::::::::::::::::::
                 Stack(
                   clipBehavior: Clip.none,
                   children: [
@@ -202,7 +218,7 @@ class _DashboardState extends State<Dashboard> {
                     )
                   ],
                 ),
-                // :::::::::::::::::: BUTTONS START HERE ::::::::::::::::::::::
+                // ::::::::::::::::::::::::::::::::::::::::::: BUTTONS START HERE ::::::::::::::::::::::::::::::::::::
                 const SizedBox(height: 60.0),
                 Row(
                   children: [
@@ -220,7 +236,12 @@ class _DashboardState extends State<Dashboard> {
                     DashboardButton(
                       icon: Icons.edit_square,
                       text: "Edit Profile",
-                      onChange: () {},
+                      onChange: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const PersonalFstDetails();
+                        }));
+                      },
                     ),
                   ],
                 ),
@@ -273,7 +294,9 @@ class _DashboardState extends State<Dashboard> {
                     DashboardButton(
                       icon: Icons.logout,
                       text: "Logout",
-                      onChange: () {},
+                      onChange: () {
+                        Provider.of<LoginController>(context, listen: false).logout(context);
+                      },
                     ),
                   ],
                 )

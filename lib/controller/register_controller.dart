@@ -1,3 +1,5 @@
+import 'package:matchme/controller/splash_controller.dart';
+import 'package:matchme/screen/photo_upload.dart';
 import 'package:matchme/widgets/my_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -34,8 +36,8 @@ class RegisterController extends ChangeNotifier {
   static final TextEditingController locality = TextEditingController();
   static final TextEditingController community = TextEditingController();
   static final TextEditingController medical = TextEditingController();
-  String nationality = "";
-  String religious = "";
+  static String nationality = "";
+  static String religious = "";
 
   // Third Personal Details;
   static final TextEditingController whatsappNumber = TextEditingController();
@@ -43,8 +45,8 @@ class RegisterController extends ChangeNotifier {
   static final TextEditingController heightInch = TextEditingController();
   String height = "${heightFeet.text.trim()}.${heightInch.text.trim()}";
   static final TextEditingController weight = TextEditingController();
-  String maritalStatus = "";
-  String eatingPref = "";
+  static String maritalStatus = "";
+  static String eatingPref = "";
 
   // Family Details;
   static final TextEditingController fathername = TextEditingController();
@@ -52,14 +54,14 @@ class RegisterController extends ChangeNotifier {
   static final TextEditingController hometown = TextEditingController();
   static final TextEditingController familyDescription =
       TextEditingController();
-  String fatherOccupation = "";
-  String motherOccupation = "";
-  String noOfSibling = "";
-  String familyBackground = "";
-  String familyAnualIncome = "";
+  static String fatherOccupation = "";
+  static String motherOccupation = "";
+  static String noOfSibling = "";
+  static String familyBackground = "";
+  static String familyAnualIncome = "";
 
   // Qualification Details;
-  String qualification = "";
+  static String qualification = "";
   static final TextEditingController schoolName = TextEditingController();
   static final TextEditingController ugCollegeName = TextEditingController();
   static final TextEditingController pgCollegeName = TextEditingController();
@@ -68,27 +70,27 @@ class RegisterController extends ChangeNotifier {
   static final TextEditingController highestDegree = TextEditingController();
 
   // Work Details
-  String profession = "";
+  static String profession = "";
   static final TextEditingController industry = TextEditingController();
   static final TextEditingController orgnization = TextEditingController();
   static final TextEditingController designation = TextEditingController();
   static final TextEditingController turnover = TextEditingController();
   static final TextEditingController website = TextEditingController();
-  String anualIncome = "";
+  static String anualIncome = "";
 
   // Life Style
-  String drink = "";
-  String smoker = "";
-  String workout = "";
-  List<String> weekendActivites = [];
-  List<String> interest = [];
-  List<String> holidays = [];
-  String eatOut = "";
-  String travle = "";
-  String socialise = "";
-  String goOut = "";
-  String spritual = "";
-  String howReligious = "";
+  static String drink = "";
+  static String smoker = "";
+  static String workout = "";
+  static List<String> weekendActivites = [];
+  static List<String> interest = [];
+  static List<String> holidays = [];
+  static String eatOut = "";
+  static String travle = "";
+  static String socialise = "";
+  static String goOut = "";
+  static String spritual = "";
+  static String howReligious = "";
 
   // Introduction about Your sele;
   static final TextEditingController introduction = TextEditingController();
@@ -154,7 +156,7 @@ class RegisterController extends ChangeNotifier {
   }
 
   // update specific field....
-  // This is memeber function only not call directly..;
+  // This is memeber function only, not call directly..;
   static Future<dynamic> register(Map<String, dynamic> field) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     final String? token = pref.getString("token");
@@ -171,8 +173,6 @@ class RegisterController extends ChangeNotifier {
 
     // remove in production
     var res = jsonDecode(req.body);
-    debugPrint("============response===========");
-    debugPrint(res);
 
     if (req.statusCode == 200) {
       return {"success": true, "res": res};
@@ -289,7 +289,9 @@ class RegisterController extends ChangeNotifier {
         setErrorMsg({"whatsappNumber": true});
       }
 
-      if (height.trim().isEmpty || height.trim() == "." || height.trim() == "0.0") {
+      if (height.trim().isEmpty ||
+          height.trim() == "." ||
+          height.trim() == "0.0") {
         setErrorMsg({"height": true});
       }
       if (weight.text.trim().isEmpty) {
@@ -305,7 +307,6 @@ class RegisterController extends ChangeNotifier {
       return;
     }
 
-    
     var reg = await register({
       "country": whatsappNumber.text.trim(),
       "height": height.trim(),
@@ -656,6 +657,10 @@ class RegisterController extends ChangeNotifier {
 
   //
   void introductionSubmit(ctx) async {
+    var getStatus = await SplashController.getSteps();
+    var status = getStatus['registration_status'];
+
+    // Check validation
     if (introduction.text.isEmpty) {
       setErrorMsg({"introduction": true});
 
@@ -668,12 +673,21 @@ class RegisterController extends ChangeNotifier {
     });
 
     if (reg['success'] == true) {
-      Navigator.push(
-        ctx,
-        MaterialPageRoute(
-          builder: (ctx) => const MoreQuestionNext(),
-        ),
-      );
+      if (status == "0") {
+        Navigator.push(
+          ctx,
+          MaterialPageRoute(
+            builder: (ctx) => const MoreQuestionNext(),
+          ),
+        );
+      }else{
+        Navigator.push(
+          ctx,
+          MaterialPageRoute(
+            builder: (ctx) => const PhotoUpload(),
+          ),
+        );
+      }
     } else {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }

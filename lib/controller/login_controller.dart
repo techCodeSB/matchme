@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:matchme/screen/login.dart';
 import 'package:matchme/widgets/my_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -67,5 +68,15 @@ class LoginController extends ChangeNotifier {
       setError("Someting went wrong");
       return;
     }
+  }
+
+  void logout(ctx) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.remove("token");
+    Navigator.of(ctx).pushReplacement(
+      MaterialPageRoute(
+        builder: (ctx) => const Login(),
+      ),
+    );
   }
 }

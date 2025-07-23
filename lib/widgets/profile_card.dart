@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:matchme/controller/interest_controller.dart';
 import 'package:provider/provider.dart';
 
+
 class ProfileCard extends StatefulWidget {
   final List<String> profilePhotos;
   const ProfileCard({
@@ -128,18 +129,22 @@ class _ProfileCardState extends State<ProfileCard> {
                                   width: 10.0,
                                   height: 10.0,
                                   decoration: BoxDecoration(
-                                    color: const Color.fromARGB(255, 90, 206, 94),
+                                    color:
+                                        const Color.fromARGB(255, 90, 206, 94),
                                     borderRadius: BorderRadius.circular(100.0),
                                     boxShadow: const [
                                       BoxShadow(
-                                        color: Color.fromARGB(255, 172, 230, 106),
+                                        color:
+                                            Color.fromARGB(255, 172, 230, 106),
                                         blurRadius: 5.0,
                                         spreadRadius: 3.0,
                                       )
                                     ],
                                   ),
                                 ),
-                                const SizedBox(width: 15.0,),
+                                const SizedBox(
+                                  width: 15.0,
+                                ),
                                 Container(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 30.0,

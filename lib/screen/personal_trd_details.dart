@@ -151,17 +151,18 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                     Dropdown(
                       hint: "Marital Status",
                       onChanged: (v) {
-                        Provider.of<RegisterController>(context, listen: false)
-                            .maritalStatus = v!;
+                        RegisterController.maritalStatus = v!;
                         Provider.of<RegisterController>(context, listen: false)
                             .setErrorMsg({'maritalStatus': false});
                       },
                       items: const [
-                        "Never Married",
-                        "Divorced",
-                        "Widowed",
+                        "NEVER MARRIED",
+                        "DIVORCED",
+                        "WIDOWED",
                       ],
                       icon: Icons.person_outline,
+                      defaultValue:
+                          RegisterController.maritalStatus.toUpperCase(),
                     ),
                     ErrorText(
                       text: "Marital Status can't be blank",
@@ -172,13 +173,13 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                     const SizedBox(height: 15.0),
                     my_radio.Radio(
                       title: "Tell us about your eating preferences?",
-                      items: const ["Veg", "Non-Veg", "Vegan"],
+                      items: const ["VEG", "NON-VEG", "VEGAN"],
                       onChanged: (v) {
-                        Provider.of<RegisterController>(context, listen: false)
-                            .eatingPref = v!;
+                        RegisterController.eatingPref = v!;
                         Provider.of<RegisterController>(context, listen: false)
                             .setErrorMsg({"eatingPref": false});
                       },
+                      defaultValue: RegisterController.eatingPref.toUpperCase(),
                     ),
                     ErrorText(
                       text: "Eating Preferance can't be blank",
@@ -201,8 +202,8 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                   horizontal: size.width * 0.05,
                   vertical: size.height * 0.02,
                 ),
-                child: // *********************** BUTTONS ***********************
-                    Row(
+                // ::::::::::::::::::::::::::::::::::::::::::: BUTTONS :::::::::::::::::::::::::::::::::::::::::::
+                child: Row(
                   children: [
                     Expanded(
                       child: Container(

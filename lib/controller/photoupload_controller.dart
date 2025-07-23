@@ -19,6 +19,8 @@ class PhotouploadController extends ChangeNotifier {
     "six": null
   };
 
+  static Map<String, dynamic> uploadedImages = {};
+
   // Function to open the camera
   Future<void> openCamera(context, pos) async {
     final ImagePicker picker = ImagePicker();

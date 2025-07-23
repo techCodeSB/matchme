@@ -32,6 +32,14 @@ class _Lifestyle2State extends State<Lifestyle2> {
         .setErrorMsg({"weekendActivites": false});
   }
 
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the selected activities based on the existing data
+    _selectedActivities.addAll(RegisterController.weekendActivites);
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -88,6 +96,7 @@ class _Lifestyle2State extends State<Lifestyle2> {
                   ],
                 ),
               ),
+              // :::::::::::::::::::::::::::::::::::::::::::::::: FORM FIELDS ::::::::::::::::::::::::::::::::::::::::::::
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                 child: Column(
@@ -103,9 +112,9 @@ class _Lifestyle2State extends State<Lifestyle2> {
                       onChanged: (v) {
                         Provider.of<RegisterController>(context, listen: false)
                             .setErrorMsg({"workout": false});
-                        Provider.of<RegisterController>(context, listen: false)
-                            .workout = v!;
+                        RegisterController.workout = v!;
                       },
+                      defaultValue: RegisterController.workout,
                     ),
                     ErrorText(
                       text: "Select an option",
@@ -207,6 +216,7 @@ class _Lifestyle2State extends State<Lifestyle2> {
                           .errMsg['weekendActivites']!,
                 ),
               ),
+              // ::::::::::::::::::::::::::::::::::::::::::: BUTTONS :::::::::::::::::::::::::::::::::::::::::
               SizedBox(
                 width: double.infinity,
                 child: Image.asset(
@@ -223,7 +233,7 @@ class _Lifestyle2State extends State<Lifestyle2> {
                   children: [
                     Expanded(
                       child: InkWell(
-                        onTap: (){
+                        onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(

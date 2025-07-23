@@ -84,6 +84,7 @@ class _Lifestyle5State extends State<Lifestyle5> {
               ),
             ),
             const SizedBox(height: 20.0),
+            // ::::::::::::::::::::::::::::::::::::::::::::::: FORM FIELDS ::::::::::::::::::::::::::::::::::::::::::::::::
             Padding(
               padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
               child: Column(
@@ -94,9 +95,9 @@ class _Lifestyle5State extends State<Lifestyle5> {
                     onChanged: (v) {
                       Provider.of<RegisterController>(context, listen: false)
                           .setErrorMsg({"socialise": false});
-                      Provider.of<RegisterController>(context, listen: false)
-                          .socialise = v!;
+                      RegisterController.socialise = v!;
                     },
+                    defaultValue: RegisterController.socialise,
                   ),
                   ErrorText(
                     text: "Select an option",
@@ -111,9 +112,9 @@ class _Lifestyle5State extends State<Lifestyle5> {
                     onChanged: (v) {
                       Provider.of<RegisterController>(context, listen: false)
                           .setErrorMsg({"goOut": false});
-                      Provider.of<RegisterController>(context, listen: false)
-                          .goOut = v!;
+                      RegisterController.goOut = v!;
                     },
+                    defaultValue: RegisterController.goOut,
                   ),
                   ErrorText(
                     text: "Select an option",
@@ -133,9 +134,9 @@ class _Lifestyle5State extends State<Lifestyle5> {
                     onChanged: (v) {
                       Provider.of<RegisterController>(context, listen: false)
                           .setErrorMsg({"spritual": false});
-                      Provider.of<RegisterController>(context, listen: false)
-                          .spritual = v!;
+                      RegisterController.spritual = v!;
                     },
+                    defaultValue: RegisterController.spritual,
                   ),
                   ErrorText(
                     text: "Select an option",
@@ -155,9 +156,9 @@ class _Lifestyle5State extends State<Lifestyle5> {
                     onChanged: (v) {
                       Provider.of<RegisterController>(context, listen: false)
                           .setErrorMsg({"howReligious": false});
-                      Provider.of<RegisterController>(context, listen: false)
-                          .howReligious = v!;
+                      RegisterController.howReligious = v!;
                     },
+                    defaultValue: RegisterController.howReligious,
                   ),
                   ErrorText(
                     text: "Select an option",
@@ -168,6 +169,7 @@ class _Lifestyle5State extends State<Lifestyle5> {
                 ],
               ),
             ),
+            // ::::::::::::::::::::::::::::::::::::::::: BUTTONS ::::::::::::::::::::::::::::::::::::::::::::::::
             SizedBox(
               width: double.infinity,
               child: Image.asset(

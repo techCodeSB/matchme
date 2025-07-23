@@ -78,14 +78,14 @@ class _WorkDetailsState extends State<WorkDetails> {
                     ],
                   ),
                   const SizedBox(height: 20.0),
+                  // ::::::::::::::::::::::::::::::::::::::::: FORM FIELDS ::::::::::::::::::::::::::::::::::::::::::
                   Dropdown(
                     hint: "Your Profession",
                     onChanged: (v) {
                       setState(() {
                         _profession = v!.toLowerCase();
                       });
-                      Provider.of<RegisterController>(context, listen: false)
-                          .profession = v!.toLowerCase();
+                      RegisterController.profession = v!.toLowerCase();
                       Provider.of<RegisterController>(context, listen: false)
                           .setErrorMsg({"profession": false});
                     },
@@ -94,6 +94,7 @@ class _WorkDetailsState extends State<WorkDetails> {
                       "Service",
                     ],
                     icon: Icons.business_center_outlined,
+                    defaultValue: RegisterController.profession,
                   ),
                   ErrorText(
                     text: "Select your Profession",
@@ -157,8 +158,7 @@ class _WorkDetailsState extends State<WorkDetails> {
                   Dropdown(
                     hint: "Personal Anual Income",
                     onChanged: (v) {
-                      Provider.of<RegisterController>(context, listen: false)
-                          .anualIncome = v!;
+                      RegisterController.anualIncome = v!.toLowerCase();
                       Provider.of<RegisterController>(context, listen: false)
                           .setErrorMsg({"anualIncome": false});
                     },
@@ -170,6 +170,7 @@ class _WorkDetailsState extends State<WorkDetails> {
                       "40 Lakhs and Above",
                     ],
                     icon: Icons.currency_rupee_sharp,
+                    defaultValue: RegisterController.anualIncome,
                   ),
                   ErrorText(
                     text: "Select your personal income",
@@ -233,8 +234,8 @@ class _WorkDetailsState extends State<WorkDetails> {
                 horizontal: size.width * 0.05,
                 vertical: size.height * 0.02,
               ),
-              child: // *********************** BUTTONS ***********************
-                  Row(
+              // :::::::::::::::::::::::::::::::::: BUTTONS ::::::::::::::::::::::::::::::::::
+              child: Row(
                 children: [
                   Expanded(
                     child: InkWell(

@@ -31,6 +31,14 @@ class _Lifestyle4State extends State<Lifestyle4> {
         .setErrorMsg({"holidays": false});
   }
 
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the selected holidays from the provider
+    _selectedHolidays.addAll(RegisterController.holidays);
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -86,6 +94,7 @@ class _Lifestyle4State extends State<Lifestyle4> {
                 ],
               ),
             ),
+            // ::::::::::::::::::::::::::::::::::::::::::::::: FORM FIELDS ::::::::::::::::::::::::::::::::::::::::::::::::
             Padding(
               padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
               child: ErrorText(
@@ -103,11 +112,11 @@ class _Lifestyle4State extends State<Lifestyle4> {
                     title: "How often do you eat out?",
                     items: const ["Occasionally", "Weekends", "Regularly"],
                     onChanged: (v) {
+                      RegisterController.eatOut = v!;
                       Provider.of<RegisterController>(context, listen: false)
                           .setErrorMsg({"eatOut": false});
-                      Provider.of<RegisterController>(context, listen: false)
-                          .eatOut = v!;
                     },
+                    defaultValue: RegisterController.eatOut,
                   ),
                   ErrorText(
                     text: "Select an option",
@@ -125,11 +134,11 @@ class _Lifestyle4State extends State<Lifestyle4> {
                       "Never"
                     ],
                     onChanged: (v) {
+                      RegisterController.travle = v!;
                       Provider.of<RegisterController>(context, listen: false)
                           .setErrorMsg({"travle": false});
-                      Provider.of<RegisterController>(context, listen: false)
-                          .travle = v!;
                     },
+                    defaultValue: RegisterController.travle,
                   ),
                   ErrorText(
                     text: "Select an option",
@@ -193,6 +202,7 @@ class _Lifestyle4State extends State<Lifestyle4> {
                 ],
               ),
             ),
+            // ::::::::::::::::::::::::::::::::::::::::::::: BUTTONS ::::::::::::::::::::::::::::::::::::::::::::::::
             SizedBox(
               width: double.infinity,
               child: Image.asset(

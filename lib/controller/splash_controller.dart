@@ -83,6 +83,7 @@ class SplashController {
 
     debugPrint("[SplashController]: $steps");
     debugPrint("[SplashController]: $status");
+    
     // Registration not complete;
     if (status == "0") {
       for (var i = 0; i < screens.length; i++) {

@@ -69,6 +69,7 @@ class _Lifestyle1State extends State<Lifestyle1> {
                   ],
                 ),
               ),
+              // :::::::::::::::::::::::::::::::::::::::::::::: FORM FIELDS ::::::::::::::::::::::::::::::::::::::::::::
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                 child: Column(
@@ -84,9 +85,9 @@ class _Lifestyle1State extends State<Lifestyle1> {
                       onChanged: (v) {
                         Provider.of<RegisterController>(context, listen: false)
                             .setErrorMsg({"drink": false});
-                        Provider.of<RegisterController>(context, listen: false)
-                            .drink = v!;
+                        RegisterController.drink = v!;
                       },
+                      defaultValue: RegisterController.drink,
                     ),
                     ErrorText(
                       text: "Select an option",
@@ -101,9 +102,9 @@ class _Lifestyle1State extends State<Lifestyle1> {
                       onChanged: (v) {
                         Provider.of<RegisterController>(context, listen: false)
                             .setErrorMsg({"smoker": false});
-                        Provider.of<RegisterController>(context, listen: false)
-                            .smoker = v!;
+                        RegisterController.smoker = v!;
                       },
+                      defaultValue: RegisterController.smoker,
                     ),
                     ErrorText(
                       text: "Select an option",
@@ -115,6 +116,7 @@ class _Lifestyle1State extends State<Lifestyle1> {
                 ),
               ),
               const Spacer(),
+              // ::::::::::::::::::::::::::::::::::::::::::: BUTTONS :::::::::::::::::::::::::::::::::::::::::
               SizedBox(
                 width: double.infinity,
                 child: Image.asset(
