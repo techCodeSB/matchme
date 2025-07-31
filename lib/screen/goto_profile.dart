@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:matchme/controller/register_controller.dart';
+import 'package:provider/provider.dart';
 import '../widgets/container_button.dart';
 import '../constant.dart';
+
 
 class GotoProfile extends StatefulWidget {
   const GotoProfile({super.key});
@@ -75,7 +78,10 @@ class _GotoProfileState extends State<GotoProfile> {
                 text: "Go to Profile",
                 color: Colors.white,
                 textColor: Colors.black,
-                onTap: () {},
+                onTap: () {
+                  Provider.of<RegisterController>(context, listen: false)
+                      .gotoProfile(context);
+                },
               ),
             ),
             const SizedBox(height: 40.0),

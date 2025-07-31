@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../controller/psychometric_controller.dart';
 import 'package:provider/provider.dart';
 import './controller/interest_controller.dart';
 import 'controller/profile_controller.dart';
@@ -23,12 +24,13 @@ import './controller/register_controller.dart';
 // import './screen/goto_profile.dart';
 // import './screen/photo_upload.dart';
 // import './screen/profile.dart';
-// import './screen/splash.dart';
+import './screen/splash.dart';
 // import './screen/lifestyle_5.dart';
 // import './screen/introduction.dart';
 // import './screen/notification.dart';
 // import './screen/interest.dart';
-import '../screen/main_page.dart';
+// import '../screen/main_page.dart';
+
 
 // :::::::::: JAY JAGANNATH 0!0 ::::::::::/
 //  :::::::::::::::::::::::::::::::::::::
@@ -42,6 +44,7 @@ void main() {
       ChangeNotifierProvider(create: (context) => MainpageController()),
       ChangeNotifierProvider(create: (context) => InterestController()),
       ChangeNotifierProvider(create: (context) => ProfileController()),
+      ChangeNotifierProvider(create: (context) => PsychometricController()),
     ],
     child: const App(),
   ));
@@ -63,7 +66,7 @@ class _AppState extends State<App> {
       theme: ThemeData(
         applyElevationOverlayColor: false,
       ),
-      home: const MainPage(),
+      home: const Splash(),
     );
   }
 }

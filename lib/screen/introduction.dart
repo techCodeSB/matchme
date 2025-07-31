@@ -6,6 +6,7 @@ import '../screen/lifestyle_5.dart';
 import '../constant.dart';
 import '../widgets/error_text.dart';
 import '../controller/register_controller.dart';
+import 'package:matchme/widgets/registration_bottom_buttons.dart';
 
 class Introduction extends StatefulWidget {
   const Introduction({super.key});
@@ -19,6 +20,12 @@ class _IntroductionState extends State<Introduction> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(size.height * 0.3),
+        child: DetailsHero(
+          size: size,
+        ),
+      ),
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -26,7 +33,6 @@ class _IntroductionState extends State<Introduction> {
           color: Colors.white,
           child: ListView(
             children: [
-              DetailsHero(size: size),
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: size.width * 0.05,
@@ -91,6 +97,8 @@ class _IntroductionState extends State<Introduction> {
                   },
                   maxLines: 5,
                   decoration: InputDecoration(
+                    hintText:
+                        "Please write 5-6 line about discribing your self, where you were born, brought up, personality etc.",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),
@@ -106,10 +114,7 @@ class _IntroductionState extends State<Introduction> {
                           .errMsg['introduction']!,
                 ),
               ),
-              SizedBox(
-                height: size.height * 0.08,
-              ),
-              // ::::::::::::::::::::::::::::::::::::::::::::::: BUTTONS ::::::::::::::::::::::::::::::::::::::::::::::::
+              SizedBox(height: size.height * 0.08),
               SizedBox(
                 width: double.infinity,
                 child: Image.asset(
@@ -117,83 +122,26 @@ class _IntroductionState extends State<Introduction> {
                   fit: BoxFit.cover,
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                  left: size.width * 0.05,
-                  right: size.width * 0.05,
-                  top: size.height * 0.02,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Lifestyle5(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            border: Border.all(
-                              color: const Color(0xFF033A44),
-                              width: 2.0,
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Back",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: Constant.subHadding,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20.0),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          // print(_selectedInterest);
-                          Provider.of<RegisterController>(
-                            context,
-                            listen: false,
-                          ).introductionSubmit(context);
-                        },
-                        child: Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            color: const Color(0xFF033A44),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Submit",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: Constant.subHadding,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              const SizedBox(height: 100.0),
             ],
           ),
         ),
+      ),
+      bottomSheet: RegistrationBottomButtons(
+        onNextTap: () {
+          Provider.of<RegisterController>(
+            context,
+            listen: false,
+          ).introductionSubmit(context);
+        },
+        onBackTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const Lifestyle5(),
+            ),
+          );
+        },
       ),
     );
   }

@@ -8,6 +8,7 @@ import '../widgets/interest_button.dart';
 import '../widgets/error_text.dart';
 import '../controller/register_controller.dart';
 import '../screen/lifestyle_1.dart';
+import 'package:matchme/widgets/registration_bottom_buttons.dart';
 
 class Lifestyle2 extends StatefulWidget {
   const Lifestyle2({super.key});
@@ -32,7 +33,6 @@ class _Lifestyle2State extends State<Lifestyle2> {
         .setErrorMsg({"weekendActivites": false});
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -45,6 +45,12 @@ class _Lifestyle2State extends State<Lifestyle2> {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(size.height * 0.3),
+        child: DetailsHero(
+          size: size,
+        ),
+      ),
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -52,7 +58,6 @@ class _Lifestyle2State extends State<Lifestyle2> {
           color: Colors.white,
           child: ListView(
             children: [
-              DetailsHero(size: size),
               Padding(
                 padding: EdgeInsets.only(
                   left: size.width * 0.05,
@@ -216,7 +221,6 @@ class _Lifestyle2State extends State<Lifestyle2> {
                           .errMsg['weekendActivites']!,
                 ),
               ),
-              // ::::::::::::::::::::::::::::::::::::::::::: BUTTONS :::::::::::::::::::::::::::::::::::::::::
               SizedBox(
                 width: double.infinity,
                 child: Image.asset(
@@ -224,79 +228,24 @@ class _Lifestyle2State extends State<Lifestyle2> {
                   fit: BoxFit.cover,
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.05,
-                  vertical: size.height * 0.02,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Lifestyle1()));
-                        },
-                        child: Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            border: Border.all(
-                              color: const Color(0xFF033A44),
-                              width: 2.0,
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Back",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: Constant.subHadding,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20.0),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Provider.of<RegisterController>(
-                            context,
-                            listen: false,
-                          ).lifeStyle2Submit(context, _selectedActivities);
-                        },
-                        child: Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            color: const Color(0xFF033A44),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Submit",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: Constant.subHadding,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
+              const SizedBox(height: 100.0),
             ],
           ),
         ),
+      ),
+      bottomSheet: RegistrationBottomButtons(
+        onNextTap: () {
+          Provider.of<RegisterController>(
+            context,
+            listen: false,
+          ).lifeStyle2Submit(context, _selectedActivities);
+        },
+        onBackTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Lifestyle1()),
+          );
+        },
       ),
     );
   }

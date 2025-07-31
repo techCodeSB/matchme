@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matchme/screen/lifestyle_2.dart';
 import 'package:provider/provider.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../widgets/details_hero.dart';
@@ -7,6 +8,7 @@ import '../widgets/interest_button.dart';
 import 'package:icons_plus/icons_plus.dart';
 import '../widgets/error_text.dart';
 import '../controller/register_controller.dart';
+import 'package:matchme/widgets/registration_bottom_buttons.dart';
 
 class Lifestyle3 extends StatefulWidget {
   const Lifestyle3({super.key});
@@ -64,7 +66,6 @@ class _Lifestyle3State extends State<Lifestyle3> {
         .setErrorMsg({"interest": false});
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -76,6 +77,12 @@ class _Lifestyle3State extends State<Lifestyle3> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(size.height * 0.3),
+        child: DetailsHero(
+          size: size,
+        ),
+      ),
       body: SafeArea(
         child: Container(
           color: const Color(0xFFF5F7F7),
@@ -83,7 +90,6 @@ class _Lifestyle3State extends State<Lifestyle3> {
           height: double.infinity,
           child: ListView(
             children: [
-              DetailsHero(size: size),
               Padding(
                 padding: EdgeInsets.only(
                   left: size.width * 0.05,
@@ -130,7 +136,8 @@ class _Lifestyle3State extends State<Lifestyle3> {
               const SizedBox(height: 20.0),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Expanded( // previous this is container
+                child: Expanded(
+                  // previous this is container
                   // width: double.infinity,
                   // height: size.height * 0.6,
                   // color: Colors.white,
@@ -146,11 +153,11 @@ class _Lifestyle3State extends State<Lifestyle3> {
                         ),
                       ),
                       Text(
-                        "Tell us what piques your curiosity and\npassions",
+                        "What are your interests",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: Constant.subHadding,
-                          fontSize: 15.0,
+                          fontSize: 16.0,
                           color: const Color(0xFF333333),
                         ),
                       ),
@@ -165,22 +172,22 @@ class _Lifestyle3State extends State<Lifestyle3> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           InterestButton(
-                            icons: Icons.menu_book_outlined,
-                            text: "Reading",
+                            icons: Icons.music_note,
+                            text: "Music",
                             onChanged: (v) {
-                              setInterest("Reading");
+                              setInterest("Music");
                             },
-                            isSelected: _selectedInterest.contains("Reading"),
+                            isSelected: _selectedInterest.contains("Music"),
                           ),
                           const SizedBox(width: 15.0),
                           InterestButton(
-                            icons: Icons.camera,
-                            text: "Photography",
+                            icons: Icons.menu_book_sharp,
+                            text: "Literature",
                             onChanged: (v) {
-                              setInterest("Photography");
+                              setInterest("Literature");
                             },
                             isSelected:
-                                _selectedInterest.contains("Photography"),
+                                _selectedInterest.contains("Literature"),
                           )
                         ],
                       ),
@@ -190,27 +197,27 @@ class _Lifestyle3State extends State<Lifestyle3> {
                         children: [
                           InterestButton(
                             icons: Icons.sports_esports_outlined,
-                            text: "Gaming",
+                            text: "Art",
                             onChanged: (v) {
-                              setInterest("Gaming");
+                              setInterest("Art");
                             },
-                            isSelected: _selectedInterest.contains("Gaming"),
+                            isSelected: _selectedInterest.contains("Art"),
                           ),
                           InterestButton(
                             onChanged: (v) {
-                              setInterest("Music");
+                              setInterest("Adventure");
                             },
                             icons: Icons.music_note,
-                            text: "Music",
-                            isSelected: _selectedInterest.contains("Music"),
+                            text: "Adventure",
+                            isSelected: _selectedInterest.contains("Adventure"),
                           ),
                           InterestButton(
                             onChanged: (v) {
-                              setInterest("Travel");
+                              setInterest("Sports");
                             },
-                            icons: Icons.travel_explore,
-                            text: "Travel",
-                            isSelected: _selectedInterest.contains("Travel"),
+                            icons: Icons.sports_basketball,
+                            text: "Sports",
+                            isSelected: _selectedInterest.contains("Sports"),
                           ),
                         ],
                       ),
@@ -220,11 +227,35 @@ class _Lifestyle3State extends State<Lifestyle3> {
                         children: [
                           InterestButton(
                             onChanged: (v) {
-                              setInterest("Painting");
+                              setInterest("Dance");
+                            },
+                            icons: Bootstrap.people_fill,
+                            text: "Dance",
+                            isSelected: _selectedInterest.contains("Dance"),
+                          ),
+                          const SizedBox(width: 15.0),
+                          InterestButton(
+                            onChanged: (v) {
+                              setInterest("Fitness & Welness");
+                            },
+                            icons: Icons.fitness_center_outlined,
+                            text: "Fitness & Welness",
+                            isSelected:
+                                _selectedInterest.contains("Fitness & Welness"),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InterestButton(
+                            onChanged: (v) {
+                              setInterest("Travel");
                             },
                             icons: FontAwesome.paintbrush_solid,
-                            text: "Painting",
-                            isSelected: _selectedInterest.contains("Painting"),
+                            text: "Travel",
+                            isSelected: _selectedInterest.contains("Travel"),
                           ),
                           const SizedBox(width: 15.0),
                           InterestButton(
@@ -235,28 +266,7 @@ class _Lifestyle3State extends State<Lifestyle3> {
                             text: "Politics",
                             isSelected: _selectedInterest.contains("Politics"),
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 15.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          InterestButton(
-                            onChanged: (v) {
-                              setInterest("Charity");
-                            },
-                            icons: Bootstrap.people_fill,
-                            text: "Charity",
-                            isSelected: _selectedInterest.contains("Charity"),
-                          ),
-                          InterestButton(
-                            onChanged: (v) {
-                              setInterest("Cooking");
-                            },
-                            icons: FontAwesome.spoon_solid,
-                            text: "Cooking",
-                            isSelected: _selectedInterest.contains("Cooking"),
-                          ),
+                          const SizedBox(width: 15.0),
                           InterestButton(
                             onChanged: (v) {
                               setInterest("Pets");
@@ -273,51 +283,44 @@ class _Lifestyle3State extends State<Lifestyle3> {
                         children: [
                           InterestButton(
                             onChanged: (v) {
-                              setInterest("Sports");
+                              setInterest("Foods");
                             },
-                            icons: Icons.sports_basketball,
-                            text: "Sports",
-                            isSelected: _selectedInterest.contains("Sports"),
+                            icons: Icons.food_bank_outlined,
+                            text: "Foods",
+                            isSelected: _selectedInterest.contains("Foods"),
                           ),
                           const SizedBox(width: 15.0),
                           InterestButton(
                             onChanged: (v) {
-                              setInterest("Sports");
+                              setInterest("Cooking");
                             },
-                            icons: FontAwesome.shirt_solid,
-                            text: "Sports",
-                            isSelected: _selectedInterest.contains("Sports"),
+                            icons: FontAwesome.spoon_solid,
+                            text: "Cooking",
+                            isSelected: _selectedInterest.contains("Cooking"),
                           ),
                         ],
                       ),
                       const SizedBox(height: 15.0),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           InterestButton(
                             onChanged: (v) {
-                              setInterest("Literature");
+                              setInterest("Photography");
                             },
                             icons: FontAwesome.book_atlas_solid,
-                            text: "Literature",
+                            text: "Photography",
                             isSelected:
-                                _selectedInterest.contains("Literature"),
+                                _selectedInterest.contains("Photography"),
                           ),
+                          const SizedBox(width: 15.0),
                           InterestButton(
                             onChanged: (v) {
-                              setInterest("Travle");
+                              setInterest("Theatre");
                             },
                             icons: FontAwesome.mound_solid,
-                            text: "Travle",
-                            isSelected: _selectedInterest.contains("Travle"),
-                          ),
-                          InterestButton(
-                            onChanged: (v) {
-                              setInterest("Dance");
-                            },
-                            icons: FontAwesome.baby_solid,
-                            text: "Dance",
-                            isSelected: _selectedInterest.contains("Dance"),
+                            text: "Theatre",
+                            isSelected: _selectedInterest.contains("Theatre"),
                           ),
                         ],
                       ),
@@ -329,7 +332,7 @@ class _Lifestyle3State extends State<Lifestyle3> {
                             onChanged: (v) {
                               setInterest("Nature");
                             },
-                            icons: Icons.sports_basketball,
+                            icons: Icons.nature,
                             text: "Nature",
                             isSelected: _selectedInterest.contains("Nature"),
                           ),
@@ -345,6 +348,30 @@ class _Lifestyle3State extends State<Lifestyle3> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 15.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InterestButton(
+                            onChanged: (v) {
+                              setInterest("Movie");
+                            },
+                            icons: FontAwesome.baby_solid,
+                            text: "Movie",
+                            isSelected: _selectedInterest.contains("Movie"),
+                          ),
+                          const SizedBox(width: 15.0),
+                          InterestButton(
+                            onChanged: (v) {
+                              setInterest("Gaming");
+                            },
+                            icons: Icons.sports_esports_outlined,
+                            text: "Gaming",
+                            isSelected:
+                                _selectedInterest.contains("Gaming"),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -357,73 +384,29 @@ class _Lifestyle3State extends State<Lifestyle3> {
                   fit: BoxFit.cover,
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.05,
-                  vertical: size.height * 0.02,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 50.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30.0),
-                          border: Border.all(
-                            color: const Color(0xFF033A44),
-                            width: 1.5,
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Back",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: Constant.subHadding,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20.0),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Provider.of<RegisterController>(
-                            context,
-                            listen: false,
-                          ).lifeStyle3Submit(context, _selectedInterest);
-                        },
-                        child: Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            color: const Color(0xFF033A44),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Submit",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: Constant.subHadding,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10.0),
+
+              const SizedBox(height: 100.0),
             ],
           ),
         ),
       ),
+      bottomSheet: RegistrationBottomButtons(
+        onNextTap: () {
+          Provider.of<RegisterController>(
+            context,
+            listen: false,
+          ).lifeStyle3Submit(context, _selectedInterest);
+        },
+        onBackTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const Lifestyle2(),
+            ),
+          );
+        },
+      ),
     );
   }
 }
+

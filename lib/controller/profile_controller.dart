@@ -8,6 +8,12 @@ import '../constant.dart';
 
 class ProfileController extends RegisterController {
   Map<String, dynamic> userData = {};
+  bool isPsycho = false;
+
+  void setUserData(data) {
+    userData = data;
+    notifyListeners();
+  }
 
   Future<void> getUserData(ctx) async {
     Uri url = Uri.parse("${Constant.api}users/get");
@@ -22,6 +28,7 @@ class ProfileController extends RegisterController {
       );
       var res = jsonDecode(req.body);
       userData = res;
+      isPsycho = res['psychometric_test'];
 
       notifyListeners();
     } catch (e) {
@@ -34,22 +41,29 @@ class ProfileController extends RegisterController {
     RegisterController.fullname.text = userData['full_name'];
     RegisterController.nickname.text = userData['nick_name'];
     RegisterController.country.text = userData['country'];
-    RegisterController.city.text = userData['country'];
+    RegisterController.city.text = userData['city'];
     RegisterController.gender = userData['gender'];
     RegisterController.dateOfBirth = DateTime.parse(userData['dob']);
+    RegisterController.timeOfBirth = userData['birth_time'];
+    RegisterController.placeOfBirth.text = userData['birth_place'];
     RegisterController.locality.text = userData['locality'];
     RegisterController.community.text = userData['community'];
     RegisterController.medical.text = userData['medical_history'];
     RegisterController.whatsappNumber.text = userData['whatsapp_number'];
-    RegisterController.heightFeet.text = userData['height'].split(".")[0];
-    RegisterController.heightInch.text = userData['height'].split(".")[1];
+    RegisterController.heightFeet = userData['height'].split(".")[0];
+    RegisterController.heightInch = userData['height'].split(".")[1];
     RegisterController.nationality = userData['nationality'];
     RegisterController.religious = userData['religion'];
-    RegisterController.weight.text = userData['weight'];
+    RegisterController.weight.text = userData['weight'].split(" ")[0];
+    RegisterController.weightUnit = userData['weight'].split(" ")[1];
     RegisterController.maritalStatus = userData['marital_status'];
+    RegisterController.fromMaritalStatusYear = userData['marital_status_from_year'].toString();
+    RegisterController.toMaritalStatusYear = userData['marital_status_to_year'].toString();
+    RegisterController.doYouHaveKids = userData['do_have_kids'];
+    RegisterController.showWeightOnProfile = userData['should_weight_display_on_profile'];
+
     RegisterController.eatingPref = userData['eating_preferences'];
     RegisterController.fathername.text = userData['father_name'];
-
     RegisterController.mothername.text = userData['mother_name'];
     RegisterController.hometown.text = userData['hometown'];
     RegisterController.familyDescription.text = userData['family_description'];
@@ -81,8 +95,7 @@ class ProfileController extends RegisterController {
     RegisterController.workout = userData['how_often_you_workout'];
     RegisterController.weekendActivites
         .addAll(List<String>.from(userData['favourite_weekend_activities']));
-    RegisterController.interest
-        .addAll(List<String>.from(userData['interests']));
+    RegisterController.interest = List<String>.from(userData['interests']);
     RegisterController.holidays
         .addAll(List<String>.from(userData['holidays_prefrences']));
     RegisterController.eatOut = userData['how_often_you_eat_out'];
@@ -99,5 +112,4 @@ class ProfileController extends RegisterController {
 
     notifyListeners();
   }
-  
 }

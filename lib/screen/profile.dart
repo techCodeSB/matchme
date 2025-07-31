@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:matchme/controller/profile_controller.dart';
+import 'package:matchme/controller/register_controller.dart';
+import 'package:matchme/helper/get_age_from_dob.dart';
+import 'package:matchme/screen/personal_fst_details.dart';
+import 'package:matchme/screen/photo_upload.dart';
 import 'package:provider/provider.dart';
 import '../controller/mainpage_controller.dart';
 import '../widgets/slider.dart';
@@ -12,15 +17,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  List<Map<String, dynamic>> interest = [
-    {"name": "Movie", "color": Colors.green},
-    {"name": "Photography", "color": Colors.blueAccent},
-    {"name": "Reading Book", "color": Colors.blueAccent},
-    {"name": "Design", "color": Colors.lightBlue},
-    {"name": "Singing", "color": const Color.fromARGB(255, 29, 245, 108)},
-    {"name": "Music", "color": const Color.fromARGB(255, 237, 188, 75)}
-  ];
-
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -38,13 +34,25 @@ class _ProfileState extends State<Profile> {
                 height: size.height * 0.9 / 2,
                 child: Stack(
                   children: [
-                    const ProfileSlider(
+                    ProfileSlider(
+                      // imgs: [
+                      //   "assets/images/Photo.png",
+                      //   "assets/images/Photo.png",
+                      //   "assets/images/Photo.png"
+                      // ],
                       imgs: [
-                        "assets/images/Photo.png",
-                        "assets/images/Photo.png",
-                        "assets/images/Photo.png"
+                        Provider.of<ProfileController>(context, listen: true)
+                                .userData["image"]?["one"] ??
+                            "",
+                        Provider.of<ProfileController>(context, listen: true)
+                                .userData["image"]?["two"] ??
+                            "",
+                        Provider.of<ProfileController>(context, listen: true)
+                                .userData["image"]?["three"] ??
+                            "",
                       ],
                     ),
+                    // ::::::::::::::::: TOP BUTTON ::::::::::::::::::
                     Positioned(
                       left: 20.0,
                       right: 20.0,
@@ -68,9 +76,17 @@ class _ProfileState extends State<Profile> {
                               child: Icon(Icons.arrow_back_ios_sharp),
                             ),
                           ),
-                          const CircleAvatar(
-                            backgroundColor: Colors.white,
-                            child: Icon(Icons.edit_square),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return const PhotoUpload();
+                              }));
+                            },
+                            child: const CircleAvatar(
+                              backgroundColor: Colors.white,
+                              child: Icon(Icons.edit_square),
+                            ),
                           ),
                         ],
                       ),
@@ -79,6 +95,7 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               const SizedBox(height: 20.0),
+              // :::::::::::::::::::::::::::::::::::::::::::: PROFILE INFO ::::::::::::::::::::::::::::::::::::::::
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
@@ -86,20 +103,33 @@ class _ProfileState extends State<Profile> {
                   children: [
                     Text.rich(
                       TextSpan(
-                        text: "Reza E Prasetyo, 26",
+                        text:
+                            "${RegisterController.fullname.text}, ${getAgeFromYMD(RegisterController.dateOfBirth.toString())}",
                         style: TextStyle(
                           fontSize: 25.0,
                           fontFamily: Constant.haddingFont,
                           color: const Color(0xFF033A44),
                           fontWeight: FontWeight.bold,
                         ),
-                        children: const [
+                        children: [
                           WidgetSpan(
                             child: Padding(
-                              padding: EdgeInsets.only(left: 10.0),
-                              child: Icon(
-                                Icons.check_circle,
-                                color: Color(0xFF84BA2B),
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return const PersonalFstDetails();
+                                  }));
+                                },
+                                child: const CircleAvatar(
+                                  radius: 15.0,
+                                  child: Icon(
+                                    Icons.edit_square,
+                                    size: 17.0,
+                                    color: Color(0xFF84BA2B),
+                                  ),
+                                ),
                               ),
                             ),
                           )
@@ -117,7 +147,8 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                           TextSpan(
-                            text: "Jakarta, Indonesia",
+                            text:
+                                "${RegisterController.locality.text}, ${RegisterController.country.text}",
                             style: TextStyle(
                               fontSize: 16.0,
                               fontFamily: Constant.subHadding,
@@ -138,7 +169,7 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                     Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tempus lacus in quam laoreet, eget finibus orci pharetra. Sed molestie leo eget urna egestas tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec nec luctus tortor, at sagittis orci.",
+                      RegisterController.introduction.text,
                       style: TextStyle(
                         fontFamily: Constant.subHadding,
                         fontSize: 15.0,
@@ -160,16 +191,16 @@ class _ProfileState extends State<Profile> {
                     Wrap(
                       spacing: 10.0,
                       runSpacing: 10.0,
-                      children: interest.map((e) {
+                      children: RegisterController.interest.map((e) {
                         return Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20.0, vertical: 5.0),
                           decoration: BoxDecoration(
-                            color: e['color'],
+                            color: Colors.blueAccent,
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                           child: Text(
-                            e['name'],
+                            e,
                             style: const TextStyle(
                               color: Colors.white,
                             ), // optional styling

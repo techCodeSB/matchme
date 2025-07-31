@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import "package:flutter_svg/flutter_svg.dart";
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:matchme/controller/login_controller.dart';
+import 'package:matchme/controller/preferance_controller.dart';
 import 'package:matchme/controller/profile_controller.dart';
+import 'package:matchme/controller/psychometric_controller.dart';
 import 'package:matchme/screen/personal_fst_details.dart';
 import 'package:matchme/screen/preference.dart';
+import 'package:matchme/screen/psychometric.dart';
 import 'package:provider/provider.dart';
 import '../controller/mainpage_controller.dart';
 import '../widgets/dashboard_button.dart';
@@ -20,9 +23,9 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   List<String> img = [
-    "http://13.203.218.134:1337/uploads/Cancer_Care_F_Image_a80443046f.jpg",
-    "http://13.203.218.134:1337/uploads/Cancer_Care_F_Image_a80443046f.jpg",
-    "http://13.203.218.134:1337/uploads/Cancer_Care_F_Image_a80443046f.jpg"
+    "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
+    "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
+    "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg"
   ];
   int currentIndex = 0;
 
@@ -35,13 +38,18 @@ class _DashboardState extends State<Dashboard> {
       await Provider.of<ProfileController>(context, listen: false)
           .getUserData(context);
 
+      if (!mounted) return;
       Provider.of<ProfileController>(context, listen: false).setData();
+
+      await Provider.of<PreferanceController>(context, listen: false)
+          .getData(context);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -64,7 +72,7 @@ class _DashboardState extends State<Dashboard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "New Interest",
+                      "New Matches",
                       style: TextStyle(
                         fontFamily: Constant.haddingFont,
                         color: const Color(0xFF033A44),
@@ -73,16 +81,43 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ),
                     PopupMenuButton(
+                      icon: const CircleAvatar(
+                        child: Icon(Icons.more_vert),
+                      ),
                       itemBuilder: (context) {
                         return [
                           const PopupMenuItem(child: Text("My Profile")),
-                          const PopupMenuItem(child: Text("Edit Profile")),
-                          const PopupMenuItem(child: Text("Psychometric Test")),
-                          const PopupMenuItem(child: Text("Interest")),
                           const PopupMenuItem(child: Text("Inbox")),
-                          const PopupMenuItem(child: Text("Edit Preferences")),
+                          PopupMenuItem(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return const PersonalFstDetails();
+                              }));
+                            },
+                            child: const Text("Edit Profile"),
+                          ),
+                          PopupMenuItem(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return const Preference();
+                              }));
+                            },
+                            child: const Text("Edit Preferences"),
+                          ),
                           const PopupMenuItem(child: Text("Matches")),
-                          const PopupMenuItem(child: Text("Logout")),
+                          const PopupMenuItem(child: Text("Interest")),
+                          const PopupMenuItem(child: Text("Connection")),
+                          PopupMenuItem(
+                            onTap: () {
+                              Provider.of<LoginController>(
+                                context,
+                                listen: false,
+                              ).logout(context);
+                            },
+                            child: const Text("Logout"),
+                          ),
                         ];
                       },
                     )
@@ -220,6 +255,65 @@ class _DashboardState extends State<Dashboard> {
                 ),
                 // ::::::::::::::::::::::::::::::::::::::::::: BUTTONS START HERE ::::::::::::::::::::::::::::::::::::
                 const SizedBox(height: 60.0),
+                Provider.of<ProfileController>(context, listen: true)
+                            .isPsycho !=
+                        true
+                    ? InkWell(
+                        onTap: () {
+                          Provider.of<PsychometricController>(context,
+                                  listen: false)
+                              .getQuestions();
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return const Psychometric();
+                          }));
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 15.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            gradient: const LinearGradient(
+                              colors: [
+                                Color.fromARGB(255, 80, 137, 147),
+                                Color(0xFF245C66)
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                          ),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.psychology_alt_sharp,
+                                  color: Colors.white,
+                                ),
+                                const SizedBox(width: 10.0),
+                                Text(
+                                  "Psychometric Test",
+                                  style: TextStyle(
+                                    fontFamily: Constant.haddingFont,
+                                    color: Colors.white,
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    : const Text(""),
+                SizedBox(
+                  height: Provider.of<ProfileController>(context, listen: true)
+                              .isPsycho !=
+                          true
+                      ? 15.0
+                      : 0.0,
+                ),
                 Row(
                   children: [
                     DashboardButton(
@@ -234,51 +328,9 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     const SizedBox(width: 15.0),
                     DashboardButton(
-                      icon: Icons.edit_square,
-                      text: "Edit Profile",
-                      onChange: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const PersonalFstDetails();
-                        }));
-                      },
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15.0),
-                Row(
-                  children: [
-                    DashboardButton(
-                      icon: Icons.psychology_alt_sharp,
-                      text: "Psychometric Test",
-                      onChange: () {},
-                    ),
-                    const SizedBox(width: 15.0),
-                    DashboardButton(
-                      icon: Icons.favorite_rounded,
-                      text: "Interest",
-                      onChange: () {},
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15.0),
-                Row(
-                  children: [
-                    DashboardButton(
                       icon: Icons.chat_rounded,
                       text: "Inbox",
                       onChange: () {},
-                    ),
-                    const SizedBox(width: 15.0),
-                    DashboardButton(
-                      icon: Icons.edit_note_outlined,
-                      text: "Edit Preferences",
-                      onChange: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const Preference();
-                        }));
-                      },
                     ),
                   ],
                 ),
@@ -292,14 +344,17 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     const SizedBox(width: 15.0),
                     DashboardButton(
-                      icon: Icons.logout,
-                      text: "Logout",
+                      icon: Icons.favorite_rounded,
+                      text: "Interest",
                       onChange: () {
-                        Provider.of<LoginController>(context, listen: false).logout(context);
+                        Provider.of<MainpageController>(context, listen: false)
+                            .updatePosition("heart");
+                        Provider.of<MainpageController>(context, listen: false)
+                            .setBottomIndex(1);
                       },
                     ),
                   ],
-                )
+                ),
               ],
             ),
           )

@@ -9,13 +9,10 @@ class ImageUploader extends StatefulWidget {
   final File? image;
   final String? pos;
   final String? uploadedImage;
+  final String? label;
 
-  const ImageUploader({
-    super.key,
-    this.image,
-    this.pos,
-    this.uploadedImage,
-  });
+  const ImageUploader(
+      {super.key, this.image, this.pos, this.uploadedImage, this.label});
 
   @override
   State<ImageUploader> createState() => _ImageUploaderState();
@@ -39,22 +36,34 @@ class _ImageUploaderState extends State<ImageUploader> {
             ? SizedBox(
                 height: double.infinity,
                 child: widget.uploadedImage == null
-                    ? const Center(
-                        child: Icon(
-                          Icons.add_circle_rounded,
-                          color: Color(0xFF033A44),
-                          size: 35.0,
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.add_circle_rounded,
+                              color: Color(0xFF033A44),
+                              size: 35.0,
+                            ),
+                            Text(
+                              widget.label!,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 13.0
+                              ),
+                            )
+                          ],
                         ),
                       )
                     : ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: Image.network(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: Image.network(
                           "${Constant.imageUrl}${widget.uploadedImage}",
                           fit: BoxFit.cover,
                           width: double.infinity,
                           height: double.infinity,
                         ),
-                    ),
+                      ),
               )
             : SizedBox(
                 width: double.infinity,

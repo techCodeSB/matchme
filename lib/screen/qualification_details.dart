@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matchme/widgets/registration_bottom_buttons.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import '../screen/family_details.dart';
@@ -18,12 +19,25 @@ class QualificationDetails extends StatefulWidget {
 }
 
 class _QualificationDetailsState extends State<QualificationDetails> {
-  String _qualification = "school";
+  String _qualification = "School";
+
+  @override
+  void initState() {
+    super.initState();
+
+    _qualification = RegisterController.qualification;
+  }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(size.height * 0.3),
+        child: DetailsHero(
+          size: size,
+        ),
+      ),
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -31,9 +45,6 @@ class _QualificationDetailsState extends State<QualificationDetails> {
           color: Colors.white,
           child: ListView(
             children: [
-              DetailsHero(size: size),
-              // *********************** TOP BAR CLOSE ***********************
-
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: size.width * 0.05,
@@ -83,22 +94,28 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                       hint: "Your Highest Qualification",
                       onChanged: (v) {
                         setState(() {
-                          _qualification = v!.toLowerCase();
+                          _qualification = v!;
                         });
 
                         Provider.of<RegisterController>(context, listen: false)
                             .setErrorMsg({"qualification": false});
 
-                        RegisterController.qualification = v!.toLowerCase();
+                        RegisterController.qualification = v!;
                       },
                       items: const [
                         "School",
                         "Graduation",
                         "Post-Grad",
-                        "Pd.D"
+                        "Ph.D"
                       ],
                       icon: Icons.school_outlined,
                       defaultValue: RegisterController.qualification,
+                      onClear: () {
+                        setState(() {
+                          _qualification = "School";
+                        });
+                        RegisterController.qualification = "";
+                      },
                     ),
                     ErrorText(
                       text: "Select your qualification",
@@ -125,9 +142,9 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                       ).errMsg['schoolName']!,
                     ),
                     Visibility(
-                      visible: _qualification == "post-grad" ||
-                              _qualification == "graduation" ||
-                              _qualification == "pd.d"
+                      visible: _qualification == "Post-Grad" ||
+                              _qualification == "Graduation" ||
+                              _qualification == "Ph.D"
                           ? true
                           : false,
                       child: Column(
@@ -154,8 +171,8 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                       ),
                     ),
                     Visibility(
-                      visible: _qualification == "post-grad" ||
-                              _qualification == "pd.d"
+                      visible: _qualification == "Post-Grad" ||
+                              _qualification == "Ph.D"
                           ? true
                           : false,
                       child: Column(
@@ -182,7 +199,7 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                       ),
                     ),
                     Visibility(
-                      visible: _qualification == "pd.d" ? true : false,
+                      visible: _qualification == "Ph.D" ? true : false,
                       child: Column(
                         children: [
                           const SizedBox(height: 20.0),
@@ -232,7 +249,6 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                   ],
                 ),
               ),
-
               SizedBox(
                 width: double.infinity,
                 child: Image.asset(
@@ -240,83 +256,26 @@ class _QualificationDetailsState extends State<QualificationDetails> {
                   fit: BoxFit.cover,
                 ),
               ),
-
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.05,
-                  vertical: size.height * 0.02,
-                ),
-                child: // *********************** BUTTONS ***********************
-                    Row(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const FamilyDetails(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            border: Border.all(
-                              color: const Color(0xFF033A44),
-                              width: 1.5,
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Back",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: Constant.subHadding,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20.0),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Provider.of<RegisterController>(
-                            context,
-                            listen: false,
-                          ).qualificationSubmit(context);
-                        },
-                        child: Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            color: const Color(0xFF033A44),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Submit",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: Constant.subHadding,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
+              const SizedBox(height: 100.0),
             ],
           ),
         ),
+      ),
+      bottomSheet: RegistrationBottomButtons(
+        onNextTap: () {
+          Provider.of<RegisterController>(
+            context,
+            listen: false,
+          ).qualificationSubmit(context);
+        },
+        onBackTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const FamilyDetails(),
+            ),
+          );
+        },
       ),
     );
   }

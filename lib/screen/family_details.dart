@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:matchme/screen/personal_trd_details.dart';
+import 'package:matchme/widgets/registration_bottom_buttons.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import '../controller/register_controller.dart';
-import '../screen/personal_sec_details.dart';
 import '../widgets/error_text.dart';
 import '../constant.dart';
 import '../widgets/details_textfield.dart';
@@ -21,6 +22,12 @@ class _FamilyDetailsState extends State<FamilyDetails> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(size.height * 0.3),
+        child: DetailsHero(
+          size: size,
+        ),
+      ),
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -28,9 +35,6 @@ class _FamilyDetailsState extends State<FamilyDetails> {
           color: Colors.white,
           child: ListView(
             children: [
-              DetailsHero(size: size),
-              // *********************** TOP BAR CLOSE ***********************
-
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: size.width * 0.05,
@@ -97,6 +101,8 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                       hint: "Father's Occupation",
                       onChanged: (v) {
                         RegisterController.fatherOccupation = v!;
+                        Provider.of<RegisterController>(context, listen: false)
+                            .setErrorMsg({"fatherOcco": false});
                       },
                       items: const [
                         "Business",
@@ -106,7 +112,18 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                       ],
                       icon: Icons.work_outline,
                       defaultValue: RegisterController.fatherOccupation,
+                      onClear: () {
+                        RegisterController.fatherOccupation = "";
+                      },
                     ),
+                    ErrorText(
+                      text: "Father's occupation can't be blank",
+                      visible: Provider.of<RegisterController>(
+                        context,
+                        listen: true,
+                      ).errMsg['fatherOcco']!,
+                    ),
+
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
                       onTap: () {
@@ -124,11 +141,14 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                         listen: true,
                       ).errMsg['mothername']!,
                     ),
+
                     const SizedBox(height: 20.0),
                     Dropdown(
                       hint: "Mother's Occupation",
                       onChanged: (v) {
                         RegisterController.motherOccupation = v!;
+                        Provider.of<RegisterController>(context, listen: false)
+                            .setErrorMsg({"motherOcco": false});
                       },
                       items: const [
                         "Business",
@@ -139,22 +159,48 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                       ],
                       icon: Icons.work_outline,
                       defaultValue: RegisterController.motherOccupation,
+                      onClear: () {
+                        RegisterController.motherOccupation = "";
+                      },
                     ),
+                    ErrorText(
+                      text: "Mother's occupation can't be blank",
+                      visible: Provider.of<RegisterController>(
+                        context,
+                        listen: true,
+                      ).errMsg['motherOcco']!,
+                    ),
+
                     const SizedBox(height: 20.0),
                     Dropdown(
                       hint: "No of Siblings",
                       onChanged: (v) {
                         RegisterController.noOfSibling = v!;
+                        Provider.of<RegisterController>(context, listen: false)
+                            .setErrorMsg({"noOfSibling": false});
                       },
                       items: const ["0", "1", "2", "3", "3+"],
                       icon: Icons.people_outline,
                       defaultValue: RegisterController.noOfSibling,
+                      onClear: () {
+                        RegisterController.noOfSibling = "";
+                      },
                     ),
+                    ErrorText(
+                      text: "No. of Siblings can't be blank",
+                      visible: Provider.of<RegisterController>(
+                        context,
+                        listen: true,
+                      ).errMsg['noOfSibling']!,
+                    ),
+
                     const SizedBox(height: 20.0),
                     Dropdown(
                       hint: "Family Background",
                       onChanged: (v) {
                         RegisterController.familyBackground = v!;
+                        Provider.of<RegisterController>(context, listen: false)
+                            .setErrorMsg({"familyBackground": false});
                       },
                       items: const [
                         "Business owners",
@@ -166,7 +212,18 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                       ],
                       icon: Icons.business_center_outlined,
                       defaultValue: RegisterController.familyBackground,
+                      onClear: () {
+                        RegisterController.familyBackground = "";
+                      },
                     ),
+                    ErrorText(
+                      text: "Family Background can't be blank",
+                      visible: Provider.of<RegisterController>(
+                        context,
+                        listen: true,
+                      ).errMsg['familyBackground']!,
+                    ),
+
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
                       onTap: () {
@@ -241,7 +298,6 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                   ],
                 ),
               ),
-
               SizedBox(
                 width: double.infinity,
                 child: Image.asset(
@@ -249,82 +305,26 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                   fit: BoxFit.cover,
                 ),
               ),
-
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.05,
-                  vertical: size.height * 0.02,
-                ),
-                // ::::::::::::::::::::::::::::::::::::::::: BUTTONS :::::::::::::::::::::::::::::::::::::::::
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const PersonalSecDetails(),
-                              ));
-                        },
-                        child: Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            border: Border.all(
-                              color: const Color(0xFF033A44),
-                              width: 1.5,
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Back",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: Constant.subHadding,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20.0),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Provider.of<RegisterController>(context,
-                                  listen: false)
-                              .familySubmit(context);
-                        },
-                        child: Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            color: const Color(0xFF033A44),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Submit",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: Constant.subHadding,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              const SizedBox(height: 100.0),
             ],
           ),
         ),
+      ),
+      bottomSheet: RegistrationBottomButtons(
+        onNextTap: () {
+          Provider.of<RegisterController>(
+            context,
+            listen: false,
+          ).familySubmit(context);
+        },
+        onBackTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const PersonalTrdDetails(),
+            ),
+          );
+        },
       ),
     );
   }

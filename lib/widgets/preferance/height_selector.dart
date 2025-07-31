@@ -17,11 +17,25 @@ class HeightSelectorState extends State<HeightSelector> {
   int? selectedFeet;
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final height =
+          Provider.of<PreferanceController>(context, listen: false).height;
+      setState(() {
+        selectedFeet = int.parse(height.split(".")[0]);
+        selectedInch = int.parse(height.split(".")[1]);
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     // final size = MediaQuery.of(context);
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
       decoration: const BoxDecoration(
         color: Color(0xFF033A44),
         borderRadius: BorderRadius.only(
@@ -38,7 +52,7 @@ class HeightSelectorState extends State<HeightSelector> {
               Padding(
                 padding: const EdgeInsets.only(left: 25.0),
                 child: Text(
-                  "Inch",
+                  "Feet",
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: Constant.subHadding,
@@ -50,7 +64,7 @@ class HeightSelectorState extends State<HeightSelector> {
               Padding(
                 padding: const EdgeInsets.only(right: 40.0),
                 child: Text(
-                  "Feet",
+                  "Inch",
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: Constant.subHadding,
@@ -89,11 +103,6 @@ class HeightSelectorState extends State<HeightSelector> {
                           selectedInch = v;
                         });
                         if (selectedInch != null && selectedFeet != null) {
-                          Provider.of<PreferanceController>(
-                            context,
-                            listen: false,
-                          ).nextIndex(2);
-
                           Provider.of<PreferanceController>(context,
                                       listen: false)
                                   .height =
@@ -144,11 +153,6 @@ class HeightSelectorState extends State<HeightSelector> {
                           selectedFeet = v;
                         });
                         if (selectedInch != null && selectedFeet != null) {
-                          Provider.of<PreferanceController>(
-                            context,
-                            listen: false,
-                          ).nextIndex(2);
-
                           Provider.of<PreferanceController>(context,
                                       listen: false)
                                   .height =
@@ -175,6 +179,26 @@ class HeightSelectorState extends State<HeightSelector> {
                 ),
               ),
             ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: MaterialButton(
+                onPressed: () {
+                  if (selectedInch != null && selectedFeet != null) {
+                    Provider.of<PreferanceController>(
+                      context,
+                      listen: false,
+                    ).nextIndex(2);
+                  }
+                },
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)),
+                color: Colors.white,
+                child: const Text("Next"),
+              ),
+            ),
           ),
         ],
       ),

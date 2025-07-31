@@ -1,6 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:matchme/controller/splash_controller.dart';
+import 'package:matchme/screen/lifestyle_1.dart';
+import 'package:matchme/screen/main_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/my_snackbar.dart';
@@ -19,7 +23,7 @@ class PhotouploadController extends ChangeNotifier {
     "six": null
   };
 
-  static Map<String, dynamic> uploadedImages = {};
+  static Map<String, dynamic> uploadedImages = {}; // uploaded img store;
 
   // Function to open the camera
   Future<void> openCamera(context, pos) async {
@@ -128,18 +132,23 @@ class PhotouploadController extends ChangeNotifier {
   // Function to upload images
   Future<void> upload(ctx) async {
     // Choose first 5 image;
-    for (var e in images.keys) {
-      if (images[e] == null && e != "six") {
-        mySnackBar(ctx, "Choose first 5 image.");
-        return;
+    if (uploadedImages.isEmpty) {
+      for (var e in images.keys) {
+        if ((e != "five" && e != "six") && images[e] == null) {
+          mySnackBar(ctx, "Choose first 4 image.");
+          return;
+        }
       }
     }
 
+    Uri url2 = Uri.parse("${Constant.api}users/update");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
     var uri = Uri.parse('${Constant.api}users/upload');
     var req = http.MultipartRequest('POST', uri);
     req.fields['token'] = token!;
+    var getStatus = await SplashController.getSteps();
+    var status = getStatus['registration_status'];
 
     for (var entry in images.entries) {
       final fieldName = entry.key;
@@ -165,9 +174,33 @@ class PhotouploadController extends ChangeNotifier {
       }
     }
 
+    var req2 = await http.post(
+      url2,
+      body: jsonEncode({
+        "token": token,
+        "registration_step": "10",
+      }),
+      headers: {"Content-Type": "application/json"},
+    );
+
     var res = await req.send();
-    if (res.statusCode == 200) {
+    if (res.statusCode == 200 && req2.statusCode == 200) {
       mySnackBar(ctx, 'Upload successful');
+      if (status == "0") {
+        Navigator.pushReplacement(
+          ctx,
+          MaterialPageRoute(
+            builder: (context) => const Lifestyle1(),
+          ),
+        );
+      } else {
+        Navigator.push(
+          ctx,
+          MaterialPageRoute(
+            builder: (ctx) => const MainPage(),
+          ),
+        );
+      }
     } else {
       mySnackBar(ctx, "Upload failed");
       // final body = await res.stream.bytesToString();

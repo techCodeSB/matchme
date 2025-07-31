@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matchme/widgets/registration_bottom_buttons.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -18,14 +19,20 @@ class PersonalFstDetails extends StatefulWidget {
 
 class _PersonalFstDetailsState extends State<PersonalFstDetails> {
   DateTime? selectedDate;
+  TimeOfDay? selectedTime;
+
+  String formatTime(TimeOfDay time) {
+    final now = DateTime.now(); // today's date
+    final dt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
+    return DateFormat('hh:mm a').format(dt); // e.g., 04:30 PM
+  }
 
   void _openDatePicker(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: selectedDate ?? DateTime.now(),
-      firstDate: DateTime(1900),
+      firstDate: DateTime(1985),
       lastDate: DateTime.now(),
-
     );
 
     if (pickedDate != null) {
@@ -36,16 +43,45 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
     }
   }
 
+  Future<void> _openTimePicker(BuildContext context) async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: selectedTime ?? TimeOfDay.now(),
+    );
+
+    if (pickedTime != null && pickedTime != selectedTime) {
+      final now = DateTime.now();
+      final dt = DateTime(
+          now.year, now.month, now.day, pickedTime.hour, pickedTime.minute);
+      final time = DateFormat('HH:mm').format(dt);
+      RegisterController.timeOfBirth = time;
+
+      setState(() {
+        selectedTime = pickedTime;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     selectedDate = RegisterController.dateOfBirth;
+
+    int hour = int.parse(RegisterController.timeOfBirth!.split(":")[0]);
+    int minute = int.parse(RegisterController.timeOfBirth!.split(":")[1]);
+    selectedTime = TimeOfDay(hour: hour, minute: minute);
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(size.height * 0.3),
+        child: DetailsHero(
+          size: size,
+        ),
+      ),
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -53,7 +89,6 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
           color: Colors.white,
           child: ListView(
             children: [
-              DetailsHero(size: size),
               // *********************** TOP BAR CLOSE ***********************
 
               Padding(
@@ -122,7 +157,7 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
                       controller: RegisterController.nickname,
-                      hintText: "Nickname",
+                      hintText: "Your Nickname",
                       icon: Icons.person_outline,
                     ),
 
@@ -130,16 +165,16 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
                     Dropdown(
                       hint: "Gender",
                       onChanged: (v) {
-                        RegisterController.gender = v!.toLowerCase();
+                        RegisterController.gender = v!;
                         Provider.of<RegisterController>(context, listen: false)
                             .setErrorMsg({'gender': false});
                       },
-                      items: const [
-                        "MALE",
-                        "FEMALE",
-                      ],
+                      items: const ["Male", "Female", "Other"],
                       icon: Icons.person_outline,
-                      defaultValue: RegisterController.gender.toUpperCase(),
+                      defaultValue: RegisterController.gender,
+                      onClear: () {
+                        RegisterController.gender = "";
+                      },
                     ),
                     ErrorText(
                       text: "Gender can't be blank",
@@ -150,7 +185,11 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
                     ),
                     const SizedBox(height: 20.0),
                     InkWell(
-                      onTap: () => _openDatePicker(context),
+                      onTap: () {
+                        Provider.of<RegisterController>(context, listen: false)
+                            .setErrorMsg({'dob': false});
+                        _openDatePicker(context);
+                      },
                       child: Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(10.0),
@@ -178,6 +217,62 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
                         ),
                       ),
                     ),
+                    ErrorText(
+                      text: "Date of Birth can't be blank",
+                      visible: Provider.of<RegisterController>(
+                        context,
+                        listen: true,
+                      ).errMsg['dob']!,
+                    ),
+
+                    const SizedBox(height: 20.0),
+                    InkWell(
+                      onTap: () {
+                        _openTimePicker(context);
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.0),
+                          border: Border.all(color: const Color(0xFF1690A7)),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons
+                                .access_time), // icon changed to match time
+                            const SizedBox(width: 10.0),
+                            Text(
+                              selectedTime != null
+                                  ? formatTime(selectedTime!)
+                                  : "Time of Birth",
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF0C5461),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20.0),
+                    DetailsTextfield(
+                      controller: RegisterController.placeOfBirth,
+                      hintText: "Place of Birth",
+                      icon: Icons.person_outline,
+                      onTap: () {
+                        Provider.of<RegisterController>(context, listen: false)
+                            .setErrorMsg({'birthPlace': false});
+                      },
+                    ),
+                    ErrorText(
+                      text: "Place of Birth can't be blank",
+                      visible: Provider.of<RegisterController>(
+                        context,
+                        listen: true,
+                      ).errMsg['birthPlace']!,
+                    ),
                   ],
                 ),
               ),
@@ -188,72 +283,19 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
                   fit: BoxFit.cover,
                 ),
               ),
-              // *********************** BUTTONS ***********************
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.05,
-                  vertical: size.height * 0.02,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 50.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30.0),
-                          border: Border.all(
-                            color: const Color(0xFF033A44),
-                            width: 2.0,
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Back",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: Constant.subHadding,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20.0),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Provider.of<RegisterController>(
-                            context,
-                            listen: false,
-                          ).personalFstSubmit(context);
-                        },
-                        child: Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            color: const Color(0xFF033A44),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Submit",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: Constant.subHadding,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
+              const SizedBox(height: 100.0),
             ],
           ),
         ),
+      ),
+      bottomSheet: RegistrationBottomButtons(
+        onNextTap: () {
+          Provider.of<RegisterController>(
+            context,
+            listen: false,
+          ).personalFstSubmit(context);
+        },
+        isBack: false,
       ),
     );
   }

@@ -20,10 +20,10 @@ class DetailsHero extends StatelessWidget {
           Positioned(
             left: 0,
             right: 0,
-            bottom: 0.0,
+            top: size!.height * 0.09,
             child: Image.asset(
               "assets/images/matchme-logo 2.png",
-              width: size!.width * 0.4,
+              height: size!.height * 0.1,
             ),
           ),
           Positioned(

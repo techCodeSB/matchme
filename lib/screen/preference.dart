@@ -16,8 +16,12 @@ class Preference extends StatefulWidget {
 
 class _PreferenceState extends State<Preference> {
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    super.dispose();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<PreferanceController>(context, listen: false).resetRederQ();
+    });
   }
 
   @override
@@ -68,26 +72,30 @@ class _PreferenceState extends State<Preference> {
                       ),
                     ),
                     const Spacer(),
-                    CircularPercentIndicator(
-                      radius: 30.0, //size
-                      lineWidth: 10.0,
-                      percent: 0.84,
-                      center: Text(
-                        "84%",
-                        style: TextStyle(
-                          color: const Color(0xFF033A44),
-                          fontFamily: Constant.haddingFont,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                      linearGradient: const LinearGradient(
-                        colors: [Color(0xFF1690A7), Color(0xFF033A44)],
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                      ),
-                      backgroundColor: const Color(0xFFD9D9D9),
-                    ),
+                    Provider.of<PreferanceController>(context, listen: true)
+                                .prefUpdate ==
+                            false
+                        ? CircularPercentIndicator(
+                            radius: 30.0, //size
+                            lineWidth: 10.0,
+                            percent: 0.84,
+                            center: Text(
+                              "84%",
+                              style: TextStyle(
+                                color: const Color(0xFF033A44),
+                                fontFamily: Constant.haddingFont,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                            linearGradient: const LinearGradient(
+                              colors: [Color(0xFF1690A7), Color(0xFF033A44)],
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                            ),
+                            backgroundColor: const Color(0xFFD9D9D9),
+                          )
+                        : const Text(""),
                   ],
                 ),
               ),

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:matchme/screen/personal_sec_details.dart';
+import 'package:matchme/widgets/registration_bottom_buttons.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../controller/register_controller.dart';
 import 'package:provider/provider.dart';
@@ -18,10 +21,53 @@ class PersonalTrdDetails extends StatefulWidget {
 }
 
 class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
+  bool dontDisplayProfile = false;
+  DateTime? fromYear;
+  DateTime? toYear;
+  String maritalStatus = "Never Married";
+
+  void _openDatePicker(BuildContext context, which) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: (which == "from" ? fromYear : toYear) ?? DateTime.now(),
+      firstDate: DateTime(1985),
+      lastDate: DateTime.now(),
+      initialDatePickerMode: DatePickerMode.year,
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        if (which == "from") {
+          fromYear = pickedDate;
+          RegisterController.fromMaritalStatusYear = pickedDate.year.toString();
+        } else {
+          toYear = pickedDate;
+          RegisterController.toMaritalStatusYear = pickedDate.year.toString();
+        }
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    maritalStatus = RegisterController.maritalStatus;
+    fromYear = DateTime(int.parse(RegisterController.fromMaritalStatusYear));
+    toYear = DateTime(int.parse(RegisterController.toMaritalStatusYear));
+
+    dontDisplayProfile = RegisterController.showWeightOnProfile;
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(size.height * 0.3),
+        child: DetailsHero(
+          size: size,
+        ),
+      ),
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -29,9 +75,6 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
           color: Colors.white,
           child: ListView(
             children: [
-              DetailsHero(size: size),
-              // *********************** TOP BAR CLOSE ***********************
-
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: size.width * 0.05,
@@ -79,7 +122,7 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                     DetailsTextfield(
                       type: TextInputType.phone,
                       controller: RegisterController.whatsappNumber,
-                      hintText: "Add WhatsApp Number",
+                      hintText: "Whatsapp No. (+9194XXX, +143XXX)",
                       icon: FontAwesome.whatsapp_brand,
                       onTap: () {
                         Provider.of<RegisterController>(context, listen: false)
@@ -87,7 +130,8 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                       },
                     ),
                     ErrorText(
-                      text: "WhatsApp number can't be blank",
+                      text:
+                          "Only numbers and +symbol allowed (no space, (),-)Ex. (+919876543210, +143890999909)",
                       visible:
                           Provider.of<RegisterController>(context, listen: true)
                               .errMsg['whatsappNumber']!,
@@ -96,30 +140,51 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                     Row(
                       children: [
                         Expanded(
-                          child: DetailsTextfield(
-                            type: TextInputType.number,
-                            controller: RegisterController.heightFeet,
-                            hintText: "Height (feet)",
-                            icon: Icons.height_rounded,
-                            onTap: () {
+                          child: Dropdown(
+                            hint: "Height (Feet)",
+                            onChanged: (v) {
+                              RegisterController.heightFeet = v!;
                               Provider.of<RegisterController>(context,
                                       listen: false)
                                   .setErrorMsg({'height': false});
                             },
+                            items: const ["4", "5", "6", "7"],
+                            icon: Icons.height_rounded,
+                            onClear: () {
+                              RegisterController.heightFeet = "";
+                            },
+                            defaultValue: RegisterController.heightFeet,
                           ),
                         ),
                         const SizedBox(width: 20.0),
                         Expanded(
-                          child: DetailsTextfield(
-                            type: TextInputType.number,
-                            controller: RegisterController.heightInch,
-                            hintText: "Height (inches)",
-                            icon: Icons.height_rounded,
-                            onTap: () {
+                          child: Dropdown(
+                            hint: "Height (Inch.)",
+                            onChanged: (v) {
+                              RegisterController.heightInch = v!;
                               Provider.of<RegisterController>(context,
                                       listen: false)
                                   .setErrorMsg({'height': false});
                             },
+                            items: const [
+                              "0",
+                              "1",
+                              "2",
+                              "3",
+                              "4",
+                              "5",
+                              "6",
+                              "7",
+                              "8",
+                              "9",
+                              "10",
+                              "11",
+                            ],
+                            icon: Icons.height_rounded,
+                            onClear: () {
+                              RegisterController.heightInch = "";
+                            },
+                            defaultValue: RegisterController.heightInch,
                           ),
                         ),
                       ],
@@ -131,21 +196,83 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                               .errMsg['height']!,
                     ),
                     const SizedBox(height: 20.0),
-                    DetailsTextfield(
-                      type: TextInputType.number,
-                      controller: RegisterController.weight,
-                      hintText: "Weight",
-                      icon: FontAwesome.weight_scale_solid,
-                      onTap: () {
-                        Provider.of<RegisterController>(context, listen: false)
-                            .setErrorMsg({'weight': false});
-                      },
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: DetailsTextfield(
+                            type: TextInputType.number,
+                            controller: RegisterController.weight,
+                            hintText: "Weight",
+                            icon: FontAwesome.weight_scale_solid,
+                            onTap: () {
+                              Provider.of<RegisterController>(context,
+                                      listen: false)
+                                  .setErrorMsg({'weight': false});
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 20.0),
+                        Expanded(
+                          flex: 1,
+                          child: Dropdown(
+                            hint: "Unit",
+                            onChanged: (v) {
+                              RegisterController.weightUnit = v!;
+                              Provider.of<RegisterController>(context,
+                                      listen: false)
+                                  .setErrorMsg({'weightUnit': false});
+                            },
+                            items: const ["Kgs", "lbs"],
+                            icon: null,
+                            onClear: () {
+                              RegisterController.weightUnit = "";
+                            },
+                            defaultValue: RegisterController.weightUnit,
+                          ),
+                        )
+                      ],
                     ),
                     ErrorText(
-                      text: "Weight can't be blank",
+                      text: "Weight and unit can't be blank",
+                      visible: Provider.of<RegisterController>(context,
+                                  listen: true)
+                              .errMsg['weight']! ||
+                          Provider.of<RegisterController>(context, listen: true)
+                              .errMsg['weightUnit']!,
+                    ),
+                    const SizedBox(height: 20.0),
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: dontDisplayProfile,
+                          onChanged: (v) {
+                            setState(() {
+                              dontDisplayProfile = v!;
+                            });
+                            RegisterController.showWeightOnProfile =
+                                dontDisplayProfile;
+                          },
+                        ),
+                        const Text("Don't display on my profile"),
+                      ],
+                    ),
+                    const SizedBox(height: 20.0),
+                    my_radio.Radio(
+                      title: "Tell us about your eating preferences?",
+                      items: const ["Veg", "Non-Veg", "Vegan"],
+                      onChanged: (v) {
+                        RegisterController.eatingPref = v!;
+                        Provider.of<RegisterController>(context, listen: false)
+                            .setErrorMsg({"eatingPref": false});
+                      },
+                      defaultValue: RegisterController.eatingPref,
+                    ),
+                    ErrorText(
+                      text: "Eating Preferance can't be blank",
                       visible:
                           Provider.of<RegisterController>(context, listen: true)
-                              .errMsg['weight']!,
+                              .errMsg['eatingPref']!,
                     ),
                     const SizedBox(height: 20.0),
                     Dropdown(
@@ -154,15 +281,19 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                         RegisterController.maritalStatus = v!;
                         Provider.of<RegisterController>(context, listen: false)
                             .setErrorMsg({'maritalStatus': false});
+                        setState(() {
+                          maritalStatus = v;
+                        });
                       },
-                      items: const [
-                        "NEVER MARRIED",
-                        "DIVORCED",
-                        "WIDOWED",
-                      ],
+                      items: const ["Never Married", "Divorced", "Widowed"],
                       icon: Icons.person_outline,
-                      defaultValue:
-                          RegisterController.maritalStatus.toUpperCase(),
+                      defaultValue: RegisterController.maritalStatus,
+                      onClear: () {
+                        RegisterController.maritalStatus = "";
+                        setState(() {
+                          maritalStatus = "";
+                        });
+                      },
                     ),
                     ErrorText(
                       text: "Marital Status can't be blank",
@@ -170,22 +301,134 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                           Provider.of<RegisterController>(context, listen: true)
                               .errMsg['maritalStatus']!,
                     ),
-                    const SizedBox(height: 15.0),
-                    my_radio.Radio(
-                      title: "Tell us about your eating preferences?",
-                      items: const ["VEG", "NON-VEG", "VEGAN"],
-                      onChanged: (v) {
-                        RegisterController.eatingPref = v!;
-                        Provider.of<RegisterController>(context, listen: false)
-                            .setErrorMsg({"eatingPref": false});
-                      },
-                      defaultValue: RegisterController.eatingPref.toUpperCase(),
+                    const SizedBox(height: 20.0),
+                    Visibility(
+                      visible: maritalStatus == "Never Married" ? false : true,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    Provider.of<RegisterController>(context,
+                                            listen: false)
+                                        .setErrorMsg({'dob': false});
+                                    _openDatePicker(context, "from");
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.all(10.0),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                      border: Border.all(
+                                          color: const Color(0xFF1690A7)),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        const Icon(Icons.date_range_outlined),
+                                        const SizedBox(width: 10.0),
+                                        Text(
+                                          fromYear != null
+                                              ? DateFormat("yyyy")
+                                                  .format(fromYear!)
+                                                  .toString()
+                                              : "From Years",
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                            fontWeight: FontWeight.w500,
+                                            color: Color(0xFF0C5461),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 20.0),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    Provider.of<RegisterController>(context,
+                                            listen: false)
+                                        .setErrorMsg(
+                                            {'fromMaritalStatus': false});
+                                    Provider.of<RegisterController>(context,
+                                            listen: false)
+                                        .setErrorMsg(
+                                            {'toMaritalStatus': false});
+                                    _openDatePicker(context, "to");
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.all(10.0),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                      border: Border.all(
+                                          color: const Color(0xFF1690A7)),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        const Icon(Icons.date_range_outlined),
+                                        const SizedBox(width: 10.0),
+                                        Text(
+                                          toYear != null
+                                              ? DateFormat("yyyy")
+                                                  .format(toYear!)
+                                                  .toString()
+                                              : "To Years",
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                            fontWeight: FontWeight.w500,
+                                            color: Color(0xFF0C5461),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          ErrorText(
+                            text: "Select From and To years",
+                            visible: Provider.of<RegisterController>(context,
+                                        listen: true)
+                                    .errMsg['fromMaritalStatus']! ||
+                                Provider.of<RegisterController>(context,
+                                        listen: true)
+                                    .errMsg['toMaritalStatus']!,
+                          ),
+                        ],
+                      ),
                     ),
-                    ErrorText(
-                      text: "Eating Preferance can't be blank",
-                      visible:
-                          Provider.of<RegisterController>(context, listen: true)
-                              .errMsg['eatingPref']!,
+                    const SizedBox(height: 15.0),
+                    Visibility(
+                      visible: maritalStatus == "Never Married" ? false : true,
+                      child: Column(
+                        children: [
+                          my_radio.Radio(
+                            title: "Do you have kids?",
+                            items: const [
+                              "Yes",
+                              "No",
+                            ],
+                            onChanged: (v) {
+                              RegisterController.doYouHaveKids = v!;
+                              Provider.of<RegisterController>(context,
+                                      listen: false)
+                                  .setErrorMsg({"haveKids": false});
+                            },
+                            defaultValue: RegisterController.doYouHaveKids,
+                          ),
+                          ErrorText(
+                            text: "require this field",
+                            visible: Provider.of<RegisterController>(context,
+                                    listen: true)
+                                .errMsg['haveKids']!,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -197,72 +440,26 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                   fit: BoxFit.cover,
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.05,
-                  vertical: size.height * 0.02,
-                ),
-                // ::::::::::::::::::::::::::::::::::::::::::: BUTTONS :::::::::::::::::::::::::::::::::::::::::::
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 50.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30.0),
-                          border: Border.all(
-                            color: const Color(0xFF033A44),
-                            width: 2.0,
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Back",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: Constant.subHadding,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20.0),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Provider.of<RegisterController>(
-                            context,
-                            listen: false,
-                          ).personalTrdSubmit(context);
-                        },
-                        child: Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            color: const Color(0xFF033A44),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Submit",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: Constant.subHadding,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
+              const SizedBox(height: 100.0),
             ],
           ),
         ),
+      ),
+      bottomSheet: RegistrationBottomButtons(
+        onNextTap: () {
+          Provider.of<RegisterController>(
+            context,
+            listen: false,
+          ).personalTrdSubmit(context);
+        },
+        onBackTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const PersonalSecDetails(),
+            ),
+          );
+        },
       ),
     );
   }

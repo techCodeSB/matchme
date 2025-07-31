@@ -27,8 +27,8 @@ class _RadioState extends State<Radio> {
     super.initState();
 
     if (widget.defaultValue != null && widget.defaultValue!.isNotEmpty) {
-      final lowerDefault = widget.defaultValue!.toLowerCase();
-      final lowerItems = widget.items.map((e) => e.toLowerCase()).toList();
+      final lowerDefault = widget.defaultValue!;
+      final lowerItems = widget.items.map((e) => e).toList();
 
       selectedIndex = lowerItems.indexOf(lowerDefault);
     }
@@ -68,7 +68,7 @@ class _RadioState extends State<Radio> {
               return InkWell(
                 onTap: () {
                   setState(() => selectedIndex = index);
-                  widget.onChanged(widget.items[index].toLowerCase());
+                  widget.onChanged(widget.items[index]);
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(

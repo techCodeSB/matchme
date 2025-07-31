@@ -1,5 +1,4 @@
 import 'package:matchme/controller/splash_controller.dart';
-import 'package:matchme/screen/photo_upload.dart';
 import 'package:matchme/widgets/my_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -8,6 +7,9 @@ import 'package:http/http.dart' as http;
 import '../constant.dart';
 
 // Screens;
+import '../screen/goto_profile.dart';
+import '../screen/lifestyle_1.dart';
+import '../screen/main_page.dart';
 import '../screen/introduction.dart';
 import '../screen/family_details.dart';
 import '../screen/more_question_next.dart';
@@ -17,7 +19,6 @@ import '../screen/preference.dart';
 import '../screen/qualification_details.dart';
 import '../screen/work_details.dart';
 import '../screen/personal_fst_details.dart';
-import '../screen/lifestyle_1.dart';
 import '../screen/lifestyle_2.dart';
 import '../screen/lifestyle_3.dart';
 import '../screen/lifestyle_4.dart';
@@ -29,6 +30,8 @@ class RegisterController extends ChangeNotifier {
   static final TextEditingController nickname = TextEditingController();
   static String gender = "";
   static DateTime? dateOfBirth;
+  static String? timeOfBirth;
+  static TextEditingController placeOfBirth = TextEditingController();
 
   // Second Personal Details;
   static final TextEditingController country = TextEditingController();
@@ -41,12 +44,17 @@ class RegisterController extends ChangeNotifier {
 
   // Third Personal Details;
   static final TextEditingController whatsappNumber = TextEditingController();
-  static final TextEditingController heightFeet = TextEditingController();
-  static final TextEditingController heightInch = TextEditingController();
-  String height = "${heightFeet.text.trim()}.${heightInch.text.trim()}";
+  static String heightFeet = "";
+  static String heightInch = "";
+  String height = "${heightFeet.trim()}.${heightInch.trim()}";
   static final TextEditingController weight = TextEditingController();
+  static String weightUnit = "";
   static String maritalStatus = "";
   static String eatingPref = "";
+  static bool showWeightOnProfile = false;
+  static String fromMaritalStatusYear = "";
+  static String toMaritalStatusYear = "";
+  static String doYouHaveKids = "";
 
   // Family Details;
   static final TextEditingController fathername = TextEditingController();
@@ -108,14 +116,24 @@ class RegisterController extends ChangeNotifier {
     "whatsappNumber": false,
     "height": false,
     "weight": false,
+    "weightUnit": false,
     "maritalStatus": false,
     "eatingPref": false,
+    "birthPlace": false,
+    "dob": false,
+    "fromMaritalStatus": false,
+    "toMaritalStatus": false,
+    "haveKids": false,
 
     // For family details;
     "fathername": false,
     "mothername": false,
     "hometown": false,
     "description": false,
+    "fatherOcco": false,
+    "motherOcco": false,
+    "noOfSibling": false,
+    "familyBackground": false,
 
     // qualification;
     "qualification": false,
@@ -132,6 +150,7 @@ class RegisterController extends ChangeNotifier {
     "designation": false,
     "anualIncome": false,
     "turnover": false,
+    "website": false,
 
     // Lifestyle
     "drink": false,
@@ -195,12 +214,21 @@ class RegisterController extends ChangeNotifier {
   //
   void personalFstSubmit(ctx) async {
     // Check validation
-    if (fullname.text == "" || gender == "") {
+    if (fullname.text == "" ||
+        gender == "" ||
+        placeOfBirth.text.isEmpty ||
+        dateOfBirth == null) {
       if (fullname.text.trim().isEmpty) {
         setErrorMsg({"fullname": true});
       }
       if (gender.isEmpty) {
         setErrorMsg({"gender": true});
+      }
+      if (dateOfBirth == null) {
+        setErrorMsg({"dob": true});
+      }
+      if (placeOfBirth.text.trim().isEmpty) {
+        setErrorMsg({"birthPlace": true});
       }
 
       return;
@@ -211,6 +239,8 @@ class RegisterController extends ChangeNotifier {
       "nick_name": nickname.text.trim(),
       "gender": gender,
       "dob": dateOfBirth.toString(),
+      "birth_time": timeOfBirth,
+      "birth_place": placeOfBirth.text.trim(),
       "registration_step": '2'
     });
 
@@ -278,24 +308,37 @@ class RegisterController extends ChangeNotifier {
 
   //
   void personalTrdSubmit(ctx) async {
-    var height = "${heightFeet.text.trim()}.${heightInch.text.trim()}";
+    var height = "${heightFeet.trim()}.${heightInch.trim()}";
+
+    final regex = RegExp(r'^\+\d{10,15}$');
+    if (regex.hasMatch(whatsappNumber.text.trim()) == false) {
+      setErrorMsg({"whatsappNumber": true});
+      return;
+    }
+
     // Check validation
     if (whatsappNumber.text.isEmpty ||
-        height.isEmpty ||
+        heightFeet.trim().isEmpty ||
+        heightInch.trim().isEmpty ||
         weight.text.isEmpty ||
+        weightUnit.isEmpty ||
         maritalStatus.isEmpty ||
-        eatingPref.isEmpty) {
+        eatingPref.isEmpty ||
+        (maritalStatus != "Never Married" && fromMaritalStatusYear.isEmpty) ||
+        (maritalStatus != "Never Married" && fromMaritalStatusYear.isEmpty) ||
+        (maritalStatus != "Never Married" && doYouHaveKids.isEmpty)) {
       if (whatsappNumber.text.trim().isEmpty) {
         setErrorMsg({"whatsappNumber": true});
       }
 
-      if (height.trim().isEmpty ||
-          height.trim() == "." ||
-          height.trim() == "0.0") {
+      if (heightFeet.trim().isEmpty || heightInch.trim().isEmpty) {
         setErrorMsg({"height": true});
       }
       if (weight.text.trim().isEmpty) {
         setErrorMsg({"weight": true});
+      }
+      if (weightUnit.isEmpty) {
+        setErrorMsg({"weightUnit": true});
       }
       if (maritalStatus.isEmpty) {
         setErrorMsg({"maritalStatus": true});
@@ -303,16 +346,29 @@ class RegisterController extends ChangeNotifier {
       if (eatingPref.isEmpty) {
         setErrorMsg({"eatingPref": true});
       }
+      if (fromMaritalStatusYear.isEmpty) {
+        setErrorMsg({"fromMaritalStatus": true});
+      }
+      if (toMaritalStatusYear.isEmpty) {
+        setErrorMsg({"toMaritalStatus": true});
+      }
+      if (doYouHaveKids.isEmpty) {
+        setErrorMsg({"haveKids": true});
+      }
 
       return;
     }
 
     var reg = await register({
-      "country": whatsappNumber.text.trim(),
+      "whatsapp_number": whatsappNumber.text.trim(),
       "height": height.trim(),
-      "weight": weight.text.trim(),
+      "weight": "${weight.text.trim()} $weightUnit",
+      "should_weight_display_on_profile": showWeightOnProfile,
       "marital_status": maritalStatus.trim(),
       "eating_preferences": eatingPref.trim(),
+      "do_have_kids": doYouHaveKids,
+      "marital_status_from_year": fromMaritalStatusYear,
+      "marital_status_to_year": toMaritalStatusYear,
       "registration_step": '4'
     });
 
@@ -334,6 +390,10 @@ class RegisterController extends ChangeNotifier {
     if (fathername.text.isEmpty ||
         hometown.text.isEmpty ||
         mothername.text.isEmpty ||
+        fatherOccupation.isEmpty ||
+        motherOccupation.isEmpty ||
+        noOfSibling.isEmpty ||
+        familyBackground.isEmpty ||
         familyDescription.text.isEmpty) {
       if (fathername.text.trim().isEmpty) {
         setErrorMsg({"fathername": true});
@@ -346,6 +406,18 @@ class RegisterController extends ChangeNotifier {
       }
       if (familyDescription.text.trim().isEmpty) {
         setErrorMsg({"description": true});
+      }
+      if (fatherOccupation.trim().isEmpty) {
+        setErrorMsg({"fatherOcco": true});
+      }
+      if (motherOccupation.trim().isEmpty) {
+        setErrorMsg({"motherOcco": true});
+      }
+      if (noOfSibling.trim().isEmpty) {
+        setErrorMsg({"noOfSibling": true});
+      }
+      if (familyBackground.trim().isEmpty) {
+        setErrorMsg({"familyBackground": true});
       }
 
       return;
@@ -438,9 +510,13 @@ class RegisterController extends ChangeNotifier {
 
   //
   void workSubmit(ctx) async {
+    var getStatus = await SplashController.getSteps();
+    var status = getStatus['registration_status'];
+
     // Check validation
     if (profession.isEmpty ||
-        (profession == "business" && turnover.text.trim() == "") ||
+        (profession == "Business" && turnover.text.trim() == "") ||
+        (profession == "Business" && website.text.trim() == "") ||
         industry.text.trim() == "" ||
         orgnization.text.trim() == "" ||
         designation.text.trim() == "" ||
@@ -463,6 +539,9 @@ class RegisterController extends ChangeNotifier {
       if (turnover.text.trim().isEmpty) {
         setErrorMsg({"turnover": true});
       }
+      if (website.text.trim().isEmpty) {
+        setErrorMsg({"website": true});
+      }
 
       return;
     }
@@ -479,10 +558,35 @@ class RegisterController extends ChangeNotifier {
     });
 
     if (reg['success'] == true) {
+      if (status == "0") {
+        Navigator.push(
+          ctx,
+          MaterialPageRoute(
+            builder: (ctx) => const MoreQuestionNext(),
+          ),
+        );
+      } else {
+        Navigator.push(
+          ctx,
+          MaterialPageRoute(
+            builder: (ctx) => const Lifestyle1(),
+          ),
+        );
+      }
+    } else {
+      mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
+    }
+  }
+
+  //
+  void moreQuestionNext(ctx) async {
+    var reg = await register({'registration_step': "8"});
+
+    if (reg['success'] == true) {
       Navigator.push(
         ctx,
         MaterialPageRoute(
-          builder: (ctx) => const Lifestyle1(),
+          builder: (ctx) => const Preference(),
         ),
       );
     } else {
@@ -506,7 +610,7 @@ class RegisterController extends ChangeNotifier {
     var reg = await register({
       "how_often_you_drink": drink.trim(),
       "are_you_a_smoker": smoker.trim(),
-      "registration_step": '8'
+      "registration_step": '11'
     });
 
     if (reg['success'] == true) {
@@ -539,7 +643,7 @@ class RegisterController extends ChangeNotifier {
     var reg = await register({
       "how_often_you_workout": workout.trim(),
       "favourite_weekend_activities": weekendActivites,
-      "registration_step": '9'
+      "registration_step": '12'
     });
 
     if (reg['success'] == true) {
@@ -564,7 +668,7 @@ class RegisterController extends ChangeNotifier {
     }
 
     var reg =
-        await register({"interests": interest, "registration_step": '10'});
+        await register({"interests": interest, "registration_step": '13'});
 
     if (reg['success'] == true) {
       Navigator.push(
@@ -599,7 +703,7 @@ class RegisterController extends ChangeNotifier {
       "holidays_prefrences": holidays,
       "how_often_you_eat_out": eatOut.trim(),
       "how_often_you_travel": travle.trim(),
-      "registration_step": '11',
+      "registration_step": '14',
     });
 
     if (reg['success'] == true) {
@@ -616,6 +720,9 @@ class RegisterController extends ChangeNotifier {
 
   //
   void lifeStyle5Submit(ctx) async {
+    var getStatus = await SplashController.getSteps();
+    var status = getStatus['registration_status'];
+
     if (socialise.isEmpty ||
         goOut.isEmpty ||
         spritual.isEmpty ||
@@ -640,7 +747,7 @@ class RegisterController extends ChangeNotifier {
       "whom_do_you_like_going_out_with": goOut.trim(),
       "how_spiritual_are_you": spritual.trim(),
       "how_religious_are_you": howReligious.trim(),
-      "registration_step": '12',
+      "registration_step": '15',
     });
 
     if (reg['success'] == true) {
@@ -669,7 +776,7 @@ class RegisterController extends ChangeNotifier {
 
     var reg = await register({
       "about_yourself": introduction.text.trim(),
-      "registration_step": '13',
+      "registration_step": '16',
     });
 
     if (reg['success'] == true) {
@@ -677,14 +784,14 @@ class RegisterController extends ChangeNotifier {
         Navigator.push(
           ctx,
           MaterialPageRoute(
-            builder: (ctx) => const MoreQuestionNext(),
+            builder: (ctx) => const GotoProfile(),
           ),
         );
-      }else{
+      } else {
         Navigator.push(
           ctx,
           MaterialPageRoute(
-            builder: (ctx) => const PhotoUpload(),
+            builder: (ctx) => const MainPage(),
           ),
         );
       }
@@ -694,14 +801,17 @@ class RegisterController extends ChangeNotifier {
   }
 
   //
-  void moreQuestionNext(ctx) async {
-    var reg = await register({'registration_step': "14"});
+  void gotoProfile(ctx) async {
+    var reg = await register({
+      'registration_step': "0", //unnecessary;
+      'registration_status': "1",
+    });
 
     if (reg['success'] == true) {
-      Navigator.push(
+      Navigator.pushReplacement(
         ctx,
         MaterialPageRoute(
-          builder: (ctx) => const Preference(),
+          builder: (ctx) => const MainPage(),
         ),
       );
     } else {

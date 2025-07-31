@@ -28,7 +28,9 @@ class _DetailsTextfieldState extends State<DetailsTextfield> {
     return TextField(
       keyboardType: widget.type,
       onTap: () {
-        widget.onTap();
+        if(widget.onTap != null){
+          widget.onTap();
+        }
       },
       controller: widget.controller,
       style: TextStyle(
@@ -40,7 +42,8 @@ class _DetailsTextfieldState extends State<DetailsTextfield> {
           widget.icon,
           color: const Color(0xFF0C5461),
         ),
-        hintText: widget.hintText,
+        label: Text(widget.hintText),
+        alignLabelWithHint: true,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30.0),
           borderSide: const BorderSide(

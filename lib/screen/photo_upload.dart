@@ -19,6 +19,12 @@ class _PhotoUploadState extends State<PhotoUpload> {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(size.height * 0.3),
+        child: DetailsHero(
+          size: size,
+        ),
+      ),
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -26,9 +32,6 @@ class _PhotoUploadState extends State<PhotoUpload> {
           color: const Color(0xFFF5F7F7),
           child: ListView(
             children: [
-              DetailsHero(size: size),
-              // *********************** TOP BAR CLOSE ***********************
-
               Text(
                 'Upload your photos',
                 textAlign: TextAlign.center,
@@ -71,6 +74,7 @@ class _PhotoUploadState extends State<PhotoUpload> {
                                 ).images['one'],
                                 uploadedImage:
                                     PhotouploadController.uploadedImages['one'],
+                                label: "Portrait Photo",
                               ),
                             ),
                             const SizedBox(width: 15.0),
@@ -87,6 +91,7 @@ class _PhotoUploadState extends State<PhotoUpload> {
                                       ).images['two'],
                                       uploadedImage: PhotouploadController
                                           .uploadedImages['two'],
+                                      label: "A family Photo",
                                     ),
                                   ),
                                   const SizedBox(height: 15.0),
@@ -99,6 +104,7 @@ class _PhotoUploadState extends State<PhotoUpload> {
                                       ).images['three'],
                                       uploadedImage: PhotouploadController
                                           .uploadedImages['three'],
+                                      label: "A full length picture",
                                     ),
                                   ),
                                 ],
@@ -122,6 +128,7 @@ class _PhotoUploadState extends State<PhotoUpload> {
                                 ).images['four'],
                                 uploadedImage: PhotouploadController
                                     .uploadedImages['four'],
+                                label: "A favorite Photo",
                               ),
                             ),
                             const SizedBox(width: 15.0),
@@ -134,6 +141,7 @@ class _PhotoUploadState extends State<PhotoUpload> {
                                 ).images['five'],
                                 uploadedImage: PhotouploadController
                                     .uploadedImages['five'],
+                                label: "Upload Photo (Optional)",
                               ),
                             ),
                             const SizedBox(width: 15.0),
@@ -146,6 +154,7 @@ class _PhotoUploadState extends State<PhotoUpload> {
                                 ).images['six'],
                                 uploadedImage:
                                     PhotouploadController.uploadedImages['six'],
+                                label: "Upload Photo (Optional)",
                               ),
                             ),
                           ],
@@ -163,22 +172,24 @@ class _PhotoUploadState extends State<PhotoUpload> {
                   fit: BoxFit.cover,
                 ),
               ),
-              const SizedBox(height: 30.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: ContainerButton(
-                  text: "Continue",
-                  color: const Color(0xFF033A44),
-                  textColor: Colors.white,
-                  onTap: () {
-                    Provider.of<PhotouploadController>(context, listen: false)
-                        .upload(context);
-                  },
-                ),
-              ),
-              const SizedBox(height: 30.0),
+              const SizedBox(height: 100.0),
             ],
           ),
+        ),
+      ),
+      bottomSheet: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: size.width * 0.05,
+          vertical: size.height * 0.02,
+        ),
+        child: ContainerButton(
+          text: "Continue",
+          color: const Color(0xFF033A44),
+          textColor: Colors.white,
+          onTap: () {
+            Provider.of<PhotouploadController>(context, listen: false)
+                .upload(context);
+          },
         ),
       ),
     );

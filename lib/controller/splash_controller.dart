@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:matchme/screen/dashboard.dart';
+import 'package:matchme/screen/main_page.dart';
 import 'package:matchme/screen/opening.dart';
 import '../screen/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,35 +58,59 @@ class SplashController {
 
   // Dicision function and login function call this function;
   static void checkSteps(ctx) async {
-    var stepsAndStatus = await getSteps();
-    var status = stepsAndStatus['registration_status'];
-    var steps = stepsAndStatus['registration_step'];
+    dynamic stepsAndStatus = await getSteps();
+    dynamic status = stepsAndStatus['registration_status'];
+    dynamic steps = stepsAndStatus['registration_step'];
+
+    //::: DON'T CHANGE POSITION ::::
     List<Widget> screens = const [
       GetStarted(),
       PersonalFstDetails(),
       PersonalSecDetails(),
       PersonalTrdDetails(),
       FamilyDetails(),
-      QualificationDetails(),
+      QualificationDetails(), 
       WorkDetails(),
+      MoreQuestionNext(),
+      Preference(),
+      PhotoUpload(),
       Lifestyle1(),
       Lifestyle2(),
       Lifestyle3(),
       Lifestyle4(),
       Lifestyle5(),
       Introduction(),
-      MoreQuestionNext(),
-      Preference(),
-      PhotoUpload(),
       GotoProfile(),
     ];
 
+
+
+    // List<Widget> screens = const [
+    //   GetStarted(),
+    //   PersonalFstDetails(),
+    //   PersonalSecDetails(),
+    //   PersonalTrdDetails(),
+    //   FamilyDetails(),
+    //   QualificationDetails(),
+    //   WorkDetails(),
+    //   Lifestyle1(),
+    //   Lifestyle2(),
+    //   Lifestyle3(),
+    //   Lifestyle4(),
+    //   Lifestyle5(),
+    //   Introduction(),
+    //   MoreQuestionNext(),
+    //   Preference(),
+    //   PhotoUpload(),
+    //   GotoProfile(),
+    // ];
+
     debugPrint("[SplashController]: $steps");
     debugPrint("[SplashController]: $status");
-    
+
     // Registration not complete;
     if (status == "0") {
-      for (var i = 0; i < screens.length; i++) {
+      for (int i = 0; i < screens.length; i++) {
         if (steps == i.toString()) {
           Navigator.of(ctx).pushReplacement(
             MaterialPageRoute(builder: (ctx) => screens[i]),
@@ -100,7 +124,7 @@ class SplashController {
     // Registration complete;
     else {
       Navigator.of(ctx).pushReplacement(
-        MaterialPageRoute(builder: (ctx) => const Dashboard()),
+        MaterialPageRoute(builder: (ctx) => const MainPage()),
       );
     }
   }

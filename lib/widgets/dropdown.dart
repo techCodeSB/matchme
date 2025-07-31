@@ -4,18 +4,19 @@ import '../constant.dart';
 class Dropdown extends StatefulWidget {
   final String hint;
   final ValueChanged<String?> onChanged;
+  final Function? onClear;
   final List<String> items;
   final IconData? icon;
   final String? defaultValue;
 
-  const Dropdown({
-    super.key,
-    required this.hint,
-    required this.onChanged,
-    required this.items,
-    required this.icon,
-    this.defaultValue,
-  });
+  const Dropdown(
+      {super.key,
+      required this.hint,
+      required this.onChanged,
+      required this.items,
+      required this.icon,
+      this.defaultValue,
+      this.onClear});
 
   @override
   State<Dropdown> createState() => _DropdownState();
@@ -27,10 +28,9 @@ class _DropdownState extends State<Dropdown> {
   @override
   void initState() {
     super.initState();
-    print("defaultValue::::::: ${widget.defaultValue}");
 
     if (widget.defaultValue != null && widget.defaultValue!.isNotEmpty) {
-      selectedValue = widget.defaultValue!.toUpperCase();
+      selectedValue = widget.defaultValue;
     }
   }
 
@@ -55,6 +55,7 @@ class _DropdownState extends State<Dropdown> {
             Expanded(
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
+                  menuMaxHeight: 150.0,
                   value: selectedValue,
                   hint: Text(
                     widget.hint,
@@ -65,7 +66,7 @@ class _DropdownState extends State<Dropdown> {
                   ),
                   items: widget.items.map((String item) {
                     return DropdownMenuItem<String>(
-                      value: item.toUpperCase(),
+                      value: item,
                       child: Text(item),
                     );
                   }).toList(),
@@ -75,10 +76,23 @@ class _DropdownState extends State<Dropdown> {
                     });
                     widget.onChanged(value); // call the callback
                   },
-                  icon: const Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    color: Color(0xFF033A44),
-                  ),
+                  icon: selectedValue == null
+                      ? const Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          color: Color(0xFF033A44),
+                        )
+                      : InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedValue = null;
+                            });
+                            widget.onClear!();
+                          },
+                          child: const Icon(
+                            Icons.close,
+                            size: 18.0,
+                          ),
+                        ),
                   style: const TextStyle(
                     color: Color(0xFF0C5461),
                     fontSize: 16.0,

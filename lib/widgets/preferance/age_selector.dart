@@ -16,11 +16,24 @@ class AgeSelectorState extends State<AgeSelector> {
   int? toAge = 0;
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final agePref =
+          Provider.of<PreferanceController>(context, listen: false).agePref;
+      setState(() {
+        fromAge = int.tryParse(agePref["from"] ?? '0') ?? 0;
+        toAge = int.tryParse(agePref["to"] ?? '0') ?? 0;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.of(context);
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
       decoration: const BoxDecoration(
         color: Color(0xFF033A44),
         borderRadius: BorderRadius.only(
@@ -89,16 +102,12 @@ class AgeSelectorState extends State<AgeSelector> {
                           setState(() {
                             fromAge = v;
                           });
-                        }else if(toAge == 0){
+                        } else if (toAge == 0) {
                           setState(() {
                             fromAge = v;
                           });
                         }
                         if (fromAge! > 0 && toAge! > 0) {
-                          Provider.of<PreferanceController>(
-                            context,
-                            listen: false,
-                          ).nextIndex(0);
                           Provider.of<PreferanceController>(context,
                                   listen: false)
                               .agePref = {
@@ -152,11 +161,6 @@ class AgeSelectorState extends State<AgeSelector> {
                           });
                         }
                         if (fromAge! > 0 && toAge! > 0) {
-                          Provider.of<PreferanceController>(
-                            context,
-                            listen: false,
-                          ).nextIndex(0);
-
                           Provider.of<PreferanceController>(context,
                                   listen: false)
                               .agePref = {
@@ -165,7 +169,6 @@ class AgeSelectorState extends State<AgeSelector> {
                           };
                         }
                       },
-
                       hint: Center(
                         child: Text(
                           toAge != 0 ? toAge.toString() : "Select",
@@ -183,6 +186,26 @@ class AgeSelectorState extends State<AgeSelector> {
                 ),
               ),
             ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: MaterialButton(
+                onPressed: () {
+                  if (fromAge! > 0 && toAge! > 0) {
+                    Provider.of<PreferanceController>(
+                      context,
+                      listen: false,
+                    ).nextIndex(0);
+                  }
+                },
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)),
+                color: Colors.white,
+                child: const Text("Next"),
+              ),
+            ),
           ),
         ],
       ),

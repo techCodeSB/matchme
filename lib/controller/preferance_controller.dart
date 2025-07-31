@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:matchme/controller/splash_controller.dart';
-import 'package:matchme/screen/dashboard.dart';
+import 'package:matchme/screen/main_page.dart';
 import 'package:matchme/widgets/my_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constant.dart';
@@ -20,7 +20,7 @@ import '../widgets/preferance/age_selector.dart';
 class PreferanceController extends ChangeNotifier {
   // ScrollController to control the scroll of the question list
   final ScrollController scrollController = ScrollController();
-
+  bool prefUpdate = false;
   Map<String, String> agePref = {};
   String height = "";
   String education = "";
@@ -112,6 +112,27 @@ class PreferanceController extends ChangeNotifier {
   ];
 
   //
+  void resetRederQ() {
+    renderQ = [
+      {
+        "content":
+            "Let’s get to know about your preferences for a suitable match !",
+        "type": "system",
+      },
+      {
+        "content": "What is the age you preferred ?",
+        "type": "system",
+      },
+      {
+        "content": const AgeSelector(),
+        "type": "user",
+      }
+    ];
+
+    notifyListeners();
+  }
+
+  //
   void scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (scrollController.hasClients) {
@@ -164,6 +185,7 @@ class PreferanceController extends ChangeNotifier {
       "marriage_status_preference": marriageStatus,
       "religion_preference": relegion,
       "preferred_location": location,
+      "update" : prefUpdate
     };
 
     try {
@@ -179,7 +201,7 @@ class PreferanceController extends ChangeNotifier {
         url2,
         body: jsonEncode({
           "token": token,
-          "registration_step": "15",
+          "registration_step": "9",
         }),
         headers: {"Content-Type": "application/json"},
       );
@@ -196,7 +218,7 @@ class PreferanceController extends ChangeNotifier {
           Navigator.push(
             ctx,
             MaterialPageRoute(
-              builder: (context) => const Dashboard(),
+              builder: (context) => const MainPage(),
             ),
           );
         }
@@ -206,6 +228,45 @@ class PreferanceController extends ChangeNotifier {
       }
     } catch (er) {
       mySnackBar(ctx, "Something went wrong, try again later.");
+    }
+  }
+
+  Future<void> getData(ctx) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString("token");
+    Uri url = Uri.parse("${Constant.api}preferance/get");
+
+    try {
+      var req = await http.post(
+        url,
+        body: jsonEncode({"token": token}),
+        headers: {"Content-Type": "application/json"},
+      );
+
+      if (req.statusCode == 200) {
+        var res = jsonDecode(req.body);
+        agePref['from'] = res['age_preference']['from'].toString();
+        agePref['to'] = res['age_preference']['to'].toString();
+        height = res['height_preference'];
+        education = res["education_preference"];
+        familyBg = res['family_background_preference'];
+        personalIncome = res['personal_income_preference'];
+        marriageStatus = res['marriage_status_preference'];
+        location = res['preferred_location'];
+        relegion = (res['religion_preference'] as List<dynamic>)
+            .map((e) => e.toString())
+            .toList();
+
+        prefUpdate = true;
+
+        notifyListeners();
+      } else {
+        // If API call failed then show error message;
+        mySnackBar(ctx, "Something went wrong, try again later.");
+      }
+    } catch (er) {
+      print("Error: $er");
+      mySnackBar(ctx, "[Preferance:] Something went wrong, try again later.");
     }
   }
 }

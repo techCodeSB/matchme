@@ -33,10 +33,23 @@ class _RelegionSelectorState extends State<RelegionSelector> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final relegion = Provider.of<PreferanceController>(context, listen: false)
+          .relegion;
+      setState(() {
+        selectedReligions = relegion;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
       decoration: const BoxDecoration(
         color: Color(0xFF033A44),
         borderRadius: BorderRadius.only(
@@ -77,23 +90,29 @@ class _RelegionSelectorState extends State<RelegionSelector> {
             ),
           ),
           const SizedBox(height: 5.0),
-          Align(
-            alignment: Alignment.topRight,
-            child: TextButton(
-              onPressed: () {
-                Provider.of<PreferanceController>(
-                  context,
-                  listen: false,
-                ).nextIndex(12);
-
-                Provider.of<PreferanceController>(
-                  context,
-                  listen: false,
-                ).relegion = selectedReligions;
-              },
-              child: const Text(
-                "Select",
-                style: TextStyle(color: Colors.white, fontSize: 18.0),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: MaterialButton(
+                onPressed: () {
+                  Provider.of<PreferanceController>(
+                    context,
+                    listen: false,
+                  ).nextIndex(12);
+            
+                  Provider.of<PreferanceController>(
+                    context,
+                    listen: false,
+                  ).relegion = selectedReligions;
+                },
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)
+                ),
+                child: const Text(
+                  "Next",
+                ),
               ),
             ),
           ),

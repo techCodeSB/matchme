@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:matchme/widgets/registration_bottom_buttons.dart';
 import '../screen/personal_fst_details.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,12 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(size.height * 0.3),
+        child: DetailsHero(
+          size: size,
+        ),
+      ),
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -29,9 +36,6 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
           color: Colors.white,
           child: ListView(
             children: [
-              DetailsHero(size: size),
-              // *********************** TOP BAR CLOSE ***********************
-
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: size.width * 0.05,
@@ -76,6 +80,8 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                         ),
                       ],
                     ),
+                    // *********************** PERCENTAGE CLOSE ***********************
+
                     const SizedBox(height: 20.0),
                     DetailsTextfield(
                       onTap: () {
@@ -87,7 +93,7 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                       icon: Icons.person_outline,
                     ),
                     ErrorText(
-                      text: "Residence can't be blank",
+                      text: "Country can't be blank",
                       visible: Provider.of<RegisterController>(
                         context,
                         listen: true,
@@ -136,12 +142,14 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                             .setErrorMsg({"nationality": false});
                       },
                       items: const [
-                        "INDIAN",
+                        "Indian",
                         "NRI",
                       ],
                       icon: Icons.flag_outlined,
-                      defaultValue:
-                          RegisterController.nationality.toUpperCase(),
+                      defaultValue: RegisterController.nationality,
+                      onClear: () {
+                        RegisterController.nationality = "";
+                      },
                     ),
                     ErrorText(
                       text: "Nationality can't be blank",
@@ -158,9 +166,12 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                         Provider.of<RegisterController>(context, listen: false)
                             .setErrorMsg({"religious": false});
                       },
-                      items: const ["HINDU", "MUSLIM", "CHRISTIAN", "SIKH"],
+                      items: const ["Hindu", "Muslim", "Christian", "Sikh"],
                       icon: Icons.temple_hindu_outlined,
-                      defaultValue: RegisterController.religious.toUpperCase(),
+                      defaultValue: RegisterController.religious,
+                      onClear: () {
+                        RegisterController.religious = "";
+                      },
                     ),
                     ErrorText(
                       text: "Religious can't be blank",
@@ -191,82 +202,26 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                   fit: BoxFit.cover,
                 ),
               ),
-              // *********************** BUTTONS ***********************
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.05,
-                  vertical: size.height * 0.02,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const PersonalFstDetails(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            border: Border.all(
-                              color: const Color(0xFF033A44),
-                              width: 2.0,
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Back",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: Constant.subHadding,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20.0),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Provider.of<RegisterController>(
-                            context,
-                            listen: false,
-                          ).personalSecSubmit(context);
-                        },
-                        child: Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            color: const Color(0xFF033A44),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Submit",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: Constant.subHadding,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
+              const SizedBox(height: 100.0),
             ],
           ),
         ),
+      ),
+      bottomSheet: RegistrationBottomButtons(
+        onNextTap: () {
+          Provider.of<RegisterController>(
+            context,
+            listen: false,
+          ).personalSecSubmit(context);
+        },
+        onBackTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const PersonalFstDetails(),
+            ),
+          );
+        },
       ),
     );
   }

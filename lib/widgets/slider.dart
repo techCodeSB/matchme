@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matchme/constant.dart';
 
 // ============================
 // This Widget use in Profile
@@ -40,7 +41,8 @@ class _ProfileSliderState extends State<ProfileSlider> {
                   bottomRight: Radius.circular(30.0),
                 ),
                 image: DecorationImage(
-                  image: AssetImage(widget.imgs[index]),
+                  // image: AssetImage(widget.imgs[index]),
+                  image: NetworkImage("${Constant.imageUrl}${widget.imgs[index]}"),
                   fit: BoxFit.cover,
                 ),
               ),

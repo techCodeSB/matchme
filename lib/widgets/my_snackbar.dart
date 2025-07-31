@@ -7,6 +7,7 @@ ScaffoldFeatureController mySnackBar(ctx, text) {
       duration: const Duration(seconds: 2),
       closeIconColor: Colors.yellow,
       showCloseIcon: true,
+      behavior: SnackBarBehavior.floating,
     ),
   );
 }

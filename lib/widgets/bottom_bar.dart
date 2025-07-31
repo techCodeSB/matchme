@@ -39,6 +39,7 @@ class _BottomBarState extends State<BottomBar> {
         Provider.of<MainpageController>(context, listen: true).activeIcon;
 
     return Container(
+      color: Colors.transparent,
       clipBehavior: Clip.none,
       padding: EdgeInsets.zero,
       width: double.infinity,
@@ -52,11 +53,24 @@ class _BottomBarState extends State<BottomBar> {
       // ),
       child: Stack(
         children: [
-          Image.asset(
-            "assets/icons/bottomnav.png",
+          Container(
             height: 80.0,
             width: double.infinity,
-            fit: BoxFit.cover,
+            decoration: BoxDecoration(
+              image: const DecorationImage(
+                image: AssetImage("assets/icons/bottomnav.png"),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(30.0),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color.fromARGB(255, 197, 193, 193).withOpacity(0.3),
+                  spreadRadius: 2,
+                  blurRadius: 6,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
           ),
           Center(
             child: Padding(

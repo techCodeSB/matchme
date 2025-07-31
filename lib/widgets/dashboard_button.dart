@@ -38,13 +38,14 @@ class _DashboardButtonState extends State<DashboardButton> {
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
                 widget.icon,
                 color: Colors.white,
-                size: 28.0,
+                size: 32.0,
               ),
+              const SizedBox(height: 7.0),
               Text(
                 widget.text,
                 style: TextStyle(

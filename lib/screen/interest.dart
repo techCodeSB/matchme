@@ -4,6 +4,7 @@ import 'package:matchme/widgets/profile_card.dart';
 import 'package:provider/provider.dart';
 import '../constant.dart';
 
+
 class Interest extends StatefulWidget {
   const Interest({super.key});
 

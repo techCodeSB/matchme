@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:matchme/controller/mainpage_controller.dart';
+// import 'package:matchme/controller/profile_controller.dart';
 import 'package:provider/provider.dart';
 import '../screen/dashboard.dart';
 import '../screen/interest.dart';
@@ -15,13 +16,15 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  // :::Don't change the index::::
+  // :::: Don't change the index ::::
   List<Widget> screens = const [
     Dashboard(),
     Interest(),
     MyNotification(),
     Profile(),
   ];
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,5 +33,6 @@ class _MainPageState extends State<MainPage> {
           .currentBottomBarIndex],
       bottomNavigationBar: const BottomBar(),
     );
+
   }
 }

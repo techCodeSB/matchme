@@ -1,9 +1,8 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:matchme/constant.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:matchme/controller/interest_controller.dart';
 import 'package:provider/provider.dart';
-
 
 class ProfileCard extends StatefulWidget {
   final List<String> profilePhotos;
@@ -82,93 +81,40 @@ class _ProfileCardState extends State<ProfileCard> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0),
-                        padding: const EdgeInsets.all(10.0),
-                        width: double.infinity,
-                        height: size.height * 0.3 / 2,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(156, 0, 0, 0),
-                          borderRadius: BorderRadius.circular(15.0),
+                      ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(30.0),
+                          bottomRight: Radius.circular(30.0),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "John, 27",
-                              style: TextStyle(
-                                fontSize: 23.0,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                        child: Container(
+                          color: const Color.fromARGB(54, 12, 12, 12),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(
+                              sigmaX: 3,
+                              sigmaY: 3,
+                            ), // Blur strength
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 0.0,
                               ),
-                            ),
-                            const SizedBox(height: 3.0),
-                            const Text.rich(
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 12.0),
-                              TextSpan(
+                              padding: const EdgeInsets.all(20.0),
+                              width: double.infinity,
+                              child: const Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  WidgetSpan(
-                                    child: Icon(
-                                      Icons.location_on_outlined,
-                                      size: 12.0,
+                                  Text(
+                                    "John, 27",
+                                    style: TextStyle(
+                                      fontSize: 23.0,
                                       color: Colors.white,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  TextSpan(
-                                      text: "\tSan Francisco • 20 kms away")
                                 ],
                               ),
                             ),
-                            const Spacer(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                  width: 10.0,
-                                  height: 10.0,
-                                  decoration: BoxDecoration(
-                                    color:
-                                        const Color.fromARGB(255, 90, 206, 94),
-                                    borderRadius: BorderRadius.circular(100.0),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color:
-                                            Color.fromARGB(255, 172, 230, 106),
-                                        blurRadius: 5.0,
-                                        spreadRadius: 3.0,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 15.0,
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 30.0,
-                                    vertical: 7.0,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: const Color.fromARGB(
-                                          255, 153, 149, 149),
-                                    ),
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
-                                  child: Text(
-                                    "Active Now",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: Constant.subHadding,
-                                      fontSize: 14.0,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
+                          ),
                         ),
                       ),
                     ],

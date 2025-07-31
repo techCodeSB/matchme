@@ -34,27 +34,31 @@ class _NotificationPopupState extends State<NotificationPopup> {
               constraints:
                   const BoxConstraints(maxWidth: 600), // Good for tablets/web
               decoration: BoxDecoration(
-                color: const Color.fromARGB(62, 0, 0, 0),
+                color: const Color.fromARGB(69, 3, 58, 68),
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: Row(
                 children: [
                   Expanded(
                     child: Text(
-                      "🔔 Allow Notification to Get Update",
+                      "Allow Notification to Get Update",
                       style: TextStyle(
                         fontFamily: Constant.haddingFont,
-                        fontSize: size.width < 360 ? 12.0 : 12.0,
+                        fontSize: size.width < 360 ? 12.0 : 15.0,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10.0),
+                  const SizedBox(width: 5.0),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF033A44),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8.0,
-                        vertical: 8.0,
+                        vertical: 0.0,
+                      ),
+                      shape:  RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7.0), // No border radius
                       ),
                     ),
                     onPressed: () {
@@ -74,7 +78,7 @@ class _NotificationPopupState extends State<NotificationPopup> {
             ),
             Positioned(
               right: -8.0,
-              top: -12.0,
+              top: -10.0,
               child: InkWell(
                 onTap: () {
                   setState(() {
@@ -82,7 +86,7 @@ class _NotificationPopupState extends State<NotificationPopup> {
                   });
                 },
                 child: const CircleAvatar(
-                  radius: 14.0,
+                  radius: 10.0,
                   backgroundColor: Colors.white,
                   child: Icon(Icons.close, size: 16.0),
                 ),
