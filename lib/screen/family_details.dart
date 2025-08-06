@@ -187,11 +187,29 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                       },
                     ),
                     ErrorText(
-                      text: "No. of Siblings can't be blank",
+                      text: "No. of siblings can't be blank",
                       visible: Provider.of<RegisterController>(
                         context,
                         listen: true,
                       ).errMsg['noOfSibling']!,
+                    ),
+
+                    const SizedBox(height: 20.0),
+                    DetailsTextfield(
+                      onTap: () {
+                        Provider.of<RegisterController>(context, listen: false)
+                            .setErrorMsg({"hometown": false});
+                      },
+                      controller: RegisterController.hometown,
+                      hintText: "Home Town",
+                      icon: Icons.location_on_outlined,
+                    ),
+                    ErrorText(
+                      text: "Home town can't be blank",
+                      visible: Provider.of<RegisterController>(
+                        context,
+                        listen: true,
+                      ).errMsg['hometown']!,
                     ),
 
                     const SizedBox(height: 20.0),
@@ -217,7 +235,7 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                       },
                     ),
                     ErrorText(
-                      text: "Family Background can't be blank",
+                      text: "Family background can't be blank",
                       visible: Provider.of<RegisterController>(
                         context,
                         listen: true,
@@ -225,27 +243,12 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                     ),
 
                     const SizedBox(height: 20.0),
-                    DetailsTextfield(
-                      onTap: () {
-                        Provider.of<RegisterController>(context, listen: false)
-                            .setErrorMsg({"hometown": false});
-                      },
-                      controller: RegisterController.hometown,
-                      hintText: "Home Town",
-                      icon: Icons.location_on_outlined,
-                    ),
-                    ErrorText(
-                      text: "Home Town can't be blank",
-                      visible: Provider.of<RegisterController>(
-                        context,
-                        listen: true,
-                      ).errMsg['hometown']!,
-                    ),
-                    const SizedBox(height: 20.0),
                     Dropdown(
-                      hint: "Family Anual Income",
+                      hint: "Family Annual Income",
                       onChanged: (v) {
                         RegisterController.familyAnualIncome = v!;
+                        Provider.of<RegisterController>(context, listen: false)
+                            .setErrorMsg({"familyAnualIncome": false});
                       },
                       items: const [
                         "> 10L",
@@ -257,7 +260,19 @@ class _FamilyDetailsState extends State<FamilyDetails> {
                       ],
                       icon: Icons.currency_rupee_sharp,
                       defaultValue: RegisterController.familyAnualIncome,
+                      onClear: () {
+                        RegisterController.familyAnualIncome = "";
+                      },
                     ),
+                    ErrorText(
+                      text: "Family annual income can't be blank",
+                      visible: Provider.of<RegisterController>(
+                        context,
+                        listen: true,
+                      ).errMsg['familyAnualIncome']!,
+                    ),
+
+
                     const SizedBox(height: 20.0),
                     TextField(
                       controller: RegisterController.familyDescription,

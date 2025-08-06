@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:matchme/constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class PsychometricController extends ChangeNotifier {
   List<dynamic>? qaData;
   List<dynamic> userAnswer = [];
@@ -28,6 +29,7 @@ class PsychometricController extends ChangeNotifier {
     }
   }
 
+
   void nextCall(int index, String answer) {
     Map<dynamic, dynamic> selectedQa = Map.from(qaData![index]);
 
@@ -38,6 +40,7 @@ class PsychometricController extends ChangeNotifier {
     userAnswer.insert(index, selectedQa);
     notifyListeners();
   }
+
 
   Future<bool> submit(int index, String answer) async {
     nextCall(index, answer);

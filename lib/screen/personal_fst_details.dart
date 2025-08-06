@@ -28,11 +28,17 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
   }
 
   void _openDatePicker(BuildContext context) async {
+    final DateTime now = DateTime.now();
+    final DateTime maxDate = DateTime(now.year - 18); // youngest: 18 years old
+    final DateTime minDate = DateTime(now.year - 54); // oldest: 54 years old
+
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: selectedDate ?? DateTime.now(),
-      firstDate: DateTime(1985),
-      lastDate: DateTime.now(),
+      initialDate: selectedDate != null
+          ? selectedDate!
+          : maxDate, // default to max eligible age
+      firstDate: minDate,
+      lastDate: maxDate,
     );
 
     if (pickedDate != null) {
@@ -67,9 +73,11 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
     super.initState();
     selectedDate = RegisterController.dateOfBirth;
 
-    int hour = int.parse(RegisterController.timeOfBirth!.split(":")[0]);
-    int minute = int.parse(RegisterController.timeOfBirth!.split(":")[1]);
-    selectedTime = TimeOfDay(hour: hour, minute: minute);
+    if (selectedDate != null) {
+      int hour = int.parse(RegisterController.timeOfBirth!.split(":")[0]);
+      int minute = int.parse(RegisterController.timeOfBirth!.split(":")[1]);
+      selectedTime = TimeOfDay(hour: hour, minute: minute);
+    }
   }
 
   @override
@@ -147,7 +155,7 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
                       },
                     ),
                     ErrorText(
-                      text: "Full Name can't be blank",
+                      text: "Full name can't be blank",
                       visible: Provider.of<RegisterController>(
                         context,
                         listen: true,
@@ -218,7 +226,7 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
                       ),
                     ),
                     ErrorText(
-                      text: "Date of Birth can't be blank",
+                      text: "Date of birth can't be blank",
                       visible: Provider.of<RegisterController>(
                         context,
                         listen: true,
@@ -267,7 +275,7 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
                       },
                     ),
                     ErrorText(
-                      text: "Place of Birth can't be blank",
+                      text: "Place of birth can't be blank",
                       visible: Provider.of<RegisterController>(
                         context,
                         listen: true,

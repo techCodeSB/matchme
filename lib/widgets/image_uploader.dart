@@ -28,8 +28,8 @@ class _ImageUploaderState extends State<ImageUploader> {
       },
       child: DottedBorder(
         dashPattern: const [10, 3],
-        color: const Color(0xFF033A44),
-        strokeWidth: 2.0,
+        color: const Color.fromARGB(255, 168, 171, 172),
+        strokeWidth: 1.0,
         borderType: BorderType.RRect,
         radius: const Radius.circular(20.0),
         child: widget.image == null

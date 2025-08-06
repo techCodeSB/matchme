@@ -142,6 +142,7 @@ class _Lifestyle3State extends State<Lifestyle3> {
                   // height: size.height * 0.6,
                   // color: Colors.white,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Select up to 5 interest',
@@ -157,7 +158,7 @@ class _Lifestyle3State extends State<Lifestyle3> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: Constant.subHadding,
-                          fontSize: 16.0,
+                          fontSize: 18.0,
                           color: const Color(0xFF333333),
                         ),
                       ),
@@ -167,7 +168,7 @@ class _Lifestyle3State extends State<Lifestyle3> {
                                 listen: true)
                             .errMsg['interest']!,
                       ),
-                      const SizedBox(height: 15.0),
+                      const SizedBox(height: 30.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

@@ -35,9 +35,11 @@ class IncomeSelectorState extends State<IncomeSelector> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final income = Provider.of<PreferanceController>(context, listen: false)
           .personalIncome;
-      setState(() {
-        selectedIncome = income;
-      });
+      if (income != "") {
+        setState(() {
+          selectedIncome = income;
+        });
+      }
     });
   }
 

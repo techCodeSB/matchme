@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:matchme/constant.dart';
+import 'package:matchme/controller/profile_controller.dart';
 import 'package:matchme/controller/psychometric_controller.dart';
 import 'package:matchme/widgets/details_hero.dart';
 import 'package:provider/provider.dart';
@@ -78,7 +79,7 @@ class _PsychometricState extends State<Psychometric> {
                           horizontal: 20.0, vertical: 15.0),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? const Color(0xFF033A44)
+                            ? Constant.highlightColor
                             : const Color(0xFFD8F9FF),
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -191,6 +192,7 @@ class _PsychometricState extends State<Psychometric> {
                         actions: [
                           TextButton(
                             onPressed: () {
+                              Provider.of<ProfileController>(context, listen: false).getUserData(context);
                               Navigator.pop(context); //Close Popup;
                               Navigator.pop(context); //Back to Dashboard;
                             },

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:matchme/constant.dart';
 // import "package:flutter_svg/flutter_svg.dart";
 import 'package:matchme/controller/mainpage_controller.dart';
+import 'package:matchme/controller/profile_controller.dart';
 import 'package:provider/provider.dart';
 
 class BottomBar extends StatefulWidget {
@@ -64,7 +66,8 @@ class _BottomBarState extends State<BottomBar> {
               borderRadius: BorderRadius.circular(30.0),
               boxShadow: [
                 BoxShadow(
-                  color: const Color.fromARGB(255, 197, 193, 193).withOpacity(0.3),
+                  color:
+                      const Color.fromARGB(255, 197, 193, 193).withOpacity(0.3),
                   spreadRadius: 2,
                   blurRadius: 6,
                   offset: Offset(0, 3),
@@ -99,6 +102,11 @@ class _BottomBarState extends State<BottomBar> {
                       "assets/icons/Heart${activeIcon == "heart" ? "_active" : ""}.png",
                       height: 25.0,
                     ),
+                    // child: Icon(
+                    //   Icons.join_inner_outlined,
+                    //   size: 30.0,
+                    //   color: activeIcon == "heart"? Colors.grey: Colors.black,
+                    // ),
                   ),
                   InkWell(
                     onTap: () {
@@ -119,9 +127,17 @@ class _BottomBarState extends State<BottomBar> {
                       Provider.of<MainpageController>(context, listen: false)
                           .setBottomIndex(3);
                     },
-                    child: const CircleAvatar(
+                    child: CircleAvatar(
                       radius: 15,
-                      child: Text("S"),
+                      backgroundImage: Provider.of<ProfileController>(context,
+                                      listen: true)
+                                  .userData['image']?["one"] ==
+                              null
+                          ? const NetworkImage(
+                              "https://tisindia.net/profile/profile-4.jpg")
+                          : NetworkImage(
+                              "${Constant.imageUrl}${Provider.of<ProfileController>(context, listen: true).userData['image']["one"]}"),
+                      // child: const Text("S"),
                     ),
                   ),
                 ],

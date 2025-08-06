@@ -14,18 +14,18 @@ class LocationSelectorState extends State<LocationSelector> {
   List<String> location = ["Any where", "India", "Abroad"];
   String? selectedlocation;
 
-
-
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final location = Provider.of<PreferanceController>(context, listen: false)
-          .location;
-      setState(() {
-        selectedlocation = location;
-      });
+      final location =
+          Provider.of<PreferanceController>(context, listen: false).location;
+      if (location != "") {
+        setState(() {
+          selectedlocation = location;
+        });
+      }
     });
   }
 

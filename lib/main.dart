@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../controller/psychometric_controller.dart';
+import 'package:matchme/controller/notification_controller.dart';
+import './controller/match_controller.dart';
+import './controller/psychometric_controller.dart';
 import 'package:provider/provider.dart';
 import './controller/interest_controller.dart';
 import 'controller/profile_controller.dart';
@@ -8,28 +10,7 @@ import './controller/photoupload_controller.dart';
 import './controller/preferance_controller.dart';
 import './controller/login_controller.dart';
 import './controller/register_controller.dart';
-// import 'package:matchme/screen/opening.dart';
-// import './screen/login.dart';
-// import './screen/otp.dart';
-// import './screen/get_started.dart';
-// import './screen/family_details.dart';
-// import './screen/qualification_details.dart';
-// import './screen/work_details.dart';
-// import './screen/more_question_next.dart';
-// import './screen/chat_question.dart';
-// import './screen/personal_fst_details.dart';
-// import 'screen/personal_sec_details.dart';
-// import './screen/personal_trd_details.dart';
-// import './screen/interest.dart';
-// import './screen/goto_profile.dart';
-// import './screen/photo_upload.dart';
-// import './screen/profile.dart';
 import './screen/splash.dart';
-// import './screen/lifestyle_5.dart';
-// import './screen/introduction.dart';
-// import './screen/notification.dart';
-// import './screen/interest.dart';
-// import '../screen/main_page.dart';
 
 
 // :::::::::: JAY JAGANNATH 0!0 ::::::::::/
@@ -45,6 +26,8 @@ void main() {
       ChangeNotifierProvider(create: (context) => InterestController()),
       ChangeNotifierProvider(create: (context) => ProfileController()),
       ChangeNotifierProvider(create: (context) => PsychometricController()),
+      ChangeNotifierProvider(create: (context) => MatchController()),
+      ChangeNotifierProvider(create: (context) => NotificationController()),
     ],
     child: const App(),
   ));
@@ -58,6 +41,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../constant.dart';
 
 class NotificationPopup extends StatefulWidget {
@@ -34,7 +35,7 @@ class _NotificationPopupState extends State<NotificationPopup> {
               constraints:
                   const BoxConstraints(maxWidth: 600), // Good for tablets/web
               decoration: BoxDecoration(
-                color: const Color.fromARGB(69, 3, 58, 68),
+                color: Constant.highlightColor,
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: Row(
@@ -57,12 +58,14 @@ class _NotificationPopupState extends State<NotificationPopup> {
                         horizontal: 8.0,
                         vertical: 0.0,
                       ),
-                      shape:  RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7.0), // No border radius
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(7.0), // No border radius
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       // handle allow action
+                      await openAppSettings();
                     },
                     child: Text(
                       "Allow",

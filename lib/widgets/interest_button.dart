@@ -42,7 +42,7 @@ class _InterestButtonState extends State<InterestButton> {
           borderRadius: BorderRadius.circular(30.0),
           border: Border.all(color: const Color(0xFF033A44), width: 1.5),
           color: widget.isSelected
-              ? const Color(0xFF033A44)
+              ? Constant.highlightColor
               : Colors.white,
         ),
         child: Row(

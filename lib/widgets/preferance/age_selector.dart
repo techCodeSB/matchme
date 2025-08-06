@@ -22,10 +22,12 @@ class AgeSelectorState extends State<AgeSelector> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final agePref =
           Provider.of<PreferanceController>(context, listen: false).agePref;
-      setState(() {
-        fromAge = int.tryParse(agePref["from"] ?? '0') ?? 0;
-        toAge = int.tryParse(agePref["to"] ?? '0') ?? 0;
-      });
+      if (agePref.isNotEmpty) {
+        setState(() {
+          fromAge = int.tryParse(agePref["from"] ?? '0') ?? 0;
+          toAge = int.tryParse(agePref["to"] ?? '0') ?? 0;
+        });
+      }
     });
   }
 

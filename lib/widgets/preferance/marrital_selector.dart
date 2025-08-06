@@ -14,7 +14,6 @@ class MarritalSelectorState extends State<MarritalSelector> {
   List<String> marriedStatus = ["Any", "Never Married", "Divorced", "Widowed"];
   String? selectedmarriedStatus;
 
-
   @override
   void initState() {
     super.initState();
@@ -22,9 +21,11 @@ class MarritalSelectorState extends State<MarritalSelector> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final mStatus = Provider.of<PreferanceController>(context, listen: false)
           .marriageStatus;
-      setState(() {
-        selectedmarriedStatus = mStatus;
-      });
+      if (mStatus != "") {
+        setState(() {
+          selectedmarriedStatus = mStatus;
+        });
+      }
     });
   }
 

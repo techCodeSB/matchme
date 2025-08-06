@@ -40,14 +40,14 @@ class _RadioState extends State<Radio> {
       width: double.infinity,
       margin: const EdgeInsets.only(top: 10.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           widget.title != null
               ? Text(
                   widget.title!,
-                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: Constant.subHadding,
-                    fontSize: 15.0,
+                    fontSize: 18.0,
                     color: const Color(0xFF333333),
                   ),
                 )
@@ -75,7 +75,7 @@ class _RadioState extends State<Radio> {
                       horizontal: 5.0, vertical: 10.0),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: isSelected ? const Color(0xFF033A44) : Colors.white,
+                    color: isSelected ? Constant.highlightColor : Colors.white,
                     border:
                         Border.all(color: const Color(0xFF033A44), width: 1.5),
                     borderRadius: BorderRadius.circular(30.0),

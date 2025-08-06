@@ -1,70 +1,147 @@
-import 'dart:async';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:matchme/constant.dart';
+import 'package:matchme/controller/match_controller.dart';
+import 'package:matchme/widgets/my_snackbar.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class InterestController extends ChangeNotifier {
-  bool snap = false;
-  String swipeDirection = "none"; // "left", "right", "up"
-  bool isLovesSymbolRed = false;
-  List<String> stackData = [
-    "http://13.203.218.134:1337/uploads/testimonial_2_2ad2cab837.png",
-    "http://13.203.218.134:1337/uploads/Cancer_Care_F_Image_a80443046f.jpg",
-    "http://13.203.218.134:1337/uploads/Obstetrics_and_Gynecology_F_Image_43c3d6cae1.jpg",
-    "http://13.203.218.134:1337/uploads/testimonial_3_1f50ddc0a5.png",
-  ];
+  Map<String, dynamic>? allInterest;
+  List<dynamic>? receiveInterese;
+  List<dynamic>? allConnections;
+  int? activeMatchProfileIndex;
 
-  List<String> newData = [
-    "http://13.203.218.134:1337/uploads/test_1_7f8edbceb1.png",
-    "http://13.203.218.134:1337/uploads/testimonial_4_1fa56045f8.png",
-    "http://13.203.218.134:1337/uploads/3_cosmetic_dentistry_procedures_you_did_not_know_about_9529ab5fb0.jpg",
-    "http://13.203.218.134:1337/uploads/17_4_things_you_need_to_know_about_eye_yoga_today_1c125ada85.jpg"
-  ];
-
-  void setIsLovesSymbolRed() {
-    isLovesSymbolRed = true;
+  void setProfileDetails(index, ctx, type) {
+    if (type == "receive") {
+      Provider.of<MatchController>(ctx, listen: false).profileDetails =
+          receiveInterese?[index]['sender_user'];
+    } 
+    else if(type== "connection"){
+      Provider.of<MatchController>(ctx, listen: false).profileDetails =
+          allConnections?[index];
+    }
+    else {
+      Provider.of<MatchController>(ctx, listen: false).profileDetails =
+          allInterest?['matches'][index];
+    }
     notifyListeners();
+  }
 
-    Timer(const Duration(milliseconds: 1300), () {
-      isLovesSymbolRed = false;
+  Future<void> getInterestData(type) async {
+    Uri url = Uri.parse("${Constant.api}interest/get");
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    final token = pref.getString("token");
+
+    try {
+      var req = await http.post(
+        url,
+        headers: {"Content-Type": 'application/json'},
+        body: jsonEncode({
+          "token": token,
+          "type": type,
+        }),
+      );
+
+      var res = jsonDecode(req.body);
+      if (req.statusCode == 200) {
+        if (type == 1) {
+          allInterest = res;
+        } else if (type == 2) {
+          receiveInterese = res;
+        }
+      } else {
+        allInterest = {};
+        receiveInterese = [];
+      }
       notifyListeners();
-    });
+    } catch (e) {
+      debugPrint("Error fetching user data: $e");
+    }
   }
 
-  void setSnap(v) {
-    snap = v;
-    notifyListeners();
-  }
+  Future<void> sendInterest(interestUserId, type, ctx) async {
+    Uri url = Uri.parse("${Constant.api}interest/send");
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    final token = pref.getString("token");
 
-  void pushStackData(img) {
-    stackData.insert(0, img);
-    notifyListeners();
-  }
+    try {
+      var req = await http.post(
+        url,
+        headers: {"Content-Type": 'application/json'},
+        body: jsonEncode({
+          "token": token,
+          "type": type,
+          "matchUserId": interestUserId,
+        }),
+      );
 
-  Future<void> popStackData({required String direction}) async {
-    if (snap || stackData.isEmpty) return;
-
-    swipeDirection = direction;
-    snap = true;
-    notifyListeners();
-
-    // Wait for swipe animation to complete
-    await Future.delayed(const Duration(milliseconds: 1600));
-
-    // Remove the top card
-    stackData.removeLast();
-    notifyListeners();
-
-    // Allow a short delay to let UI settle before inserting
-    await Future.delayed(const Duration(milliseconds: 30));
-
-    // Reset snap before inserting new card to avoid animation glitch
-    snap = false;
-    notifyListeners();
-
-    // Add a new card to the bottom of the stack (start of the list)
-    if (newData.isNotEmpty) {
-      stackData.insert(0, newData.removeAt(0));
+      if (req.statusCode == 200) {
+        Provider.of<MatchController>(ctx, listen: false).getMatches();
+      } else {
+        allInterest = {};
+      }
       notifyListeners();
+    } catch (e) {
+      debugPrint("Error fetching user data: $e");
+    }
+  }
+
+  Future<void> sendConnection(connectionUserId, type, ctx) async {
+    Uri url = Uri.parse("${Constant.api}connection/accept");
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    final token = pref.getString("token");
+
+    try {
+      var req = await http.post(
+        url,
+        headers: {"Content-Type": 'application/json'},
+        body: jsonEncode({
+          "token": token,
+          "type": type,
+          "connectionUserId": connectionUserId,
+        }),
+      );
+
+      if (req.statusCode == 200) {
+        receiveInterese!
+            .removeWhere((ri) => ri["sender_user"]['_id'] == connectionUserId);
+        mySnackBar(ctx, "You are now connect");
+      } else {
+        mySnackBar(ctx, "Connection not send");
+        allInterest = {};
+      }
+      notifyListeners();
+    } catch (e) {
+      mySnackBar(ctx, "Someting went wrong");
+      debugPrint("Error fetching user data: $e");
+    }
+  }
+
+  Future<void> getConnection() async {
+    Uri url = Uri.parse("${Constant.api}connection/get");
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    final token = pref.getString("token");
+
+    try {
+      var req = await http.get(
+        url,
+        headers: {
+          "Content-Type": 'application/json',
+          "Authorization": "Bearer $token",
+        },
+      );
+
+      var res = jsonDecode(req.body);
+      if (req.statusCode == 200) {
+        allConnections = res;
+      } else {
+        allConnections = [];
+      }
+      notifyListeners();
+    } catch (e) {
+      debugPrint("Error fetching user data: $e");
     }
   }
 }

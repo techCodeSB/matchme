@@ -6,6 +6,8 @@ class Constant {
   static final String? subHadding = GoogleFonts.outfit().fontFamily;
   static Icon backIcon = const Icon(Icons.arrow_back_ios, size: 20.0);
   static String api = "http://10.0.2.2:8080/api/v1/";
-  // static String api = "https://matchme-x833.onrender.com/api/v1/";
   static String imageUrl = "http://10.0.2.2:8080/api/v1/users/upload/";
+  // static String api = "https://localhost:8080/api/v1/";
+  // static String imageUrl = "https://localhost:8080/api/v1/users/upload/";
+  static Color highlightColor = const Color(0xFFc6b27f); 
 }

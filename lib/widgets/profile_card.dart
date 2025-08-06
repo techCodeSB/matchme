@@ -1,14 +1,20 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:matchme/constant.dart';
 import 'package:matchme/controller/interest_controller.dart';
+import 'package:matchme/controller/match_controller.dart';
+import 'package:matchme/helper/get_age_from_dob.dart';
+import 'package:matchme/screen/user_profile.dart';
 import 'package:provider/provider.dart';
 
 class ProfileCard extends StatefulWidget {
-  final List<String> profilePhotos;
+  final Map<String, dynamic> userData;
+  final int index;
+  final String page;
   const ProfileCard({
     super.key,
-    required this.profilePhotos,
+    required this.userData,
+    required this.index,
+    required this.page,
   });
 
   @override
@@ -19,155 +25,195 @@ class _ProfileCardState extends State<ProfileCard> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    var getSnap = Provider.of<InterestController>(context, listen: true).snap;
-    var direction =
-        Provider.of<InterestController>(context, listen: true).swipeDirection;
 
     return Container(
       width: double.infinity,
-      height: size.height * 1.3 / 2,
-      padding: const EdgeInsets.all(35.0),
-      child: Center(
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            for (int i = 0; i < widget.profilePhotos.length; i++)
-              // ::::::::: Profile Image :::::::
-              Positioned(
-                right: (i == 0
-                    ? 30.0
-                    : i == 1
-                        ? 20.0
-                        : i == 2
-                            ? 10.0
-                            : i == 3
-                                ? 0.0
-                                : 0.0),
-                left: (i == 0
-                    ? 30.0
-                    : i == 1
-                        ? 20.0
-                        : i == 2
-                            ? 10.0
-                            : i == 3
-                                ? 0.0
-                                : 0.0),
-                top: (i == 1
-                    ? 20.0
-                    : i == 2
-                        ? 40.0
-                        : i == 3
-                            ? 60.0
-                            : 0.0),
-                bottom: 0.0,
-                child: Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color.fromARGB(255, 91, 87, 87),
-                        blurRadius: 5.0,
-                      )
-                    ],
-                    image: DecorationImage(
-                      image: NetworkImage(widget.profilePhotos[i]),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  // ::::::::::: Details Card Here ::::::::
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(30.0),
-                          bottomRight: Radius.circular(30.0),
+      height: size.height * 0.65,
+      margin: EdgeInsets.only(
+        bottom: size.width * 0.05,
+        left: size.width * 0.05,
+        right: size.width * 0.05,
+        top: size.width * 0.03,
+      ),
+      padding: const EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(40.0),
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromARGB(255, 203, 198, 198),
+            blurRadius: 10.0,
+            spreadRadius: 5.0,
+          ),
+        ],
+        border: Border.all(
+          color: const Color.fromARGB(179, 175, 171, 171),
+          width: 1.0,
+        ),
+      ),
+      child: Column(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: Image.network(
+                    "${Constant.imageUrl}${widget.userData['image']['one']}",
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: size.height * 0.7 / 2,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  (loadingProgress.expectedTotalBytes ?? 1)
+                              : null, // null makes it indeterminate
                         ),
-                        child: Container(
-                          color: const Color.fromARGB(54, 12, 12, 12),
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(
-                              sigmaX: 3,
-                              sigmaY: 3,
-                            ), // Blur strength
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 10.0,
-                                vertical: 0.0,
-                              ),
-                              padding: const EdgeInsets.all(20.0),
-                              width: double.infinity,
-                              child: const Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "John, 27",
-                                    style: TextStyle(
-                                      fontSize: 23.0,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ),
-              )
-                  .animate(
-                    target:
-                        i == widget.profilePhotos.length - 1 && getSnap ? 1 : 0,
-                  )
-                  .slide(
-                    duration: 2000.ms,
-                    begin: Offset.zero,
-                    end: direction == 'left'
-                        ? const Offset(-1.5, -0.2)
-                        : direction == 'right'
-                            ? const Offset(1.5, -0.2)
-                            : const Offset(0.0, -2.0), // up
-                    curve: Curves.easeOutBack,
-                  )
-                  .rotate(
-                    duration: 800.ms,
-                    delay: 100.ms,
-                    end: direction == 'left'
-                        ? -0.09
-                        : direction == 'right'
-                            ? 0.09
-                            : 0.0, // no rotation for up
-                    alignment: direction == 'left'
-                        ? Alignment.bottomRight
-                        : direction == 'right'
-                            ? Alignment.bottomLeft
-                            : Alignment.center,
-                    curve: Curves.easeOut,
-                  )
-                  .scale(
-                    duration: 800.ms,
-                    begin: const Offset(1.0, 1.0),
-                    end: const Offset(0.8, 0.8),
-                    curve: Curves.easeOut,
-                  )
-                  .fadeOut(
-                    duration: 400.ms,
-                    delay: 200.ms, // starts mid-swipe
-                    curve: Curves.easeOut,
-                  )
-                  .blur(
-                    duration: 400.ms,
-                    delay: 300.ms,
-                    curve: Curves.easeOut,
+                const SizedBox(height: 20.0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    "${widget.userData['full_name']}, ${getAgeFromYMD(widget.userData['dob'])}",
+                    style: TextStyle(
+                      fontFamily: Constant.haddingFont,
+                      color: const Color(0xFF0C5461),
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-          ],
-        ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        WidgetSpan(
+                          child: Icon(
+                            Icons.location_on_rounded,
+                            color: Constant.highlightColor,
+                            size: 20.0,
+                          ),
+                        ),
+                        TextSpan(
+                          text:
+                              "\t${widget.userData['country']}, ${widget.userData['city']}",
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontFamily: Constant.subHadding,
+                            color: Colors.black,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    "${widget.userData['about_yourself'].length > 50 ? (widget.userData['about_yourself']).substring(0, 50) : widget.userData['about_yourself']}${"..."}",
+                    style: TextStyle(
+                      fontFamily: Constant.subHadding,
+                      color: Colors.black,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          MaterialButton(
+            onPressed: () {
+              if (widget.page == "match") {
+                Provider.of<MatchController>(context, listen: false)
+                    .setProfileDetails(widget.index);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserProfile(page: widget.page),
+                  ),
+                ).then((v) {
+                  if (v == true) {
+                    Provider.of<MatchController>(context, listen: false)
+                        .getMatches();
+                  }
+                });
+              } else if (widget.page == "interestsend") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserProfile(
+                      page: widget.page,
+                    ),
+                  ),
+                ).then((v) {
+                  if (v == true) {
+                    Provider.of<MatchController>(context, listen: false)
+                        .getMatches();
+                  }
+                });
+                Provider.of<InterestController>(context, listen: false)
+                    .setProfileDetails(widget.index, context, 'receive');
+              } else if (widget.page == "interestreceive") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserProfile(
+                      page: widget.page,
+                    ),
+                  ),
+                ).then((v) {
+                  if (v == true) {
+                    Provider.of<MatchController>(context, listen: false)
+                        .getMatches();
+                  }
+                });
+                Provider.of<InterestController>(context, listen: false)
+                    .setProfileDetails(widget.index, context, 'receive');
+              } else if (widget.page == "connection") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserProfile(
+                      page: widget.page,
+                    ),
+                  ),
+                ).then((v) {
+                  if (v == true) {
+                    Provider.of<MatchController>(context, listen: false)
+                        .getMatches();
+                  }
+                });
+                Provider.of<InterestController>(context, listen: false)
+                    .setProfileDetails(widget.index, context, 'connection');
+              }
+            },
+            color: const Color.fromARGB(255, 224, 223, 223),
+            minWidth: size.width / 2,
+            height: 50.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            child: Text(
+              'View Profile',
+              style: TextStyle(
+                fontFamily: Constant.haddingFont,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+                fontSize: 20.0,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10.0),
+        ],
       ),
     );
   }

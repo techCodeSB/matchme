@@ -185,7 +185,7 @@ class PreferanceController extends ChangeNotifier {
       "marriage_status_preference": marriageStatus,
       "religion_preference": relegion,
       "preferred_location": location,
-      "update" : prefUpdate
+      "update": prefUpdate
     };
 
     try {
@@ -265,8 +265,38 @@ class PreferanceController extends ChangeNotifier {
         mySnackBar(ctx, "Something went wrong, try again later.");
       }
     } catch (er) {
-      print("Error: $er");
+      debugPrint("Error: $er");
       mySnackBar(ctx, "[Preferance:] Something went wrong, try again later.");
     }
+  }
+
+  void clearData() {
+    prefUpdate = false;
+    agePref.clear();
+    height = "";
+    education = "";
+    familyBg = "";
+    personalIncome = "";
+    marriageStatus = "";
+    relegion = [];
+    location = "";
+
+    renderQ = [
+      {
+        "content":
+            "Let’s get to know about your preferences for a suitable match !",
+        "type": "system",
+      },
+      {
+        "content": "What is the age you preferred ?",
+        "type": "system",
+      },
+      {
+        "content": const AgeSelector(),
+        "type": "user",
+      }
+    ];
+
+    notifyListeners();
   }
 }

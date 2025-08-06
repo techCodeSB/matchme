@@ -166,7 +166,14 @@ class _PersonalSecDetailsState extends State<PersonalSecDetails> {
                         Provider.of<RegisterController>(context, listen: false)
                             .setErrorMsg({"religious": false});
                       },
-                      items: const ["Hindu", "Muslim", "Christian", "Sikh"],
+                      items: const [
+                        "Hindu",
+                        "Sikh",
+                        "Christian",
+                        "Jain",
+                        "Buddhist",
+                        "Muslim"
+                      ],
                       icon: Icons.temple_hindu_outlined,
                       defaultValue: RegisterController.religious,
                       onClear: () {

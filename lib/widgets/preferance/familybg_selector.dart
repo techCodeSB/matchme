@@ -14,7 +14,6 @@ class FamilybgSelectorState extends State<FamilybgSelector> {
   List<String> familyBg = ["Any", "Business", "Service"];
   String? selectedfamilyBg;
 
-
   @override
   void initState() {
     super.initState();
@@ -22,9 +21,11 @@ class FamilybgSelectorState extends State<FamilybgSelector> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final familyBg =
           Provider.of<PreferanceController>(context, listen: false).familyBg;
-      setState(() {
-        selectedfamilyBg = familyBg;
-      });
+      if (familyBg != "") {
+        setState(() {
+          selectedfamilyBg = familyBg;
+        });
+      }
     });
   }
 

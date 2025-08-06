@@ -23,10 +23,12 @@ class HeightSelectorState extends State<HeightSelector> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final height =
           Provider.of<PreferanceController>(context, listen: false).height;
-      setState(() {
-        selectedFeet = int.parse(height.split(".")[0]);
-        selectedInch = int.parse(height.split(".")[1]);
-      });
+      if (height != "") {
+        setState(() {
+          selectedFeet = int.parse(height.split(".")[0]);
+          selectedInch = int.parse(height.split(".")[1]);
+        });
+      }
     });
   }
 

@@ -11,7 +11,7 @@ class EducationSelector extends StatefulWidget {
 }
 
 class EducationSelectorState extends State<EducationSelector> {
-  List<String> education = ["Any", "School", "Grad", "Post-Grad", "Ph.D"];
+  List<String> education = ["Any", "School", "Graduation", "Post-Grad", "Ph.D"];
   String? selectedEducation;
 
   @override
@@ -21,9 +21,11 @@ class EducationSelectorState extends State<EducationSelector> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final education =
           Provider.of<PreferanceController>(context, listen: false).education;
-      setState(() {
-        selectedEducation = education;
-      });
+      if (education != "") {
+        setState(() {
+          selectedEducation = education;
+        });
+      }
     });
   }
 

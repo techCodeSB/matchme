@@ -77,13 +77,15 @@ class _IntroductionState extends State<Introduction> {
               ),
               const SizedBox(height: 20.0),
               // ::::::::::::::::::::::::::::::::::::::::::::::: FORM FIELDS ::::::::::::::::::::::::::::::::::::::::::::::::
-              Text(
-                "Please write a bried introduction",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: const Color(0xFF033A44),
-                  fontFamily: Constant.subHadding,
-                  fontSize: 15.0,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                child: Text(
+                  "Please write a bried introduction",
+                  style: TextStyle(
+                    color: const Color(0xFF033A44),
+                    fontFamily: Constant.subHadding,
+                    fontSize: 18.0,
+                  ),
                 ),
               ),
               const SizedBox(height: 15.0),

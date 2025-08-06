@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../controller/preferance_controller.dart';
 
-
 class RelegionSelector extends StatefulWidget {
   const RelegionSelector({super.key});
 
@@ -37,11 +36,13 @@ class _RelegionSelectorState extends State<RelegionSelector> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final relegion = Provider.of<PreferanceController>(context, listen: false)
-          .relegion;
-      setState(() {
-        selectedReligions = relegion;
-      });
+      final relegion =
+          Provider.of<PreferanceController>(context, listen: false).relegion;
+      if (relegion.isNotEmpty) {
+        setState(() {
+          selectedReligions = relegion;
+        });
+      }
     });
   }
 
@@ -100,7 +101,7 @@ class _RelegionSelectorState extends State<RelegionSelector> {
                     context,
                     listen: false,
                   ).nextIndex(12);
-            
+
                   Provider.of<PreferanceController>(
                     context,
                     listen: false,
@@ -108,8 +109,7 @@ class _RelegionSelectorState extends State<RelegionSelector> {
                 },
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0)
-                ),
+                    borderRadius: BorderRadius.circular(30.0)),
                 child: const Text(
                   "Next",
                 ),

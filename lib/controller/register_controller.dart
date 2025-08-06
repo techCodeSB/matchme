@@ -134,6 +134,7 @@ class RegisterController extends ChangeNotifier {
     "motherOcco": false,
     "noOfSibling": false,
     "familyBackground": false,
+    "familyAnualIncome": false,
 
     // qualification;
     "qualification": false,
@@ -394,6 +395,7 @@ class RegisterController extends ChangeNotifier {
         motherOccupation.isEmpty ||
         noOfSibling.isEmpty ||
         familyBackground.isEmpty ||
+        familyAnualIncome.isEmpty ||
         familyDescription.text.isEmpty) {
       if (fathername.text.trim().isEmpty) {
         setErrorMsg({"fathername": true});
@@ -418,6 +420,9 @@ class RegisterController extends ChangeNotifier {
       }
       if (familyBackground.trim().isEmpty) {
         setErrorMsg({"familyBackground": true});
+      }
+      if (familyAnualIncome.trim().isEmpty) {
+        setErrorMsg({"familyAnualIncome": true});
       }
 
       return;
@@ -720,8 +725,8 @@ class RegisterController extends ChangeNotifier {
 
   //
   void lifeStyle5Submit(ctx) async {
-    var getStatus = await SplashController.getSteps();
-    var status = getStatus['registration_status'];
+    // var getStatus = await SplashController.getSteps();
+    // var status = getStatus['registration_status'];
 
     if (socialise.isEmpty ||
         goOut.isEmpty ||
@@ -817,5 +822,71 @@ class RegisterController extends ChangeNotifier {
     } else {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
+  }
+
+  static void clearAllData() {
+    // TextEditingControllers
+    fullname.clear();
+    nickname.clear();
+    placeOfBirth.clear();
+    country.clear();
+    city.clear();
+    locality.clear();
+    community.clear();
+    medical.clear();
+    whatsappNumber.clear();
+    weight.clear();
+    fathername.clear();
+    mothername.clear();
+    hometown.clear();
+    familyDescription.clear();
+    schoolName.clear();
+    ugCollegeName.clear();
+    pgCollegeName.clear();
+    phdCollegeName.clear();
+    otherDetails.clear();
+    highestDegree.clear();
+    industry.clear();
+    orgnization.clear();
+    designation.clear();
+    turnover.clear();
+    website.clear();
+    introduction.clear();
+
+    // Normal variables
+    gender = "";
+    dateOfBirth = null;
+    timeOfBirth = null;
+    nationality = "";
+    religious = "";
+    heightFeet = "";
+    heightInch = "";
+    weightUnit = "";
+    maritalStatus = "";
+    eatingPref = "";
+    showWeightOnProfile = false;
+    fromMaritalStatusYear = "";
+    toMaritalStatusYear = "";
+    doYouHaveKids = "";
+    fatherOccupation = "";
+    motherOccupation = "";
+    noOfSibling = "";
+    familyBackground = "";
+    familyAnualIncome = "";
+    qualification = "";
+    profession = "";
+    anualIncome = "";
+    drink = "";
+    smoker = "";
+    workout = "";
+    weekendActivites = [];
+    interest = [];
+    holidays = [];
+    eatOut = "";
+    travle = "";
+    socialise = "";
+    goOut = "";
+    spritual = "";
+    howReligious = "";
   }
 }

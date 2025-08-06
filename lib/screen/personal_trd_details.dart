@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:matchme/screen/personal_sec_details.dart';
+import 'package:matchme/widgets/my_snackbar.dart';
 import 'package:matchme/widgets/registration_bottom_buttons.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../controller/register_controller.dart';
@@ -38,9 +39,17 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
     if (pickedDate != null) {
       setState(() {
         if (which == "from") {
+          if (toYear != null && pickedDate.year > toYear!.year) {
+            mySnackBar(context, "Invalid years select");
+            return;
+          }
           fromYear = pickedDate;
           RegisterController.fromMaritalStatusYear = pickedDate.year.toString();
         } else {
+          if (fromYear != null && pickedDate.year < fromYear!.year) {
+            mySnackBar(context, "Invalid years select");
+            return;
+          }
           toYear = pickedDate;
           RegisterController.toMaritalStatusYear = pickedDate.year.toString();
         }
@@ -51,9 +60,15 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
   @override
   void initState() {
     super.initState();
-    maritalStatus = RegisterController.maritalStatus;
-    fromYear = DateTime(int.parse(RegisterController.fromMaritalStatusYear));
-    toYear = DateTime(int.parse(RegisterController.toMaritalStatusYear));
+    if (RegisterController.maritalStatus != "") {
+      maritalStatus = RegisterController.maritalStatus;
+    }
+
+    if (RegisterController.fromMaritalStatusYear != "" &&
+        RegisterController.toMaritalStatusYear != "") {
+      fromYear = DateTime(int.parse(RegisterController.fromMaritalStatusYear));
+      toYear = DateTime(int.parse(RegisterController.toMaritalStatusYear));
+    }
 
     dontDisplayProfile = RegisterController.showWeightOnProfile;
   }
@@ -224,7 +239,7 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                                   .setErrorMsg({'weightUnit': false});
                             },
                             items: const ["Kgs", "lbs"],
-                            icon: null,
+                            icon: FontAwesome.weight_scale_solid,
                             onClear: () {
                               RegisterController.weightUnit = "";
                             },
@@ -241,23 +256,29 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                           Provider.of<RegisterController>(context, listen: true)
                               .errMsg['weightUnit']!,
                     ),
-                    const SizedBox(height: 20.0),
+                    const SizedBox(height: 5.0),
                     Row(
                       children: [
-                        Checkbox(
-                          value: dontDisplayProfile,
-                          onChanged: (v) {
-                            setState(() {
-                              dontDisplayProfile = v!;
-                            });
-                            RegisterController.showWeightOnProfile =
-                                dontDisplayProfile;
-                          },
+                        Padding(
+                          padding: EdgeInsets.zero,
+                          child: Checkbox(
+                            value: dontDisplayProfile,
+                            onChanged: (v) {
+                              setState(() {
+                                dontDisplayProfile = v!;
+                              });
+                              RegisterController.showWeightOnProfile =
+                                  dontDisplayProfile;
+                            },
+                            visualDensity: VisualDensity.compact,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                          ),
                         ),
                         const Text("Don't display on my profile"),
                       ],
                     ),
-                    const SizedBox(height: 20.0),
+                    // const SizedBox(height: 10.0),
                     my_radio.Radio(
                       title: "Tell us about your eating preferences?",
                       items: const ["Veg", "Non-Veg", "Vegan"],
@@ -291,7 +312,7 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                       onClear: () {
                         RegisterController.maritalStatus = "";
                         setState(() {
-                          maritalStatus = "";
+                          maritalStatus = "Never Married";
                         });
                       },
                     ),
@@ -303,7 +324,7 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                     ),
                     const SizedBox(height: 20.0),
                     Visibility(
-                      visible: maritalStatus == "Never Married" ? false : true,
+                      visible: maritalStatus != "Never Married" ? true : false,
                       child: Column(
                         children: [
                           Row(
@@ -402,9 +423,9 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 15.0),
+                    const SizedBox(height: 20.0),
                     Visibility(
-                      visible: maritalStatus == "Never Married" ? false : true,
+                      visible: maritalStatus != "Never Married" ? true : false,
                       child: Column(
                         children: [
                           my_radio.Radio(

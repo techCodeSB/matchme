@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:matchme/controller/profile_controller.dart';
+import 'package:matchme/controller/photoupload_controller.dart';
+import 'package:matchme/controller/preferance_controller.dart';
+import 'package:matchme/controller/register_controller.dart';
 import 'package:matchme/screen/login.dart';
 import 'package:matchme/widgets/my_snackbar.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import './splash_controller.dart';
 import '../constant.dart';
+
 
 class LoginController extends ChangeNotifier {
   static TextEditingController username = TextEditingController();
@@ -74,8 +77,12 @@ class LoginController extends ChangeNotifier {
 
   void logout(ctx) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
+    
     pref.remove("token");
-    Provider.of<ProfileController>(ctx, listen: false).setUserData({}); // Clear userdata
+    RegisterController.clearAllData();
+    Provider.of<PreferanceController>(ctx, listen: false).clearData();
+    Provider.of<PhotouploadController>(ctx, listen: false).clearUploadedPhoto();
+
     Navigator.of(ctx).pushReplacement(
       MaterialPageRoute(
         builder: (ctx) => const Login(),

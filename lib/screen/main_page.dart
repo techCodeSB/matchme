@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:matchme/controller/mainpage_controller.dart';
-// import 'package:matchme/controller/profile_controller.dart';
 import 'package:provider/provider.dart';
 import '../screen/dashboard.dart';
-import '../screen/interest.dart';
+import './match.dart';
 import '../screen/notification.dart';
 import '../screen/profile.dart';
 import '../widgets/bottom_bar.dart';
@@ -19,11 +18,10 @@ class _MainPageState extends State<MainPage> {
   // :::: Don't change the index ::::
   List<Widget> screens = const [
     Dashboard(),
-    Interest(),
+    Match(),
     MyNotification(),
     Profile(),
   ];
-
 
 
   @override
@@ -33,6 +31,5 @@ class _MainPageState extends State<MainPage> {
           .currentBottomBarIndex],
       bottomNavigationBar: const BottomBar(),
     );
-
   }
 }

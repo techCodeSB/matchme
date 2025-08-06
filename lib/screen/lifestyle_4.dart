@@ -114,6 +114,7 @@ class _Lifestyle4State extends State<Lifestyle4> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     my_radio.Radio(
                       title: "How often do you eat out?",
@@ -153,12 +154,11 @@ class _Lifestyle4State extends State<Lifestyle4> {
                           Provider.of<RegisterController>(context, listen: true)
                               .errMsg['travle']!,
                     ),
-                    const SizedBox(height: 20.0),
+                    const SizedBox(height: 25.0),
                     Text(
                       "What kind of holidays do your prefer",
-                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 15.0,
+                        fontSize: 18.0,
                         fontFamily: Constant.subHadding,
                       ),
                     ),

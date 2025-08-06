@@ -105,6 +105,7 @@ class _Lifestyle2State extends State<Lifestyle2> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     my_radio.Radio(
                       title: "How often do you workout",
@@ -130,9 +131,8 @@ class _Lifestyle2State extends State<Lifestyle2> {
                     const SizedBox(height: 30.0),
                     Text(
                       "Your favourite weekend activites",
-                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 16.0,
+                        fontSize: 18.0,
                         fontFamily: Constant.subHadding,
                       ),
                     ),
