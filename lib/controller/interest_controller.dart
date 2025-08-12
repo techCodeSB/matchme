@@ -17,14 +17,13 @@ class InterestController extends ChangeNotifier {
     if (type == "receive") {
       Provider.of<MatchController>(ctx, listen: false).profileDetails =
           receiveInterese?[index]['sender_user'];
-    } 
-    else if(type== "connection"){
+    }
+    else if (type == "connection") {
       Provider.of<MatchController>(ctx, listen: false).profileDetails =
           allConnections?[index];
-    }
-    else {
+    } else {
       Provider.of<MatchController>(ctx, listen: false).profileDetails =
-          allInterest?['matches'][index];
+          allInterest?['matches'][index]['match_user_id'];
     }
     notifyListeners();
   }
@@ -78,11 +77,10 @@ class InterestController extends ChangeNotifier {
       );
 
       if (req.statusCode == 200) {
-        Provider.of<MatchController>(ctx, listen: false).getMatches();
+        print("--------run-----");
       } else {
-        allInterest = {};
+        mySnackBar(ctx, "Interset no send");
       }
-      notifyListeners();
     } catch (e) {
       debugPrint("Error fetching user data: $e");
     }
@@ -136,6 +134,7 @@ class InterestController extends ChangeNotifier {
       var res = jsonDecode(req.body);
       if (req.statusCode == 200) {
         allConnections = res;
+        print(res.length);
       } else {
         allConnections = [];
       }

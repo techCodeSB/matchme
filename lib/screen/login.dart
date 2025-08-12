@@ -188,7 +188,14 @@ class _LoginState extends State<Login> {
                         InkWell(
                           onTap: () {
                             Provider.of<LoginController>(context, listen: false)
-                                .login(context);
+                                .login(context)
+                                .then((v) {
+                              Provider.of<LoginController>(
+                                context,
+                                listen: false,
+                              ).addFcmToken(context);
+                            });
+
                             // Navigator.push(
                             //   context,
                             //   MaterialPageRoute(

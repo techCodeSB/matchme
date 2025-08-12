@@ -51,12 +51,20 @@ class _ProfileSliderState extends State<ProfileSlider> {
                   //   fit: BoxFit.cover,
                   // ),
                 ),
-                child: InstaImageViewer(
-                  backgroundIsTransparent: true,
-                  child: Image(
-                    image: Image.network(
-                      "${Constant.imageUrl}${widget.imgs[index]}",
-                    ).image,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(30.0),
+                    bottomRight: Radius.circular(30.0),
+                  ),
+                  child: InstaImageViewer(
+                    backgroundIsTransparent: true,
+                    imageUrl:"${Constant.imageUrl}${widget.imgs[index]}" ,
+                    child: Image(
+                      fit: BoxFit.cover,
+                      image: Image.network(
+                        "${Constant.imageUrl}${widget.imgs[index]}",
+                      ).image,
+                    ),
                   ),
                 ),
               ),

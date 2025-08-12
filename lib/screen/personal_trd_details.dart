@@ -154,14 +154,17 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                     const SizedBox(height: 20.0),
                     Row(
                       children: [
-                        Expanded(
+                        Flexible(
+                          flex: 1,
                           child: Dropdown(
                             hint: "Height (Feet)",
                             onChanged: (v) {
                               RegisterController.heightFeet = v!;
                               Provider.of<RegisterController>(context,
                                       listen: false)
-                                  .setErrorMsg({'height': false});
+                                  .setErrorMsg(
+                                {'height': false},
+                              );
                             },
                             items: const ["4", "5", "6", "7"],
                             icon: Icons.height_rounded,
@@ -172,7 +175,8 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                           ),
                         ),
                         const SizedBox(width: 20.0),
-                        Expanded(
+                        Flexible(
+                          flex: 1,
                           child: Dropdown(
                             hint: "Height (Inch.)",
                             onChanged: (v) {
@@ -262,6 +266,13 @@ class _PersonalTrdDetailsState extends State<PersonalTrdDetails> {
                         Padding(
                           padding: EdgeInsets.zero,
                           child: Checkbox(
+                            fillColor: WidgetStateProperty.resolveWith<Color>(
+                                (Set<WidgetState> states) {
+                              if (states.contains(WidgetState.disabled)) {
+                                return Colors.white;
+                              }
+                              return Constant.highlightColor;
+                            }),
                             value: dontDisplayProfile,
                             onChanged: (v) {
                               setState(() {

@@ -19,7 +19,7 @@ class MainpageController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setPosition(data){
+  void setPosition(data) {
     position = data;
     notifyListeners();
   }
@@ -30,12 +30,10 @@ class MainpageController extends ChangeNotifier {
     notifyListeners();
   }
 
-
   // When reload all data call
-  static void reload(ctx){
+  static void reload(ctx) {
     Provider.of<ProfileController>(ctx, listen: false).getUserData(ctx);
     Provider.of<ProfileController>(ctx, listen: false).setData();
     Provider.of<PreferanceController>(ctx, listen: false).getData(ctx);
-    
   }
 }

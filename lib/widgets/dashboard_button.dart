@@ -27,7 +27,7 @@ class _DashboardButtonState extends State<DashboardButton> {
         onTap: widget.onChange,
         child: Container(
           height: size.height * 0.1,
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 5.0),
           decoration: BoxDecoration(
             // color: const Color(0xFF245C66),
             gradient: const LinearGradient(
@@ -51,7 +51,7 @@ class _DashboardButtonState extends State<DashboardButton> {
                 style: TextStyle(
                   fontFamily: Constant.haddingFont,
                   color: Colors.white,
-                  fontSize: 16.0,
+                  fontSize: 15.0,
                   fontWeight: FontWeight.w600,
                 ),
               )

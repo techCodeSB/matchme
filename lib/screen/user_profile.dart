@@ -4,6 +4,7 @@ import 'package:matchme/controller/interest_controller.dart';
 import 'package:matchme/controller/match_controller.dart';
 import 'package:matchme/helper/get_age_from_dob.dart';
 import 'package:matchme/screen/user_detail_profile.dart';
+import 'package:matchme/widgets/line.dart';
 import 'package:matchme/widgets/match_bottomsheet.dart';
 import 'package:provider/provider.dart';
 import '../widgets/slider.dart';
@@ -38,7 +39,7 @@ class _UserProfileState extends State<UserProfile> {
         child: Container(
           width: double.infinity,
           height: double.infinity,
-          color: const Color(0xFFF5F7F7),
+          color: Colors.white,
           child: ListView(
             padding: const EdgeInsets.only(bottom: 20.0),
             children: [
@@ -110,7 +111,7 @@ class _UserProfileState extends State<UserProfile> {
                           TextSpan(
                             text: "${userData['country']}, ${userData['city']}",
                             style: TextStyle(
-                              fontSize: 17.0,
+                              fontSize: 15.0,
                               fontFamily: Constant.subHadding,
                               color: const Color(0xFF1690A7),
                             ),
@@ -118,6 +119,7 @@ class _UserProfileState extends State<UserProfile> {
                         ],
                       ),
                     ),
+                    const Line(),
                     const SizedBox(height: 25.0),
                     profileTitle("Birth Date and Time"),
                     Text.rich(
@@ -133,7 +135,7 @@ class _UserProfileState extends State<UserProfile> {
                           TextSpan(
                             text: "\t$formattedDate, ${userData['birth_time']}",
                             style: TextStyle(
-                              fontSize: 17.0,
+                              fontSize: 15.0,
                               fontFamily: Constant.subHadding,
                               color: Colors.black,
                             ),
@@ -141,6 +143,7 @@ class _UserProfileState extends State<UserProfile> {
                         ],
                       ),
                     ),
+                    const Line(),
                     const SizedBox(height: 25.0),
                     profileTitle("Height"),
                     Text.rich(
@@ -157,7 +160,7 @@ class _UserProfileState extends State<UserProfile> {
                             text:
                                 "\t${userData['height'].split(".")[0]}'${userData['height'].split(".")[1]}",
                             style: TextStyle(
-                              fontSize: 17.0,
+                              fontSize: 15.0,
                               fontFamily: Constant.subHadding,
                               color: Colors.black,
                             ),
@@ -165,6 +168,7 @@ class _UserProfileState extends State<UserProfile> {
                         ],
                       ),
                     ),
+                    const Line(),
                     const SizedBox(height: 25.0),
                     profileTitle("Marital Status"),
                     Text.rich(
@@ -188,6 +192,7 @@ class _UserProfileState extends State<UserProfile> {
                         ],
                       ),
                     ),
+                    const Line(),
                     const SizedBox(height: 25.0),
                     profileTitle("Something About Me"),
                     Text(
@@ -199,6 +204,7 @@ class _UserProfileState extends State<UserProfile> {
                         overflow: TextOverflow.clip,
                       ),
                     ),
+                    const Line(),
                     const SizedBox(height: 25.0),
                     Text.rich(
                       TextSpan(
@@ -213,7 +219,7 @@ class _UserProfileState extends State<UserProfile> {
                           TextSpan(
                             text: "\t${userData['designation']}",
                             style: TextStyle(
-                              fontSize: 17.0,
+                              fontSize: 15.0,
                               fontFamily: Constant.subHadding,
                               color: Colors.black,
                             ),
@@ -221,6 +227,7 @@ class _UserProfileState extends State<UserProfile> {
                         ],
                       ),
                     ),
+                    const Line(),
                     const SizedBox(height: 25.0),
                     Text.rich(
                       TextSpan(
@@ -235,7 +242,7 @@ class _UserProfileState extends State<UserProfile> {
                           TextSpan(
                             text: "\t${userData['highest_qualification']}",
                             style: TextStyle(
-                              fontSize: 17.0,
+                              fontSize: 15.0,
                               fontFamily: Constant.subHadding,
                               color: Colors.black,
                             ),
@@ -243,6 +250,7 @@ class _UserProfileState extends State<UserProfile> {
                         ],
                       ),
                     ),
+                    const Line(),
                     const SizedBox(height: 25.0),
                     profileTitle("Interset"),
                     const SizedBox(height: 5.0),
@@ -266,6 +274,7 @@ class _UserProfileState extends State<UserProfile> {
                         );
                       }).toList(),
                     ),
+                    const Line(),
                     const SizedBox(height: 25.0),
                     profileTitle("How Often Do You Travel?"),
                     Text.rich(
@@ -281,7 +290,7 @@ class _UserProfileState extends State<UserProfile> {
                           TextSpan(
                             text: "\t${userData['how_often_you_travel']}",
                             style: TextStyle(
-                              fontSize: 17.0,
+                              fontSize: 15.0,
                               fontFamily: Constant.subHadding,
                               color: Colors.black,
                             ),
@@ -289,6 +298,7 @@ class _UserProfileState extends State<UserProfile> {
                         ],
                       ),
                     ),
+                    const Line(),
                     const SizedBox(height: 25.0),
                     profileTitle("Do You Socialise?"),
                     Text.rich(
@@ -304,7 +314,7 @@ class _UserProfileState extends State<UserProfile> {
                           TextSpan(
                             text: "\t${userData['prefered_social_event']}",
                             style: TextStyle(
-                              fontSize: 17.0,
+                              fontSize: 15.0,
                               fontFamily: Constant.subHadding,
                               color: Colors.black,
                             ),
@@ -312,6 +322,7 @@ class _UserProfileState extends State<UserProfile> {
                         ],
                       ),
                     ),
+                    const Line(),
                     const SizedBox(height: 25.0),
                     profileTitle("How Often Do You Eat Out?"),
                     Text.rich(
@@ -327,7 +338,7 @@ class _UserProfileState extends State<UserProfile> {
                           TextSpan(
                             text: "\t${userData['how_often_you_eat_out']}",
                             style: TextStyle(
-                              fontSize: 17.0,
+                              fontSize: 15.0,
                               fontFamily: Constant.subHadding,
                               color: Colors.black,
                             ),
@@ -335,6 +346,7 @@ class _UserProfileState extends State<UserProfile> {
                         ],
                       ),
                     ),
+                    const Line(),
                     const SizedBox(height: 25.0),
                     profileTitle("Whom Do You Mostly Go Out With?"),
                     Text.rich(
@@ -351,7 +363,7 @@ class _UserProfileState extends State<UserProfile> {
                             text:
                                 "\t${userData['whom_do_you_like_going_out_with']}",
                             style: TextStyle(
-                              fontSize: 17.0,
+                              fontSize: 15.0,
                               fontFamily: Constant.subHadding,
                               color: Colors.black,
                             ),
@@ -359,6 +371,7 @@ class _UserProfileState extends State<UserProfile> {
                         ],
                       ),
                     ),
+                    const Line(),
                     const SizedBox(height: 20.0),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -408,13 +421,12 @@ class _UserProfileState extends State<UserProfile> {
           : widget.page == "interestreceive"
               ? Container(
                   width: double.infinity,
-                  height: size.height * 0.085,
+                  height: size.height * 0.10,
                   decoration: const BoxDecoration(
-                    // color: Constant.highlightColor,
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(80.0),
-                      topRight: Radius.circular(80.0),
+                      topLeft: Radius.circular(40.0),
+                      topRight: Radius.circular(40.0),
                     ),
                     boxShadow: [
                       BoxShadow(
@@ -429,48 +441,67 @@ class _UserProfileState extends State<UserProfile> {
                     children: [
                       // Close || dislike Button;
                       InkWell(
-                        onTap: () async{
+                        onTap: () async {
                           await Provider.of<InterestController>(
                             context,
                             listen: false,
                           ).sendConnection(userData['_id'], 0, context);
                           Navigator.pop(context);
                         },
-                        child: Container(
-                          height: 50.0,
-                          width: 50.0,
-                          decoration: BoxDecoration(
-                            color: Constant.highlightColor,
-                            borderRadius: BorderRadius.circular(50.0),
-                          ),
-                          child: const Icon(
-                            Icons.close,
-                            color: Colors.black,
-                            size: 30.0,
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 50.0,
+                              width: 50.0,
+                              decoration: BoxDecoration(
+                                color: Constant.highlightColor,
+                                borderRadius: BorderRadius.circular(50.0),
+                              ),
+                              child: const Icon(
+                                Icons.thumb_down_off_alt_outlined,
+                                color: Colors.white,
+                                size: 30.0,
+                              ),
+                            ),
+                            const SizedBox(height: 5.0),
+                            const Text(
+                              "Reject",
+                              style: TextStyle(fontSize: 13.0),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(width: 50.0),
+                      const SizedBox(width: 70.0),
                       // Favorite button;
                       InkWell(
-                        onTap: () async{
+                        onTap: () async {
                           await Provider.of<InterestController>(
                             context,
                             listen: false,
                           ).sendConnection(userData['_id'], 1, context);
 
                           Navigator.pop(context);
-                          
                         },
-                        child: Container(
-                          height: 50.0,
-                          width: 50.0,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF0C5461),
-                            borderRadius: BorderRadius.circular(50.0),
-                          ),
-                          child: const Icon(Icons.favorite_rounded,
-                              color: Colors.white),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 50.0,
+                              width: 50.0,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF0C5461),
+                                borderRadius: BorderRadius.circular(50.0),
+                              ),
+                              child: const Icon(Icons.favorite_rounded,
+                                  color: Colors.white),
+                            ),
+                            const SizedBox(height: 5.0),
+                            const Text(
+                              "Accept",
+                              style: TextStyle(fontSize: 13.0),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -488,7 +519,7 @@ class _UserProfileState extends State<UserProfile> {
         fontFamily: Constant.haddingFont,
         fontWeight: FontWeight.bold,
         color: const Color(0xFF033A44),
-        fontSize: 18.0,
+        fontSize: 16.0,
       ),
     );
   }

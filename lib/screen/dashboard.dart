@@ -11,9 +11,11 @@ import 'package:matchme/helper/get_age_from_dob.dart';
 import 'package:matchme/screen/connection.dart';
 import 'package:matchme/screen/interest_received.dart';
 import 'package:matchme/screen/interest_send.dart';
+import 'package:matchme/screen/match.dart';
 import 'package:matchme/screen/personal_fst_details.dart';
 import 'package:matchme/screen/preference.dart';
 import 'package:matchme/screen/psychometric.dart';
+import 'package:matchme/screen/support.dart';
 import 'package:matchme/screen/user_profile.dart';
 import 'package:provider/provider.dart';
 import '../controller/mainpage_controller.dart';
@@ -29,20 +31,20 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  List<String> img = [
-    "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
-    "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
-    "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg"
-  ];
   int currentIndex = 0;
   List<dynamic>? matchData;
-  bool? isNotification;
+  bool isNotification = true;
 
   @override
   void initState() {
     super.initState();
 
+    // Setup Firebase message
+    NotificationController.setupFirebaseMessaging();
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // var fcm = await FirebaseMessaging.instance.getToken();
+      // print(fcm);
       // Call Get userdata function ::::::::
       await Provider.of<ProfileController>(context, listen: false)
           .getUserData(context);
@@ -82,14 +84,15 @@ class _DashboardState extends State<Dashboard> {
             child: ListView(
               padding: const EdgeInsets.all(18.0),
               children: [
-                isNotification != true
-                    ? const NotificationPopup().animate().slide(
-                          begin: const Offset(0, -1), // from top
-                          end: Offset.zero, // to its normal position
-                          curve: Curves.easeOut,
-                          duration: 400.ms,
-                        )
-                    : const SizedBox.shrink(),
+                Visibility(
+                  visible: isNotification != true ? true : false,
+                  child: const NotificationPopup().animate().slide(
+                        begin: const Offset(0, -1), // from top
+                        end: Offset.zero, // to its normal position
+                        curve: Curves.easeOut,
+                        duration: 400.ms,
+                      ),
+                ),
                 const SizedBox(height: 30.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -99,7 +102,7 @@ class _DashboardState extends State<Dashboard> {
                       style: TextStyle(
                         fontFamily: Constant.haddingFont,
                         color: const Color(0xFF033A44),
-                        fontSize: 20.0,
+                        fontSize: 18.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -110,7 +113,15 @@ class _DashboardState extends State<Dashboard> {
                       itemBuilder: (context) {
                         return [
                           const PopupMenuItem(child: Text("My Profile")),
-                          const PopupMenuItem(child: Text("Inbox")),
+                          PopupMenuItem(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return const Support();
+                              }));
+                            },
+                            child: const Text("Inbox"),
+                          ),
                           PopupMenuItem(
                             onTap: () {
                               Navigator.push(context,
@@ -129,9 +140,27 @@ class _DashboardState extends State<Dashboard> {
                             },
                             child: const Text("Edit Preferences"),
                           ),
-                          const PopupMenuItem(child: Text("Matches")),
-                          const PopupMenuItem(child: Text("Interest")),
-                          const PopupMenuItem(child: Text("Connection")),
+                          PopupMenuItem(
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return const Match();
+                                }));
+                              },
+                              child:const Text("Matches")),
+                          PopupMenuItem(
+                              onTap: () {
+                                
+                              },
+                              child:const Text("Interest")),
+                          PopupMenuItem(
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return const Connection();
+                                }));
+                              },
+                              child:const Text("Connection")),
                           PopupMenuItem(
                             onTap: () {
                               Provider.of<LoginController>(
@@ -308,7 +337,7 @@ class _DashboardState extends State<Dashboard> {
                       )
                     : SizedBox(
                         width: double.infinity,
-                        height: size.height * 0.3 / 2,
+                        height: size.height * 0.5 / 2,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -408,7 +437,12 @@ class _DashboardState extends State<Dashboard> {
                     DashboardButton(
                       icon: Icons.chat_rounded,
                       text: "Inbox",
-                      onChange: () {},
+                      onChange: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const Support()),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -549,7 +583,7 @@ class _DashboardState extends State<Dashboard> {
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 15.0),
+                        horizontal: 10.0, vertical: 10.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       gradient: const LinearGradient(

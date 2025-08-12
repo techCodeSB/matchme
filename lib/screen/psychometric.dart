@@ -3,6 +3,7 @@ import 'package:matchme/constant.dart';
 import 'package:matchme/controller/profile_controller.dart';
 import 'package:matchme/controller/psychometric_controller.dart';
 import 'package:matchme/widgets/details_hero.dart';
+import 'package:matchme/widgets/my_snackbar.dart';
 import 'package:provider/provider.dart';
 
 class Psychometric extends StatefulWidget {
@@ -183,24 +184,29 @@ class _PsychometricState extends State<Psychometric> {
                             listen: false)
                         .submit(activeIndex, activeId);
 
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text("Submitted"),
-                        content:
-                            const Text("Your answers have been submitted."),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Provider.of<ProfileController>(context, listen: false).getUserData(context);
-                              Navigator.pop(context); //Close Popup;
-                              Navigator.pop(context); //Back to Dashboard;
-                            },
-                            child: const Text("OK"),
-                          )
-                        ],
-                      ),
-                    );
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (context) => AlertDialog(
+                    //     title: const Text("Submitted"),
+                    //     content:
+                    //         const Text("Your answers have been submitted."),
+                    //     actions: [
+                    //       TextButton(
+                    //         onPressed: () {
+                    //           Provider.of<ProfileController>(context, listen: false).getUserData(context);
+                    //           Navigator.pop(context); //Close Popup;
+                    //           Navigator.pop(context); //Back to Dashboard;
+                    //         },
+                    //         child: const Text("OK"),
+                    //       )
+                    //     ],
+                    //   ),
+                    // );
+
+                    mySnackBar(context, "Your answers have been submitted.");
+                    Provider.of<ProfileController>(context, listen: false).getUserData(context);
+                    Navigator.pop(context); //Close Popup;
+                    Navigator.pop(context); //Back to Dashboard;
                   }
                 },
                 child: Container(

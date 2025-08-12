@@ -13,6 +13,18 @@ class MatchController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeMatch(id) {
+    final matches = allMatches!['matches'] as List<dynamic>;
+
+    matches.removeWhere((v) {
+      final matchId = v['match_user_id']['_id'].toString();
+      return matchId == id.toString();
+    });
+
+    allMatches!['matches'] = matches; // Update map after removal
+    notifyListeners();
+  }
+
   void getMatches() async {
     Uri url = Uri.parse("${Constant.api}match/get");
     final SharedPreferences pref = await SharedPreferences.getInstance();
@@ -35,5 +47,4 @@ class MatchController extends ChangeNotifier {
       debugPrint("Error fetching user data: $e");
     }
   }
-
 }

@@ -44,6 +44,7 @@ class SplashController {
       );
 
       var res = jsonDecode(req.body);
+      print(res);
       if (req.statusCode == 200) {
         return res;
       } else {
@@ -82,28 +83,6 @@ class SplashController {
       Introduction(),
       GotoProfile(),
     ];
-
-
-
-    // List<Widget> screens = const [
-    //   GetStarted(),
-    //   PersonalFstDetails(),
-    //   PersonalSecDetails(),
-    //   PersonalTrdDetails(),
-    //   FamilyDetails(),
-    //   QualificationDetails(),
-    //   WorkDetails(),
-    //   Lifestyle1(),
-    //   Lifestyle2(),
-    //   Lifestyle3(),
-    //   Lifestyle4(),
-    //   Lifestyle5(),
-    //   Introduction(),
-    //   MoreQuestionNext(),
-    //   Preference(),
-    //   PhotoUpload(),
-    //   GotoProfile(),
-    // ];
 
     debugPrint("[SplashController]: $steps");
     debugPrint("[SplashController]: $status");

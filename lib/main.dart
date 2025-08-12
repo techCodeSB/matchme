@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:matchme/controller/notification_controller.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:matchme/controller/support.controller.dart';
+import 'package:matchme/services/notification_services.dart';
 import './controller/match_controller.dart';
 import './controller/psychometric_controller.dart';
 import 'package:provider/provider.dart';
@@ -11,11 +14,19 @@ import './controller/preferance_controller.dart';
 import './controller/login_controller.dart';
 import './controller/register_controller.dart';
 import './screen/splash.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 
 
 // :::::::::: JAY JAGANNATH 0!0 ::::::::::/
 //  :::::::::::::::::::::::::::::::::::::
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await NotificationService.initialize();
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => LoginController()),
@@ -28,6 +39,7 @@ void main() {
       ChangeNotifierProvider(create: (context) => PsychometricController()),
       ChangeNotifierProvider(create: (context) => MatchController()),
       ChangeNotifierProvider(create: (context) => NotificationController()),
+      ChangeNotifierProvider(create: (context) => SupportController()),
     ],
     child: const App(),
   ));
@@ -41,7 +53,6 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -54,3 +65,11 @@ class _AppState extends State<App> {
     );
   }
 }
+
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  NotificationService.showNotification(message);
+}
+

@@ -122,7 +122,7 @@ class _Lifestyle1State extends State<Lifestyle1> {
                   ],
                 ),
               ),
-              const Spacer(),
+              // const Spacer(),
               SizedBox(
                 width: double.infinity,
                 child: Image.asset(

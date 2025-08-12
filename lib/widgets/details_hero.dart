@@ -17,25 +17,7 @@ class DetailsHero extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          Positioned(
-            left: 20.0,
-            right: 20.0,
-            top: 30.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Icon(Icons.arrow_back_ios_sharp),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          //Logo
           Positioned(
             left: 0,
             right: 0,
@@ -45,6 +27,7 @@ class DetailsHero extends StatelessWidget {
               height: size!.height * 0.1,
             ),
           ),
+          //Patern
           Positioned(
             bottom: size!.height * 0.03,
             left: 0.0,
@@ -53,6 +36,33 @@ class DetailsHero extends StatelessWidget {
               "assets/images/Pattern.png",
               width: size!.width,
               fit: BoxFit.cover,
+            ),
+          ),
+          //Button
+          Positioned(
+            left: 20.0,
+            right: 20.0,
+            top: 40.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    width: 35.0,
+                    height: 35.0,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(100.0),
+                    ),
+                    child: const Center(
+                      child: Icon(Icons.arrow_back_ios_sharp),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

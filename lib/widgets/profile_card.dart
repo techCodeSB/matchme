@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:matchme/constant.dart';
 import 'package:matchme/controller/interest_controller.dart';
 import 'package:matchme/controller/match_controller.dart';
+import 'package:matchme/helper/capitalize.dart';
 import 'package:matchme/helper/get_age_from_dob.dart';
 import 'package:matchme/screen/user_profile.dart';
 import 'package:provider/provider.dart';
@@ -77,7 +78,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     },
                   ),
                 ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 10.0),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
@@ -85,7 +86,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     style: TextStyle(
                       fontFamily: Constant.haddingFont,
                       color: const Color(0xFF0C5461),
-                      fontSize: 25.0,
+                      fontSize: 23.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -104,7 +105,7 @@ class _ProfileCardState extends State<ProfileCard> {
                         ),
                         TextSpan(
                           text:
-                              "\t${widget.userData['country']}, ${widget.userData['city']}",
+                              "\t${capitalize(widget.userData['country'])}, ${capitalize(widget.userData['city'])}",
                           style: TextStyle(
                             fontSize: 18.0,
                             fontFamily: Constant.subHadding,
@@ -123,7 +124,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     style: TextStyle(
                       fontFamily: Constant.subHadding,
                       color: Colors.black,
-                      fontSize: 20.0,
+                      fontSize: 18.0,
                     ),
                   ),
                 )
@@ -161,7 +162,7 @@ class _ProfileCardState extends State<ProfileCard> {
                   }
                 });
                 Provider.of<InterestController>(context, listen: false)
-                    .setProfileDetails(widget.index, context, 'receive');
+                    .setProfileDetails(widget.index, context, "send");
               } else if (widget.page == "interestreceive") {
                 Navigator.push(
                   context,
@@ -208,7 +209,7 @@ class _ProfileCardState extends State<ProfileCard> {
                 fontFamily: Constant.haddingFont,
                 fontWeight: FontWeight.w500,
                 color: Colors.black,
-                fontSize: 20.0,
+                fontSize: 19.0,
               ),
             ),
           ),

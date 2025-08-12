@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matchme/constant.dart';
 import 'package:matchme/controller/interest_controller.dart';
 import 'package:matchme/controller/match_controller.dart';
 import 'package:matchme/widgets/my_snackbar.dart';
@@ -24,13 +25,13 @@ class _MatchBottomsheetState extends State<MatchBottomsheet> {
 
     return Container(
       width: double.infinity,
-      height: size.height * 0.085,
+      height: size.height * 0.10,
       decoration: const BoxDecoration(
         // color: Constant.highlightColor,
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(80.0),
-          topRight: Radius.circular(80.0),
+          topLeft: Radius.circular(40.0),
+          topRight: Radius.circular(40.0),
         ),
         boxShadow: [
           BoxShadow(
@@ -56,18 +57,28 @@ class _MatchBottomsheetState extends State<MatchBottomsheet> {
 
               mySnackBar(context, "Interest removed successfully");
             },
-            child: Container(
-              height: 40.0,
-              width: 40.0,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(50.0),
-              ),
-              child: const Icon(
-                Icons.close,
-                color: Colors.black,
-                size: 30.0,
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 50.0,
+                  width: 50.0,
+                  decoration: BoxDecoration(
+                    color: Constant.highlightColor,
+                    borderRadius: BorderRadius.circular(50.0),
+                  ),
+                  child: const Icon(
+                    Icons.thumb_down_off_alt_outlined,
+                    color: Colors.white,
+                    size: 25.0,
+                  ),
+                ),
+                const SizedBox(height: 5.0),
+                const Text(
+                  "Not Interested",
+                  style: TextStyle(fontSize: 13.0),
+                ),
+              ],
             ),
           ),
           const SizedBox(width: 50.0),
@@ -77,21 +88,33 @@ class _MatchBottomsheetState extends State<MatchBottomsheet> {
               Provider.of<InterestController>(context, listen: false)
                   .sendInterest(widget.id, 1, context);
 
-              Provider.of<MatchController>(context, listen: false).getMatches();
               if (context.mounted) {
                 Navigator.pop(context, true);
               }
 
+              Provider.of<MatchController>(context, listen: false)
+                  .removeMatch(widget.id);
               mySnackBar(context, "Interest send successfully");
             },
-            child: Container(
-              height: 50.0,
-              width: 50.0,
-              decoration: BoxDecoration(
-                color: const Color(0xFF0C5461),
-                borderRadius: BorderRadius.circular(50.0),
-              ),
-              child: const Icon(Icons.favorite_rounded, color: Colors.white),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 50.0,
+                  width: 50.0,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF0C5461),
+                    borderRadius: BorderRadius.circular(50.0),
+                  ),
+                  child:
+                      const Icon(Icons.favorite_rounded, color: Colors.white),
+                ),
+                const SizedBox(height: 5.0),
+                const Text(
+                  "Interested",
+                  style: TextStyle(fontSize: 13.0),
+                ),
+              ],
             ),
           ),
           const SizedBox(width: 50.0),
@@ -113,18 +136,28 @@ class _MatchBottomsheetState extends State<MatchBottomsheet> {
 
               mySnackBar(context, "Bookmarked successfully");
             },
-            child: Container(
-              height: 40.0,
-              width: 40.0,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(50.0),
-              ),
-              child: const Icon(
-                Icons.bookmark_outline_rounded,
-                color: Colors.black,
-                size: 30.0,
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 50.0,
+                  width: 50.0,
+                  decoration: BoxDecoration(
+                    color: Constant.highlightColor,
+                    borderRadius: BorderRadius.circular(50.0),
+                  ),
+                  child: const Icon(
+                    Icons.bookmark_outline_rounded,
+                    color: Colors.white,
+                    size: 25.0,
+                  ),
+                ),
+                const SizedBox(height: 5.0),
+                const Text(
+                  "Save for Later",
+                  style: TextStyle(fontSize: 13.0),
+                ),
+              ],
             ),
           ),
         ],

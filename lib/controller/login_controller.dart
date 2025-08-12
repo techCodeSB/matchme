@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:matchme/controller/photoupload_controller.dart';
 import 'package:matchme/controller/preferance_controller.dart';
@@ -28,7 +29,7 @@ class LoginController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void login(ctx) async {
+  Future<void> login(ctx) async {
     if (username.text == "" || password.text == "") {
       if (username.text.trim() == "") {
         setErrorMsg({"user": true});
@@ -62,9 +63,6 @@ class LoginController extends ChangeNotifier {
         username.text = "";
         password.text = "";
 
-        // Navigator.of(ctx).pushReplacement(MaterialPageRoute(builder: (ctx) {
-        //   return const GetStarted();
-        // }));
         SplashController.checkSteps(ctx);
       } else {
         mySnackBar(ctx, "Invalid username or password");
@@ -75,9 +73,34 @@ class LoginController extends ChangeNotifier {
     }
   }
 
+  void addFcmToken(ctx) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString("token");
+    var fcm = await FirebaseMessaging.instance.getToken();
+    Uri url = Uri.parse("${Constant.api}notification/add-token");
+
+    try {
+      Map<String, dynamic> data = {"token": token, "fcmToken": fcm};
+
+      var req = await http.post(
+        url,
+        body: jsonEncode(data),
+        headers: {"Content-Type": "application/json"},
+      );
+
+      if (req.statusCode != 200) {
+        var res = jsonDecode(req.body);
+        debugPrint("FCM Token Not Set: $res");
+      }
+    } catch (e) {
+      debugPrint("FCM: Something went wrong $e");
+      return;
+    }
+  }
+
   void logout(ctx) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    
+
     pref.remove("token");
     RegisterController.clearAllData();
     Provider.of<PreferanceController>(ctx, listen: false).clearData();

@@ -37,10 +37,10 @@ class _InterestButtonState extends State<InterestButton> {
         widget.onChanged(activeInterest);
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
-          border: Border.all(color: const Color(0xFF033A44), width: 1.5),
+          border: Border.all(color: const Color(0xFF033A44), width: 1),
           color: widget.isSelected
               ? Constant.highlightColor
               : Colors.white,
@@ -67,7 +67,7 @@ class _InterestButtonState extends State<InterestButton> {
                     ? Colors.white
                     : Colors.black,
                 fontFamily: Constant.subHadding,
-                fontSize: 16.0,
+                fontSize: 15.0,
               ),
             ),
           ],

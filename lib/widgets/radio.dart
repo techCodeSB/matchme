@@ -47,7 +47,7 @@ class _RadioState extends State<Radio> {
                   widget.title!,
                   style: TextStyle(
                     fontFamily: Constant.subHadding,
-                    fontSize: 18.0,
+                    fontSize: 17.0,
                     color: const Color(0xFF333333),
                   ),
                 )
@@ -77,7 +77,7 @@ class _RadioState extends State<Radio> {
                   decoration: BoxDecoration(
                     color: isSelected ? Constant.highlightColor : Colors.white,
                     border:
-                        Border.all(color: const Color(0xFF033A44), width: 1.5),
+                        Border.all(color: const Color(0xFF033A44), width: 1),
                     borderRadius: BorderRadius.circular(30.0),
                   ),
                   child: Text(
@@ -85,7 +85,7 @@ class _RadioState extends State<Radio> {
                     style: TextStyle(
                         color: isSelected ? Colors.white : Colors.black,
                         fontWeight: FontWeight.w500,
-                        fontSize: 16.0),
+                        fontSize: 15.0),
                     textAlign: TextAlign.center,
                   ),
                 ),

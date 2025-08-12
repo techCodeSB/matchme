@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "788975090917",
+    "project_id": "notification-bc7fc",
+    "storage_bucket": "notification-bc7fc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:788975090917:android:462edc4f1df88d0a91e80c",
+        "android_client_info": {
+          "package_name": "com.cms.matchme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaRN8DVfYCxqbzBluOitHXrgW1j7oejMY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

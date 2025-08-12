@@ -11,6 +11,7 @@ import '../constant.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart' as path;
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class PhotouploadController extends ChangeNotifier {
   Map<String, dynamic> images = {
@@ -23,6 +24,24 @@ class PhotouploadController extends ChangeNotifier {
   };
 
   static Map<String, dynamic> uploadedImages = {}; // uploaded img store;
+
+  Future<File> _compressImage(File file) async {
+    final outPath = file.path.replaceFirst(
+      path.extension(file.path),
+      '_compressed${path.extension(file.path)}',
+    );
+
+    final compressed = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      outPath,
+      quality: 70, // Adjust 0–100
+    );
+
+    // If compression fails, return original file
+    if (compressed == null) return file;
+
+    return File(compressed.path);
+  }
 
   // Function to open the camera
   Future<void> openCamera(context, pos) async {
@@ -173,7 +192,8 @@ class PhotouploadController extends ChangeNotifier {
       final file = entry.value;
 
       if (file != null && file is File) {
-        final extension = path.extension(file.path).toLowerCase();
+        final compressedFile = await _compressImage(file);
+        final extension = path.extension(compressedFile.path).toLowerCase();
         String? mimeType;
 
         if (extension == '.jpg' || extension == '.jpeg') {

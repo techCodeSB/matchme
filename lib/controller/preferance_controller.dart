@@ -227,6 +227,7 @@ class PreferanceController extends ChangeNotifier {
         mySnackBar(ctx, "Something went wrong, try again later.");
       }
     } catch (er) {
+      debugPrint(er.toString());
       mySnackBar(ctx, "Something went wrong, try again later.");
     }
   }

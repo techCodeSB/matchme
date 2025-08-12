@@ -100,7 +100,7 @@ class _BottomBarState extends State<BottomBar> {
                     },
                     child: Image.asset(
                       "assets/icons/Heart${activeIcon == "heart" ? "_active" : ""}.png",
-                      height: 25.0,
+                      height: 20.0,
                     ),
                     // child: Icon(
                     //   Icons.join_inner_outlined,
@@ -117,7 +117,7 @@ class _BottomBarState extends State<BottomBar> {
                     },
                     child: Image.asset(
                       "assets/icons/bell${activeIcon == "notification" ? "_active" : ""}.png",
-                      height: 25.0,
+                      height: 20.0,
                     ),
                   ),
                   InkWell(
@@ -127,18 +127,18 @@ class _BottomBarState extends State<BottomBar> {
                       Provider.of<MainpageController>(context, listen: false)
                           .setBottomIndex(3);
                     },
-                    child: CircleAvatar(
-                      radius: 15,
-                      backgroundImage: Provider.of<ProfileController>(context,
-                                      listen: true)
-                                  .userData['image']?["one"] ==
-                              null
-                          ? const NetworkImage(
-                              "https://tisindia.net/profile/profile-4.jpg")
-                          : NetworkImage(
-                              "${Constant.imageUrl}${Provider.of<ProfileController>(context, listen: true).userData['image']["one"]}"),
-                      // child: const Text("S"),
-                    ),
+                    child: Provider.of<ProfileController>(context, listen: true)
+                                .userData['image']?["one"] ==
+                            null
+                        ? const CircleAvatar(
+                            radius: 15,
+                            child: Icon(Icons.account_circle),
+                          )
+                        : CircleAvatar(
+                            radius: 15,
+                            backgroundImage: NetworkImage(
+                                "${Constant.imageUrl}${Provider.of<ProfileController>(context, listen: true).userData['image']["one"]}"),
+                          ),
                   ),
                 ],
               ),
