@@ -11,7 +11,6 @@ import 'package:matchme/helper/get_age_from_dob.dart';
 import 'package:matchme/screen/connection.dart';
 import 'package:matchme/screen/interest_received.dart';
 import 'package:matchme/screen/interest_send.dart';
-import 'package:matchme/screen/match.dart';
 import 'package:matchme/screen/personal_fst_details.dart';
 import 'package:matchme/screen/preference.dart';
 import 'package:matchme/screen/psychometric.dart';
@@ -141,18 +140,24 @@ class _DashboardState extends State<Dashboard> {
                             child: const Text("Edit Preferences"),
                           ),
                           PopupMenuItem(
-                              onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return const Match();
-                                }));
-                              },
-                              child:const Text("Matches")),
+                            onTap: () {
+                              Provider.of<MainpageController>(
+                                context,
+                                listen: false,
+                              ).updatePosition("heart");
+                              Provider.of<MainpageController>(
+                                context,
+                                listen: false,
+                              ).setBottomIndex(1);
+                            },
+                            child: const Text("Matches"),
+                          ),
                           PopupMenuItem(
-                              onTap: () {
-                                
-                              },
-                              child:const Text("Interest")),
+                            onTap: () {
+                              showInterestSheet(size);
+                            },
+                            child: const Text("Interest"),
+                          ),
                           PopupMenuItem(
                               onTap: () {
                                 Navigator.push(context,
@@ -160,7 +165,7 @@ class _DashboardState extends State<Dashboard> {
                                   return const Connection();
                                 }));
                               },
-                              child:const Text("Connection")),
+                              child: const Text("Connection")),
                           PopupMenuItem(
                             onTap: () {
                               Provider.of<LoginController>(
@@ -464,108 +469,7 @@ class _DashboardState extends State<Dashboard> {
                       icon: Icons.join_inner,
                       text: "Interest",
                       onChange: () {
-                        showModalBottomSheet(
-                          context: context,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20),
-                            ),
-                          ),
-                          backgroundColor: const Color(0xFF81979B),
-                          builder: (context) {
-                            return SafeArea(
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10.0,
-                                ),
-                                height: size.height * 0.170,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const SizedBox(height: 8),
-                                    const Icon(
-                                      Icons.horizontal_rule_outlined,
-                                      size: 35.0,
-                                      color: Colors.white70,
-                                    ),
-                                    const SizedBox(height: 16),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: MaterialButton(
-                                            height: 60.0,
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const InterestReceived(),
-                                                  ));
-                                            },
-                                            color: Colors.white,
-                                            textColor: Colors.black,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(30.0),
-                                            ),
-                                            child: const Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(Icons.favorite_border),
-                                                SizedBox(width: 8),
-                                                Text(
-                                                  "Interest Received",
-                                                  style:
-                                                      TextStyle(fontSize: 15.0),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10.0),
-                                        Expanded(
-                                          child: MaterialButton(
-                                            height: 60.0,
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const InterestSend(),
-                                                  ));
-                                            },
-                                            color: Colors.white,
-                                            textColor: Colors.black,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(30.0),
-                                            ),
-                                            child: const Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(Icons.send),
-                                                SizedBox(width: 8),
-                                                Text(
-                                                  "Interest Sent",
-                                                  style:
-                                                      TextStyle(fontSize: 15.0),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
+                        showInterestSheet(size);
                       },
                     ),
                   ],
@@ -623,6 +527,103 @@ class _DashboardState extends State<Dashboard> {
           )
         ],
       ),
+    );
+  }
+
+  showInterestSheet(Size size) {
+    return showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      backgroundColor: const Color(0xFF81979B),
+      builder: (context) {
+        return SafeArea(
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10.0,
+            ),
+            height: size.height * 0.170,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 8),
+                const Icon(
+                  Icons.horizontal_rule_outlined,
+                  size: 35.0,
+                  color: Colors.white70,
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: MaterialButton(
+                        height: 60.0,
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const InterestReceived(),
+                              ));
+                        },
+                        color: Colors.white,
+                        textColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.favorite_border),
+                            SizedBox(width: 5),
+                            Text(
+                              "Interest Received",
+                              style: TextStyle(fontSize: 14.0),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10.0),
+                    Expanded(
+                      child: MaterialButton(
+                        height: 60.0,
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const InterestSend(),
+                              ));
+                        },
+                        color: Colors.white,
+                        textColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.send),
+                            SizedBox(width: 5),
+                            Text(
+                              "Interest Sent",
+                              style: TextStyle(fontSize: 14.0),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
