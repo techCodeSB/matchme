@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:matchme/screen/agreement.dart';
 import 'package:matchme/screen/main_page.dart';
 import 'package:matchme/screen/opening.dart';
 import '../screen/login.dart';
@@ -44,7 +45,6 @@ class SplashController {
       );
 
       var res = jsonDecode(req.body);
-      print(res);
       if (req.statusCode == 200) {
         return res;
       } else {
@@ -81,6 +81,7 @@ class SplashController {
       Lifestyle4(),
       Lifestyle5(),
       Introduction(),
+      Agreement(),
       GotoProfile(),
     ];
 

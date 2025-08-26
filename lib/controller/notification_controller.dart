@@ -4,15 +4,18 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:matchme/constant.dart';
+import 'package:matchme/controller/mainpage_controller.dart';
+import 'package:matchme/screen/connection.dart';
+import 'package:matchme/screen/interest_received.dart';
+import 'package:matchme/screen/main_page.dart';
+import 'package:matchme/screen/support_chat.dart';
 import 'package:matchme/services/notification_services.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-
 
 class NotificationController extends ChangeNotifier {
   List<dynamic>? notificationData;
-
 
   static Future<bool> isNotificationPermissionGranted() async {
     if (Platform.isAndroid) {
@@ -58,28 +61,73 @@ class NotificationController extends ChangeNotifier {
     }
   }
 
-
-  static void setupFirebaseMessaging() async {
+  static void setupFirebaseMessaging(ctx) async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-    // 🔵 Handle foreground messages
+    // Request permissions (iOS only)
+    await messaging.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    // 🔵 Foreground messages
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      debugPrint('📬 Foreground notification: ${message.notification?.title}');
       NotificationService.showNotification(message);
     });
 
-    // 🔙 Handle messages when the app is opened from background
+    // 🔙 Background -> when tapped
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      debugPrint('🔄 App opened from background: ${message.notification?.title}');
-      // navigate to specific screen if needed
+      _handleNavigation(message.data, ctx);
     });
 
-    // 🔴 Handle messages when the app is opened from a terminated state
+    // 🔴 Terminated -> when launched by tap
     RemoteMessage? initialMessage = await messaging.getInitialMessage();
-    if (initialMessage != null) {
-      debugPrint('🚨 App launched from terminated state by notification');
-      // handle navigation or logic
+    if (initialMessage != null && initialMessage.data.isNotEmpty) {
+      final screen = initialMessage.data['customKey'];
+      if (screen != null && screen.isNotEmpty) {
+        _handleNavigation(initialMessage.data, ctx);
+      }
     }
   }
 
+  static void _handleNavigation(Map<String, dynamic> data, ctx) {
+    var screen = data['customKey'];
+
+    if (screen == "match") {
+      Navigator.push(ctx, MaterialPageRoute(
+        builder: (ctx) {
+          Provider.of<MainpageController>(ctx, listen: false)
+              .updatePosition("heart");
+          Provider.of<MainpageController>(ctx, listen: false).setBottomIndex(1);
+
+          return const MainPage();
+        },
+      ));
+    }
+    //
+    else if (screen == "interest") {
+      Navigator.push(ctx, MaterialPageRoute(
+        builder: (ctx) {
+          return const InterestReceived();
+        },
+      ));
+    }
+    //
+    else if (screen == "connection") {
+      Navigator.push(ctx, MaterialPageRoute(
+        builder: (ctx) {
+          return const Connection();
+        },
+      ));
+    }
+    //
+    else if (screen == "message") {
+      Navigator.push(ctx, MaterialPageRoute(
+        builder: (ctx) {
+          return const SupportChat();
+        },
+      ));
+    }
+  }
 }

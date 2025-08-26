@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matchme/controller/agreement_controller.dart';
 import 'package:matchme/controller/notification_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:matchme/controller/support.controller.dart';
@@ -40,6 +41,7 @@ void main() async {
       ChangeNotifierProvider(create: (context) => MatchController()),
       ChangeNotifierProvider(create: (context) => NotificationController()),
       ChangeNotifierProvider(create: (context) => SupportController()),
+      ChangeNotifierProvider(create: (context) => AgreementController()),
     ],
     child: const App(),
   ));
@@ -70,6 +72,5 @@ class _AppState extends State<App> {
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  NotificationService.showNotification(message);
 }
 

@@ -3,7 +3,7 @@ import 'package:matchme/controller/mainpage_controller.dart';
 import 'package:matchme/controller/notification_controller.dart';
 import 'package:matchme/screen/connection.dart';
 import 'package:matchme/screen/interest_received.dart';
-import 'package:matchme/screen/support.dart';
+import 'package:matchme/screen/support_chat.dart';
 import 'package:provider/provider.dart';
 import '../constant.dart';
 import "package:flutter_svg/flutter_svg.dart";
@@ -208,7 +208,7 @@ class _MyNotificationState extends State<MyNotification> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const Support(),
+                                builder: (context) => const SupportChat(),
                               ));
                         }
                       },
@@ -272,12 +272,13 @@ class _MyNotificationState extends State<MyNotification> {
           height: 22.0,
         );
       case 'match':
-        return const Icon(color: Colors.white, Icons.favorite_rounded,size: 22.0 );
+        return const Icon(
+            color: Colors.white, Icons.favorite_rounded, size: 22.0);
       case 'message':
-        return const Icon(color: Colors.white, Icons.chat_rounded,size: 22.0 );
+        return const Icon(color: Colors.white, Icons.chat_rounded, size: 22.0);
       case 'generic':
       default:
-        return const Icon(color: Colors.white, Icons.notifications,size: 22.0 );
+        return const Icon(color: Colors.white, Icons.notifications, size: 22.0);
     }
   }
 }

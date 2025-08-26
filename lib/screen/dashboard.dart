@@ -14,7 +14,7 @@ import 'package:matchme/screen/interest_send.dart';
 import 'package:matchme/screen/personal_fst_details.dart';
 import 'package:matchme/screen/preference.dart';
 import 'package:matchme/screen/psychometric.dart';
-import 'package:matchme/screen/support.dart';
+import 'package:matchme/screen/support_chat.dart';
 import 'package:matchme/screen/user_profile.dart';
 import 'package:provider/provider.dart';
 import '../controller/mainpage_controller.dart';
@@ -39,7 +39,7 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
 
     // Setup Firebase message
-    NotificationController.setupFirebaseMessaging();
+    NotificationController.setupFirebaseMessaging(context);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // var fcm = await FirebaseMessaging.instance.getToken();
@@ -116,7 +116,7 @@ class _DashboardState extends State<Dashboard> {
                             onTap: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return const Support();
+                                return const SupportChat();
                               }));
                             },
                             child: const Text("Inbox"),
@@ -445,7 +445,7 @@ class _DashboardState extends State<Dashboard> {
                       onChange: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const Support()),
+                          MaterialPageRoute(builder: (_) => const SupportChat()),
                         );
                       },
                     ),

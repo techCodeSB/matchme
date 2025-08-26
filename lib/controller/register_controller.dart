@@ -1,4 +1,5 @@
 import 'package:matchme/controller/splash_controller.dart';
+import 'package:matchme/screen/agreement.dart';
 import 'package:matchme/widgets/my_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -7,7 +8,7 @@ import 'package:http/http.dart' as http;
 import '../constant.dart';
 
 // Screens;
-import '../screen/goto_profile.dart';
+// import '../screen/goto_profile.dart';
 import '../screen/lifestyle_1.dart';
 import '../screen/main_page.dart';
 import '../screen/introduction.dart';
@@ -32,6 +33,7 @@ class RegisterController extends ChangeNotifier {
   static DateTime? dateOfBirth;
   static String? timeOfBirth;
   static TextEditingController placeOfBirth = TextEditingController();
+  static String memberType = "Non-Member";
 
   // Second Personal Details;
   static final TextEditingController country = TextEditingController();
@@ -242,7 +244,8 @@ class RegisterController extends ChangeNotifier {
       "dob": dateOfBirth.toString(),
       "birth_time": timeOfBirth,
       "birth_place": placeOfBirth.text.trim(),
-      "registration_step": '2'
+      "registration_step": '2',
+      "member_type": memberType == "Member" ? true : false
     });
 
     if (reg['success'] == true) {
@@ -789,7 +792,7 @@ class RegisterController extends ChangeNotifier {
         Navigator.push(
           ctx,
           MaterialPageRoute(
-            builder: (ctx) => const GotoProfile(),
+            builder: (ctx) => const Agreement(),
           ),
         );
       } else {
@@ -804,6 +807,7 @@ class RegisterController extends ChangeNotifier {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
   }
+
 
   //
   void gotoProfile(ctx) async {
@@ -824,6 +828,8 @@ class RegisterController extends ChangeNotifier {
     }
   }
 
+
+//
   static void clearAllData() {
     // TextEditingControllers
     fullname.clear();

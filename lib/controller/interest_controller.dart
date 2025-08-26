@@ -77,7 +77,7 @@ class InterestController extends ChangeNotifier {
       );
 
       if (req.statusCode == 200) {
-        print("--------run-----");
+
       } else {
         mySnackBar(ctx, "Interset no send");
       }
@@ -134,7 +134,6 @@ class InterestController extends ChangeNotifier {
       var res = jsonDecode(req.body);
       if (req.statusCode == 200) {
         allConnections = res;
-        print(res.length);
       } else {
         allConnections = [];
       }

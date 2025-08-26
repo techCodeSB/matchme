@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matchme/controller/splash_controller.dart';
 import 'package:matchme/widgets/registration_bottom_buttons.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,7 @@ import '../constant.dart';
 import '../widgets/dropdown.dart';
 import '../widgets/details_hero.dart';
 import '../widgets/details_textfield.dart';
+import '../widgets/radio.dart' as my_radio;
 
 class PersonalFstDetails extends StatefulWidget {
   const PersonalFstDetails({super.key});
@@ -20,6 +22,7 @@ class PersonalFstDetails extends StatefulWidget {
 class _PersonalFstDetailsState extends State<PersonalFstDetails> {
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
+  dynamic rgistrationStatus;
 
   String formatTime(TimeOfDay time) {
     final now = DateTime.now(); // today's date
@@ -78,6 +81,14 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
       int minute = int.parse(RegisterController.timeOfBirth!.split(":")[1]);
       selectedTime = TimeOfDay(hour: hour, minute: minute);
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      dynamic stepsAndStatus = await SplashController.getSteps();
+      rgistrationStatus = stepsAndStatus['registration_status'];
+
+      print("=========");
+      print(rgistrationStatus);
+    });
   }
 
   @override
@@ -143,6 +154,17 @@ class _PersonalFstDetailsState extends State<PersonalFstDetails> {
                       ],
                     ),
                     // *********************** PERCENTAGE CLOSE ***********************
+
+                    rgistrationStatus == "0"
+                        ? my_radio.Radio(
+                            title: "",
+                            items: const ["Member", "Non-Member"],
+                            onChanged: (v) {
+                              RegisterController.memberType = v!;
+                            },
+                            defaultValue: RegisterController.memberType,
+                          )
+                        : const SizedBox.shrink(),
 
                     const SizedBox(height: 20.0),
                     DetailsTextfield(

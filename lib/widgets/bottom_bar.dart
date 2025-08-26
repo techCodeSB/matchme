@@ -70,7 +70,7 @@ class _BottomBarState extends State<BottomBar> {
                       const Color.fromARGB(255, 197, 193, 193).withOpacity(0.3),
                   spreadRadius: 2,
                   blurRadius: 6,
-                  offset: Offset(0, 3),
+                  offset: const Offset(0, 3),
                 ),
               ],
             ),

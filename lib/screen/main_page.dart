@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:matchme/controller/mainpage_controller.dart';
+import 'package:matchme/controller/preferance_controller.dart';
 import 'package:provider/provider.dart';
 import '../screen/dashboard.dart';
 import './match.dart';
@@ -26,10 +27,16 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: screens[Provider.of<MainpageController>(context, listen: true)
-          .currentBottomBarIndex],
-      bottomNavigationBar: const BottomBar(),
+    return RefreshIndicator(
+      onRefresh: ()async{
+        await Provider.of<PreferanceController>(context, listen: false)
+          .getData(context);
+      },
+      child: Scaffold(
+        body: screens[Provider.of<MainpageController>(context, listen: true)
+            .currentBottomBarIndex],
+        bottomNavigationBar: const BottomBar(),
+      ),
     );
   }
 }
