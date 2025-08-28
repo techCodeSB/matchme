@@ -155,6 +155,36 @@ class _UserDetailProfileState extends State<UserDetailProfile> {
                             ],
                           ),
                         ),
+                        // Bookmark
+                        InkWell(
+                          onTap: () async {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 50.0,
+                                width: 50.0,
+                                decoration: BoxDecoration(
+                                  color: Constant.highlightColor,
+                                  borderRadius: BorderRadius.circular(50.0),
+                                ),
+                                child: const Icon(
+                                  Icons.bookmark_outline_rounded,
+                                  color: Colors.white,
+                                  size: 25.0,
+                                ),
+                              ),
+                              const SizedBox(height: 5.0),
+                              const Text(
+                                "Save for Later",
+                                style: TextStyle(fontSize: 13.0),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   )
@@ -162,7 +192,6 @@ class _UserDetailProfileState extends State<UserDetailProfile> {
       ),
     );
   }
-
 
 // :::::::::::::::::::::::::::::::::: ALL DETAILS SCREENS ::::::::::::::::::::::::::::
   Widget personalDetail() {

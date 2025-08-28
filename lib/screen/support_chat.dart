@@ -50,9 +50,11 @@ class _SupportChatState extends State<SupportChat> {
         appBar: AppBar(
           title: Text(
             "Chat",
-            style: TextStyle(fontFamily: Constant.haddingFont),
+            style: TextStyle(
+              fontFamily: Constant.haddingFont,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          centerTitle: true,
         ),
         body: const Center(
           child: CircularProgressIndicator(),
@@ -64,9 +66,11 @@ class _SupportChatState extends State<SupportChat> {
       appBar: AppBar(
         title: Text(
           "Chat",
-          style: TextStyle(fontFamily: Constant.haddingFont),
+          style: TextStyle(
+            fontFamily: Constant.haddingFont,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        centerTitle: true,
       ),
       body: RefreshIndicator(
         onRefresh: () async {

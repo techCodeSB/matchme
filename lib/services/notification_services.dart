@@ -8,7 +8,7 @@ class NotificationService {
   static Future<void> initialize() async {
     // Android settings
     const AndroidInitializationSettings androidInitSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('notification_icon');
 
     // iOS settings
     const DarwinInitializationSettings iosInitSettings =
@@ -76,6 +76,7 @@ class NotificationService {
       message.notification?.body ?? 'No Body',
       notificationDetails,
       payload: message.data.toString(), // 👈 forward extra data if needed
+      
     );
   }
 }
