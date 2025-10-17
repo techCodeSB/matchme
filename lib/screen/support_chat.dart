@@ -125,7 +125,7 @@ class _SupportChatState extends State<SupportChat> {
                       horizontal: 15.0,
                       vertical: 10.0,
                     ),
-                    margin: const EdgeInsets.only(top: 10.0),
+                    margin: const EdgeInsets.only(top: 10.0, right: 5.0),
                     decoration: BoxDecoration(
                       color: chat['message_by'] == "admin"
                           ? Constant.highlightColor

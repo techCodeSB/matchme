@@ -59,6 +59,7 @@ class LoginController extends ChangeNotifier {
       if (req.statusCode == 200) {
         // Set token in localdata
         pref.setString("token", res['token']);
+        pref.setString("userId",  res['id']);
 
         // remove value from fields;
         username.text = "";

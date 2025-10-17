@@ -6,10 +6,12 @@ class Constant {
   static final String? subHadding = GoogleFonts.outfit().fontFamily;
   static Icon backIcon = const Icon(Icons.arrow_back_ios, size: 20.0);
   // static String api = "http://10.0.2.2:8080/api/v1/";
+  // static String socket = "http://10.0.2.2:8080";
   // static String imageUrl = "http://10.0.2.2:8080/api/v1/users/upload/";
 
-  static String api = "http://api.matchmeglobal.com/api/v1/";
-  static String imageUrl = "http://api.matchmeglobal.com/api/v1/users/upload/";
+  static String api = "http://3.110.6.172:3000/api/v1/";
+  static String socket = "http://3.110.6.172:3000";
+  static String imageUrl = "http://3.110.6.172:3000/api/v1/users/upload/";
 
   static Color highlightColor = const Color(0xFFc6b27f);
 }

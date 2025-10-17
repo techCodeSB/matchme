@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matchme/controller/socket_controller.dart';
 import 'package:matchme/widgets/my_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -9,8 +10,15 @@ class SupportController extends ChangeNotifier {
   List<dynamic>? allChats;
   final TextEditingController chat = TextEditingController();
 
-
- 
+  
+  void manualChatInsert(data) {
+    if (allChats == null) {
+      allChats = [data];
+    } else {
+      allChats = [...allChats!, data];
+    }
+    notifyListeners();
+  }
 
   void changeReadStatus() async {
     Uri url = Uri.parse("${Constant.api}admin-chat/change-read-status");
@@ -69,6 +77,7 @@ class SupportController extends ChangeNotifier {
     Uri url = Uri.parse("${Constant.api}admin-chat/add-chat");
     final SharedPreferences pref = await SharedPreferences.getInstance();
     final token = pref.getString("token");
+    final userId = pref.getString("userId");
 
     if (chat.text.trim() == '') {
       return;
@@ -78,15 +87,18 @@ class SupportController extends ChangeNotifier {
       var req = await http.post(
         url,
         headers: {"Content-Type": 'application/json'},
-        body: jsonEncode({
-          "msgBy": "user",
-          "msg": chat.text,
-          "token":token
-        }),
+        body: jsonEncode({"msgBy": "user", "msg": chat.text, "token": token}),
       );
 
       var res = jsonDecode(req.body);
       if (req.statusCode == 200) {
+        var socketData = jsonEncode({
+          "from": userId,
+          "to": "admin",
+          "msg": chat.text,
+        });
+        SocketController.socket.emit("message", socketData);
+
         allChats = res;
         chat.clear();
       } else {
