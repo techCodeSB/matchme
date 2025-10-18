@@ -106,8 +106,10 @@ class _AgreementState extends State<Agreement> {
       ),
       bottomSheet: RegistrationBottomButtons(
         onNextTap: () {
-          Provider.of<AgreementController>(context, listen: false)
-              .uploadAgreement(context);
+          Provider.of<AgreementController>(
+            context,
+            listen: false,
+          ).uploadAgreement(context);
         },
         onBackTap: () {},
       ),

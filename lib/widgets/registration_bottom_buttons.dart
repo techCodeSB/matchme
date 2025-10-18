@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:matchme/constant.dart';
+import 'package:matchme/controller/register_controller.dart';
+import 'package:provider/provider.dart';
 
 class RegistrationBottomButtons extends StatefulWidget {
   final Function? onNextTap;
@@ -24,6 +26,11 @@ class _RegistrationBottomButtonsState extends State<RegistrationBottomButtons> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final buttonLoader = Provider.of<RegisterController>(
+      context,
+      listen: true,
+    ).isLoader;
+
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: size.width * 0.05,
@@ -65,9 +72,11 @@ class _RegistrationBottomButtonsState extends State<RegistrationBottomButtons> {
           widget.isNext == true
               ? Expanded(
                   child: InkWell(
-                    onTap: () {
-                      widget.onNextTap!();
-                    },
+                    onTap: buttonLoader == true
+                        ? null
+                        : () {
+                            widget.onNextTap!();
+                          },
                     child: Container(
                       height: 50.0,
                       decoration: BoxDecoration(
@@ -75,15 +84,23 @@ class _RegistrationBottomButtonsState extends State<RegistrationBottomButtons> {
                         color: const Color(0xFF033A44),
                       ),
                       child: Center(
-                        child: Text(
-                          "Next",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: Constant.subHadding,
-                          ),
-                        ),
+                        child: buttonLoader == true
+                            ? SizedBox(
+                              width: 25.0,
+                              height: 25.0,
+                              child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                            )
+                            : Text(
+                                "Next",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: Constant.subHadding,
+                                ),
+                              ),
                       ),
                     ),
                   ),

@@ -21,9 +21,7 @@ class _PhotoUploadState extends State<PhotoUpload> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(size.height * 0.3),
-        child: DetailsHero(
-          size: size,
-        ),
+        child: DetailsHero(size: size),
       ),
       body: SafeArea(
         child: Container(
@@ -195,3 +193,4 @@ class _PhotoUploadState extends State<PhotoUpload> {
     );
   }
 }
+

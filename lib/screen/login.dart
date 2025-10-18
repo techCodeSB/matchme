@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:matchme/controller/register_controller.dart';
 import '../controller/login_controller.dart';
 import '../widgets/error_text.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,10 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final btnLoader = Provider.of<RegisterController>(
+      context,
+      listen: true,
+    ).isLoader;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -180,29 +185,45 @@ class _LoginState extends State<Login> {
                         ),
                         ErrorText(
                           text: "Password can't be blank",
-                          visible: Provider.of<LoginController>(context,
-                                  listen: true)
-                              .errMsg['pass']!,
+                          visible: Provider.of<LoginController>(
+                            context,
+                            listen: true,
+                          ).errMsg['pass']!,
                         ),
                         SizedBox(height: size.height * 0.02),
                         InkWell(
-                          onTap: () {
-                            Provider.of<LoginController>(context, listen: false)
-                                .login(context)
-                                .then((v) {
-                              Provider.of<LoginController>(
-                                context,
-                                listen: false,
-                              ).addFcmToken(context);
-                            });
+                          onTap: btnLoader == true
+                              ? null
+                              : () {
+                                  Provider.of<LoginController>(
+                                    context,
+                                    listen: false,
+                                  ).login(context).then((v) {
+                                    Provider.of<LoginController>(
+                                      context,
+                                      listen: false,
+                                    ).addFcmToken(context);
 
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => const Otp(),
-                            //   ),
-                            // );
-                          },
+                                    // DeActive Button Loading...;
+                                    Provider.of<RegisterController>(
+                                      context,
+                                      listen: false,
+                                    ).setLoader(false);
+                                  });
+
+                                  // Active Button Loading...;
+                                  Provider.of<RegisterController>(
+                                    context,
+                                    listen: false,
+                                  ).setLoader(true);
+
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => const Otp(),
+                                  //   ),
+                                  // );
+                                },
                           child: Container(
                             width: double.infinity,
                             height: 50.0,
@@ -211,15 +232,20 @@ class _LoginState extends State<Login> {
                               color: const Color(0xFF0C5461),
                             ),
                             child: Center(
-                              child: Text(
-                                "Login",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: GoogleFonts.nunito().fontFamily,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
+                              child: btnLoader == true
+                                  ? CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                  : Text(
+                                      "Login",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily:
+                                            GoogleFonts.nunito().fontFamily,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
                             ),
                           ),
                         ),

@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:matchme/controller/register_controller.dart';
 import 'package:matchme/controller/splash_controller.dart';
 import 'package:matchme/screen/lifestyle_1.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/my_snackbar.dart';
 import '../constant.dart';
@@ -162,11 +164,15 @@ class PhotouploadController extends ChangeNotifier {
 
   // Function to upload images
   Future<void> upload(ctx) async {
+    Provider.of<RegisterController>(ctx, listen: false).setLoader(true);
+
     // Choose first 4 image;
     if (uploadedImages.isEmpty) {
       for (var e in images.keys) {
         if ((e != "five" && e != "six") && images[e] == null) {
           mySnackBar(ctx, "Choose first 4 image.");
+
+          Provider.of<RegisterController>(ctx, listen: false).setLoader(false);
           return;
         }
       }
@@ -175,6 +181,8 @@ class PhotouploadController extends ChangeNotifier {
     // Time of update: not select any image;
     if (uploadedImages.isNotEmpty && images.values.every((v) => v == null)) {
       Navigator.pop(ctx);
+
+      Provider.of<RegisterController>(ctx, listen: false).setLoader(false);
       return;
     }
 
@@ -235,18 +243,20 @@ class PhotouploadController extends ChangeNotifier {
         Navigator.pop(ctx, true);
       }
 
-      images = {
-        "one": null,
-        "two": null,
-        "three": null,
-        "four": null,
-        "five": null,
-        "six": null
-      };
+      // images = {
+      //   "one": null,
+      //   "two": null,
+      //   "three": null,
+      //   "four": null,
+      //   "five": null,
+      //   "six": null
+      // };
     } else {
       mySnackBar(ctx, "Upload failed");
       // final body = await res.stream.bytesToString();
     }
+
+    Provider.of<RegisterController>(ctx, listen: false).setLoader(false);
   }
 
   void clearUploadedPhoto() {

@@ -58,11 +58,28 @@ class _ProfileSliderState extends State<ProfileSlider> {
                   ),
                   child: InstaImageViewer(
                     backgroundIsTransparent: true,
-                    imageUrl:"${Constant.imageUrl}${widget.imgs[index]}" ,
+                    imageUrl: "${Constant.imageUrl}${widget.imgs[index]}",
                     child: Image(
                       fit: BoxFit.cover,
                       image: Image.network(
                         "${Constant.imageUrl}${widget.imgs[index]}",
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null)
+                            return child; // Image loaded
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      (loadingProgress.expectedTotalBytes ?? 1)
+                                  : null,
+                            ),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Center(
+                            child: Icon(Icons.broken_image, color: Colors.grey),
+                          );
+                        },
                       ).image,
                     ),
                   ),

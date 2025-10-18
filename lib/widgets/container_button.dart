@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:matchme/controller/register_controller.dart';
+import 'package:provider/provider.dart';
 import '../constant.dart';
 
 class ContainerButton extends StatefulWidget {
@@ -22,10 +24,17 @@ class ContainerButton extends StatefulWidget {
 class _ContainerButtonState extends State<ContainerButton> {
   @override
   Widget build(BuildContext context) {
+    final buttonLoader = Provider.of<RegisterController>(
+      context,
+      listen: true,
+    ).isLoader;
+
     return InkWell(
-      onTap: (){
-        widget.onTap();
-      },
+      onTap: buttonLoader == true
+          ? null
+          : () {
+              widget.onTap();
+            },
       child: Container(
         width: double.infinity,
         height: 60.0,
@@ -35,15 +44,23 @@ class _ContainerButtonState extends State<ContainerButton> {
           color: widget.color,
         ),
         child: Center(
-          child: Text(
-            widget.text,
-            style: TextStyle(
-              fontFamily: Constant.haddingFont,
-              color: widget.textColor,
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          child: buttonLoader == true
+              ? SizedBox(
+                  height: 25.0,
+                  width: 25.0,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
+                )
+              : Text(
+                  widget.text,
+                  style: TextStyle(
+                    fontFamily: Constant.haddingFont,
+                    color: widget.textColor,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
         ),
       ),
     );

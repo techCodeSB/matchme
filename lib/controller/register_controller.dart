@@ -105,6 +105,14 @@ class RegisterController extends ChangeNotifier {
   // Introduction about Your sele;
   static final TextEditingController introduction = TextEditingController();
 
+  // Button State Active or disable;
+  bool isLoader = false;
+
+  void setLoader(v) {
+    isLoader = v;
+    notifyListeners();
+  }
+
   // Error message for require fields
   Map<String, bool> errMsg = {
     // For first personal Details
@@ -216,6 +224,8 @@ class RegisterController extends ChangeNotifier {
 
   //
   void personalFstSubmit(ctx) async {
+    setLoader(true);
+
     // Check validation
     if (fullname.text == "" ||
         gender == "" ||
@@ -233,6 +243,8 @@ class RegisterController extends ChangeNotifier {
       if (placeOfBirth.text.trim().isEmpty) {
         setErrorMsg({"birthPlace": true});
       }
+
+      setLoader(false);
 
       return;
     }
@@ -258,10 +270,14 @@ class RegisterController extends ChangeNotifier {
     } else {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
+
+    setLoader(false);
   }
 
   //
   void personalSecSubmit(ctx) async {
+    setLoader(true);
+
     // Check validation
     if (country.text.isEmpty ||
         city.text.isEmpty ||
@@ -284,6 +300,7 @@ class RegisterController extends ChangeNotifier {
         setErrorMsg({"religious": true});
       }
 
+      setLoader(false);
       return;
     }
 
@@ -308,15 +325,18 @@ class RegisterController extends ChangeNotifier {
     } else {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
+    setLoader(false);
   }
 
   //
   void personalTrdSubmit(ctx) async {
+    setLoader(true);
     var height = "${heightFeet.trim()}.${heightInch.trim()}";
 
     final regex = RegExp(r'^\+\d{10,15}$');
     if (regex.hasMatch(whatsappNumber.text.trim()) == false) {
       setErrorMsg({"whatsappNumber": true});
+      setLoader(false);
       return;
     }
 
@@ -360,6 +380,7 @@ class RegisterController extends ChangeNotifier {
         setErrorMsg({"haveKids": true});
       }
 
+      setLoader(false);
       return;
     }
 
@@ -386,10 +407,13 @@ class RegisterController extends ChangeNotifier {
     } else {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
+    setLoader(false);
   }
 
   //
   void familySubmit(ctx) async {
+    setLoader(true);
+
     // Check validation
     if (fathername.text.isEmpty ||
         hometown.text.isEmpty ||
@@ -428,6 +452,7 @@ class RegisterController extends ChangeNotifier {
         setErrorMsg({"familyAnualIncome": true});
       }
 
+      setLoader(false);
       return;
     }
 
@@ -454,10 +479,13 @@ class RegisterController extends ChangeNotifier {
     } else {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
+    setLoader(false);
   }
 
   //
   void qualificationSubmit(ctx) async {
+    setLoader(true);
+
     // Check validation
     if (schoolName.text.isEmpty ||
         ((qualification == "graduation" ||
@@ -488,6 +516,7 @@ class RegisterController extends ChangeNotifier {
         setErrorMsg({"qualification": true});
       }
 
+      setLoader(false);
       return;
     }
 
@@ -514,10 +543,14 @@ class RegisterController extends ChangeNotifier {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
+
+    setLoader(false);
   }
 
   //
   void workSubmit(ctx) async {
+    setLoader(true);
+
     var getStatus = await SplashController.getSteps();
     var status = getStatus['registration_status'];
 
@@ -551,6 +584,7 @@ class RegisterController extends ChangeNotifier {
         setErrorMsg({"website": true});
       }
 
+      setLoader(false);
       return;
     }
 
@@ -584,10 +618,13 @@ class RegisterController extends ChangeNotifier {
     } else {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
+
+    setLoader(false);
   }
 
   //
   void moreQuestionNext(ctx) async {
+    setLoader(true);
     var reg = await register({'registration_step': "8"});
 
     if (reg['success'] == true) {
@@ -600,10 +637,14 @@ class RegisterController extends ChangeNotifier {
     } else {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
+
+    setLoader(false);
   }
 
   //
   void lifeStyle1Submit(ctx) async {
+    setLoader(true);
+
     if (smoker.isEmpty || drink.isEmpty) {
       if (smoker.isEmpty) {
         setErrorMsg({"smoker": true});
@@ -612,6 +653,7 @@ class RegisterController extends ChangeNotifier {
         setErrorMsg({"drink": true});
       }
 
+      setLoader(false);
       return;
     }
 
@@ -631,10 +673,14 @@ class RegisterController extends ChangeNotifier {
     } else {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
+
+    setLoader(false);
   }
 
   //
   void lifeStyle2Submit(ctx, List<String> act) async {
+    setLoader(true);
+
     weekendActivites = act; // add all Activites;
 
     if (workout.isEmpty || weekendActivites.isEmpty) {
@@ -645,6 +691,7 @@ class RegisterController extends ChangeNotifier {
         setErrorMsg({"weekendActivites": true});
       }
 
+      setLoader(false);
       return;
     }
 
@@ -664,14 +711,19 @@ class RegisterController extends ChangeNotifier {
     } else {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
+
+    setLoader(false);
   }
 
   //
   void lifeStyle3Submit(ctx, List<String> intst) async {
+    setLoader(true);
     interest = intst; // add all intersets;
 
     if (interest.isEmpty) {
       setErrorMsg({"interest": true});
+
+      setLoader(false);
       return;
     }
 
@@ -688,10 +740,13 @@ class RegisterController extends ChangeNotifier {
     } else {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
+
+    setLoader(false);
   }
 
   //
   void lifeStyle4Submit(ctx, List<String> h) async {
+    setLoader(true);
     holidays = h; // add all holidays;
 
     if (holidays.isEmpty || eatOut.isEmpty || travle.isEmpty) {
@@ -704,6 +759,8 @@ class RegisterController extends ChangeNotifier {
       if (travle.isEmpty) {
         setErrorMsg({"travle": true});
       }
+
+      setLoader(false);
       return;
     }
 
@@ -724,10 +781,13 @@ class RegisterController extends ChangeNotifier {
     } else {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
+
+    setLoader(false);
   }
 
   //
   void lifeStyle5Submit(ctx) async {
+    setLoader(true);
     // var getStatus = await SplashController.getSteps();
     // var status = getStatus['registration_status'];
 
@@ -747,6 +807,8 @@ class RegisterController extends ChangeNotifier {
       if (howReligious.isEmpty) {
         setErrorMsg({"howReligious": true});
       }
+
+      setLoader(false);
       return;
     }
 
@@ -768,10 +830,13 @@ class RegisterController extends ChangeNotifier {
     } else {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
+
+    setLoader(false);
   }
 
   //
   void introductionSubmit(ctx) async {
+    setLoader(true);
     var getStatus = await SplashController.getSteps();
     var status = getStatus['registration_status'];
 
@@ -779,6 +844,7 @@ class RegisterController extends ChangeNotifier {
     if (introduction.text.isEmpty) {
       setErrorMsg({"introduction": true});
 
+      setLoader(false);
       return;
     }
 
@@ -806,11 +872,14 @@ class RegisterController extends ChangeNotifier {
     } else {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
-  }
 
+    setLoader(false);
+  }
 
   //
   void gotoProfile(ctx) async {
+    setLoader(true);
+    
     var reg = await register({
       'registration_step': "0", //unnecessary;
       'registration_status': "1",
@@ -826,8 +895,9 @@ class RegisterController extends ChangeNotifier {
     } else {
       mySnackBar(ctx, "Error: ${reg['res']['error'] ?? reg['res']['err']}");
     }
-  }
 
+    setLoader(false);
+  }
 
 //
   static void clearAllData() {

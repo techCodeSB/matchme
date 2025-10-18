@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:matchme/controller/register_controller.dart';
 import 'package:matchme/controller/splash_controller.dart';
 import 'package:matchme/screen/main_page.dart';
 import 'package:matchme/widgets/my_snackbar.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constant.dart';
 import '../screen/photo_upload.dart';
@@ -168,6 +170,8 @@ class PreferanceController extends ChangeNotifier {
 
   // Add Preferance ;
   void registerPreferance(ctx) async {
+    Provider.of<RegisterController>(ctx, listen: false).setLoader(true);
+
     final SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString("token");
     Uri url = Uri.parse("${Constant.api}preferance/add");
@@ -226,9 +230,11 @@ class PreferanceController extends ChangeNotifier {
         // If API call failed then show error message;
         mySnackBar(ctx, "Something went wrong, try again later.");
       }
+
+      Provider.of<RegisterController>(ctx, listen: false).setLoader(false);
     } catch (er) {
-      debugPrint(er.toString());
       mySnackBar(ctx, "Something went wrong, try again later.");
+      Provider.of<RegisterController>(ctx, listen: false).setLoader(false);
     }
   }
 

@@ -11,8 +11,13 @@ class ImageUploader extends StatefulWidget {
   final String? uploadedImage;
   final String? label;
 
-  const ImageUploader(
-      {super.key, this.image, this.pos, this.uploadedImage, this.label});
+  const ImageUploader({
+    super.key,
+    this.image,
+    this.pos,
+    this.uploadedImage,
+    this.label,
+  });
 
   @override
   State<ImageUploader> createState() => _ImageUploaderState();
@@ -48,9 +53,7 @@ class _ImageUploaderState extends State<ImageUploader> {
                             Text(
                               widget.label!,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 13.0
-                              ),
+                              style: const TextStyle(fontSize: 13.0),
                             )
                           ],
                         ),
